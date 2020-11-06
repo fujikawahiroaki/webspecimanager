@@ -78,7 +78,7 @@ class CollectPoint(models.Model):
                                              blank=True, null=True,
                                              default=0.0)
     # 地点情報(オリジナル)
-    geom = models.PointField(srid=4326)
+    geom = models.PointField(srid=4326, blank=True, null=True)
     # 採集地の最低海抜距離(メートル)
     minimum_elevation = models.FloatField(verbose_name='採集地の最低海抜距離',
                                           blank=True, null=True,
