@@ -23,6 +23,7 @@ class Tour(models.Model):
     # 採集行のタイトル
     title = models.CharField(verbose_name='採集行のタイトル',
                              max_length=30, blank=True,
+                             default='',
                              null=True)
     # 採集行開始日
     start_date = models.DateField(verbose_name='採集行開始日',
@@ -33,6 +34,7 @@ class Tour(models.Model):
     # 採集ルート等をgeojsonで保持するフィールドを作る予定
     # 備考
     note = models.TextField(verbose_name='備考', max_length=200,
+                            default='',
                             blank=True, null=True)
     # 画像
     image1 = models.ImageField(upload_to=user_portfolio_directory_path,

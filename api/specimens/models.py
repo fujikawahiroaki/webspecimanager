@@ -46,57 +46,71 @@ class Specimen(models.Model):
                                            on_delete=models.SET_NULL)
     # 機関コード
     institution_code = models.CharField(verbose_name='機関コード',
-                                        max_length=50, blank=True, null=True)
+                                        max_length=50, blank=True,
+                                        default='', null=True)
     # 標本ID
     collection_code = models.IntegerField(verbose_name='標本ID',
-                                          blank=True, null=True)
+                                          blank=True,
+                                          default=0, null=True)
     # 同定者
     identified_by = models.CharField(verbose_name='同定者',
-                                     max_length=50, blank=True, null=True)
+                                     max_length=50, blank=True,
+                                     default='', null=True)
     # 同定年月日
     # 年月日がセットになっているDC最新版に準拠
     date_identified = models.DateTimeField(verbose_name='同定年月日',
                                            blank=True, null=True)
     # 採集者
     collecter = models.CharField(verbose_name='採集者',
+                                 default='',
                                  max_length=50, blank=True, null=True)
     # 採集年
     # 項目名のシンプルなDC最新版に準拠
     year = models.IntegerField(verbose_name='採集年',
+                               default=0,
                                blank=True, null=True)
     # 採集月
     # 同上
     month = models.IntegerField(verbose_name='採集月',
+                                default=0,
                                 blank=True, null=True)
     # 採集日
     # 同上
     day = models.IntegerField(verbose_name='採集日',
+                              default=0,
                               blank=True, null=True)
     # 標本の性別
     # M=オス、F=メス、H=両性、I=不確定、U=不明、T=転移
-    sex = models.CharField(verbose_name='性別',
+    sex = models.CharField(verbose_name='性別', default='U',
                            max_length=1, blank=True, null=True)
     # 標本の種類(乾燥、液浸など)
     preparation_type = models.CharField(verbose_name='標本の種類',
+                                        default='dry specimens',
                                         max_length=20, blank=True, null=True)
     # 現在の標本の状況 DC最新版準拠
     disposition = models.CharField(verbose_name='現在の標本の状況',
+                                   default='',
                                    max_length=30, blank=True, null=True)
     # 採集方法 DC最新版準拠
     sampling_protocol = models.TextField(verbose_name='採集方法',
+                                         default='',
                                          blank=True, null=True)
     # 採集中の作業メモ DC最新版準拠
     sampling_effort = models.TextField(verbose_name='採集中の作業メモ',
+                                       default='',
                                        blank=True, null=True)
     # ライフステージ DC最新版準拠
     lifestage = models.CharField(verbose_name='ライフステージ',
+                                 default='',
                                  max_length=20, blank=True, null=True)
     # 生成プロセス(wildなど)
     establishment_means = models.CharField(verbose_name='生成プロセス',
+                                           default='',
                                            max_length=20, blank=True,
                                            null=True)
     # ライセンス
     rights = models.CharField(verbose_name='ライセンス',
+                              default='',
                               max_length=10, blank=True, null=True)
     # 以上でGBIFベースの標本データカラム定義終了
     # 以下はオリジナルの定義
@@ -105,6 +119,7 @@ class Specimen(models.Model):
                              on_delete=models.SET_NULL, null=True)
     # 備考
     note = models.TextField(verbose_name='備考', max_length=200,
+                            default='',
                             blank=True, null=True)
     # 画像
     image1 = models.ImageField(upload_to=user_portfolio_directory_path,

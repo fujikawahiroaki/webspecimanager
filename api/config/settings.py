@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'taxa.apps.TaxaConfig',
     'tours.apps.ToursConfig',
     'specimens.apps.SpecimensConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -178,8 +179,8 @@ REST_FRAMEWORK = {
     ),
 }
 
-
-certificate_text = open("rsa_certificates/certificate.pem", 'rb').read()
+certificate_dir = os.path.join(BASE_DIR, "rsa_certificates/certificate.pem")
+certificate_text = open(certificate_dir, 'rb').read()
 certificate = load_pem_x509_certificate(certificate_text, default_backend())
 default_publickey = certificate.public_key()
 
