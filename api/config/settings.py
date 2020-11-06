@@ -31,10 +31,10 @@ env.read_env(os.path.join(BASE_DIR, ('.env')))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-# 開発中のみ全てのホストを有効化
-ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -100,15 +100,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'specimanager',
-        'USER': 'fujikawahiroaki',
-        'PASSWORD': 'orangetime',
-        'HOST': 'localhost',
-        'PORT': '5432',
-        'ATOMIC_REQUESTS': True,
-    }
+    'default': env.db()
 }
 
 # Password validation
@@ -157,10 +149,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 SITE_ID = 1
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8080',
-    'http://localhost:3000',
-)
+CORS_ORIGIN_WHITELIST = env.get_value('CORS_ORIGIN_WHITELIST', tuple)
 
 
 # LocationField関連設定
