@@ -31,6 +31,8 @@ djangorestframework-simplejwt = "*"
 cryptography = "*"
 python-jose = "*"
 rest-framework-auth0 = "*"
+python-dotenv = "*"
+django-environ = "*"
 
 [requires]
 python_version = "3.7"

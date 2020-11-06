@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 from pathlib import Path
+import environ
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
@@ -19,12 +20,15 @@ from cryptography.hazmat.backends import default_backend
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_NAME = os.path.basename(BASE_DIR)
+DJANGO_READ_ENV_FILE = True
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, ('.env')))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'iis4beo^ebb18%b-0^*0l&io*ng!7nmldkot=pfysnil7(%u2w'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -187,11 +191,11 @@ default_publickey = certificate.public_key()
 AUTH0 = {
     'CLIENTS': {
         'default': {
-            'AUTH0_CLIENT_ID': 'h2QwPVPzsHgXlJaIDbqaMLl2J6JKi51t',  #make sure it's the same string that aud attribute in your payload provides
-            'AUTH0_CLIENT_SECRET': 'tU3aX3WgTVoYqLsYcrbIM1ssXd68KD3suEnVtK1NOpTKe49YFN_cJ22ICOa7Rt6p',
+            'AUTH0_CLIENT_ID': env('AUTH0_CLIENT_ID'),  # make sure it's the same string that aud attribute in your payload provides
+            'AUTH0_CLIENT_SECRET': env('AUTH0_CLIENT_SECRET'),
             'CLIENT_SECRET_BASE64_ENCODED': True,
             'AUTH0_ALGORITHM': 'RS256',
-            'AUTH0_AUDIENCE': 'http://www.fujikawa-h.net',
+            'AUTH0_AUDIENCE': env('AUTH0_AUDIENCE'),
             'PUBLIC_KEY': default_publickey,  # used only for RS256
         }
     },
