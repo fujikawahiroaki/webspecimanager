@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from specimens.models import Specimen
+from .models import Specimen
 
 
 class SpecimenSerializer(serializers.ModelSerializer):

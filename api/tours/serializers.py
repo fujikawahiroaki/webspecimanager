@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from tours.models import Tour
+from .models import Tour
 
 
 class TourSerializer(serializers.ModelSerializer):
