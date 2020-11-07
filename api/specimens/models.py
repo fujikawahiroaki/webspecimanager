@@ -1,9 +1,5 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.geos import Point
-from location_field.models.spatial import LocationField
-from django.utils import timezone
 from django.conf import settings
-from django.contrib.auth import get_user_model
 import uuid
 from my_utils.file_tools import user_portfolio_directory_path
 from taxa.models import CustomTaxon, DefaultTaxon
