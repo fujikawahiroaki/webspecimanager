@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 import uuid
 from my_utils.file_tools import user_portfolio_directory_path
-from taxa.models import Taxon
+from taxa.models import CustomTaxon, DefaultTaxon
 from tours.models import Tour
 from collect_points.models import CollectPoint
 
@@ -36,9 +36,14 @@ class Specimen(models.Model):
     # 名前がよりシンプルになるものは一部Darwin Core 最新版に準拠
     # 以下、コメント内ではDarwin CoreをDCと略記
 
-    # 分類情報 外部キーのためこのカラム名はGBIF無関係
-    taxon_info = models.ForeignKey(Taxon, verbose_name='分類情報',
-                                   null=True, on_delete=models.SET_NULL)
+    # カスタム分類情報 外部キーのためこのカラム名はGBIF無関係
+    custom_taxon_info = models.ForeignKey(CustomTaxon, verbose_name='カスタム分類情報',
+                                          null=True, on_delete=models.SET_NULL)
+    # デフォルト分類情報 外部キーのためこのカラム名はGBIF無関係
+    default_taxon_info = models.ForeignKey(DefaultTaxon,
+                                           verbose_name='デフォルト分類情報',
+                                           null=True,
+                                           on_delete=models.SET_NULL)
     # 採集地点情報 外部キーのためこのカラム名はGBIF無関係
     collect_point_info = models.ForeignKey(CollectPoint,
                                            verbose_name='採集地点情報',

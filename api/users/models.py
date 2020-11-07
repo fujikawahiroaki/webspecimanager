@@ -75,15 +75,15 @@ class UesrProfile(models.Model):
                               max_length=10, blank=True, null=True)
     # 界
     kingdom = models.CharField(verbose_name='界',
-                               default='',
+                               default='Animalia',
                                max_length=30, blank=True, null=True)
     # 門
     phylum = models.CharField(verbose_name='門',
-                              default='',
+                              default='Arthropoda',
                               max_length=30, blank=True, null=True)
     # 鋼 予約語と被るため_nameを付与
     class_name = models.CharField(verbose_name='鋼',
-                                  default='',
+                                  default='Insecta',
                                   max_length=30, blank=True, null=True)
     # 目
     order = models.CharField(verbose_name='目',

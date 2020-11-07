@@ -4,9 +4,9 @@ from . import views
 
 
 router = routers.DefaultRouter()
-router.register('own-taxa', views.TaxonViewSet,
-                basename='Taxon')
-
+router.register('own-taxa', views.CustomTaxonViewSet,
+                basename='CuntomTaxon')
+router.register('shared-taxa', views.DefaultTaxonViewset)
 
 app_name = 'taxa'
 
