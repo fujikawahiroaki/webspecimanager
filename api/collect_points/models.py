@@ -59,14 +59,14 @@ class CollectPoint(models.Model):
                                            max_length=30, blank=True,
                                            default='',
                                            null=True)
-    # 採集地の経度
+    # 採集地の経度(10進法9桁小数点以下6桁)
     longitude = models.DecimalField(verbose_name='経度',
                                     max_digits=9,
                                     decimal_places=6,
                                     blank=True,
                                     null=True,
                                     default=0.0)
-    # 採集地の緯度
+    # 採集地の緯度(10進法9桁小数点以下6桁)
     latitude = models.DecimalField(verbose_name='緯度',
                                    max_digits=9,
                                    decimal_places=6,
