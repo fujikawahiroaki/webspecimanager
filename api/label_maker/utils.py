@@ -119,7 +119,7 @@ class LavelCanvas:
                           coordinate_and_elv, date_and_collecter,
                           japanese_place_name])
 
-    def _gen_col_label(self, label_dict):
+    def _gen_coll_label(self, label_dict):
         """
         コレクションラベル用文字列を生成
         """
@@ -173,33 +173,34 @@ class LavelCanvas:
         label_data = Box(label_dict)
         return textwrap.fill(label_data.sampling_protocol, 29)
 
-    def write_label(self, data=True, col=True, det=True, note=True):
+    def write_label(self, data=True, coll=True, det=True, note=True):
         """
         ラベルの書き込み 必要なタイプのラベルをオプションで指定
         """
         label_types = []
         if data is True:
             label_types.append("data")
-        if col is True:
-            label_types.append("col")
+        if coll is True:
+            label_types.append("coll")
         if det is True:
             label_types.append("det")
         if note is True:
             label_types.append("note")
         labeller_funcs = {"data": self._gen_data_label,
-                          "col": self._gen_col_label,
+                          "coll": self._gen_coll_label,
                           "det": self._gen_det_label,
                           "note": self._gen_note_label}
         while len(self.label_que) >= 1:
             # 空ラベル入り行×列数の二次元リストを1ページ分作る
             label_list = [["" for r in range(self.page_row)]
                           for c in range(self.page_col)]
-            if len(self.label_que) == 0:
-                break
-            # 有効なラベルタイプ分の行数×ページ全体の列数分インデックスを埋める
+            # 有効なラベルタイプ分の行数×ページ全体の列数分リストを埋める
+            # 1行に1ラベルタイプ、1列に1ラベルデータずつ描画
             row_counter = 0
             for label_type in label_types:
                 for col in range(self.page_col):
+                    if len(self.label_que) == 0:
+                        break
                     popdata = self.label_que.popleft()
                     row = row_counter + label_types.index(label_type)
                     label_list[row][col] = labeller_funcs[label_type](popdata)
