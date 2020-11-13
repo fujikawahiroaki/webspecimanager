@@ -45,6 +45,10 @@ class Specimen(models.Model):
                                            verbose_name='採集地点情報',
                                            null=True,
                                            on_delete=models.SET_NULL)
+    # コレクション名のフルネーム オリジナルのカラム
+    collection_name = models.CharField(verbose_name='コレクション名',
+                                       max_length=50, blank=True,
+                                       default='', null=True)
     # 機関コード
     institution_code = models.CharField(verbose_name='機関コード',
                                         max_length=50, blank=True,
@@ -93,12 +97,12 @@ class Specimen(models.Model):
                                    default='',
                                    max_length=30, blank=True, null=True)
     # 採集方法 DC最新版準拠
-    sampling_protocol = models.TextField(verbose_name='採集方法',
-                                         default='',
+    sampling_protocol = models.CharField(verbose_name='採集方法',
+                                         default='', max_length=20,
                                          blank=True, null=True)
     # 採集中の作業メモ DC最新版準拠
     sampling_effort = models.TextField(verbose_name='採集中の作業メモ',
-                                       default='',
+                                       default='', max_length=100,
                                        blank=True, null=True)
     # ライフステージ DC最新版準拠
     lifestage = models.CharField(verbose_name='ライフステージ',
