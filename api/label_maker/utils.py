@@ -190,7 +190,7 @@ class LavelCanvas:
                           "col": self._gen_col_label,
                           "det": self._gen_det_label,
                           "note": self._gen_note_label}
-        while len(self.label_que) > 0:
+        while len(self.label_que) >= 1:
             # 空ラベル入り行×列数の二次元リストを1ページ分作る
             label_list = [["" for r in range(self.page_row)]
                           for c in range(self.page_col)]
