@@ -34,10 +34,12 @@ class Specimen(models.Model):
 
     # カスタム分類情報 外部キーのためこのカラム名はGBIF無関係
     custom_taxon_info = models.ForeignKey(CustomTaxon, verbose_name='カスタム分類情報',
+                                          related_name='custom_taxon_info',
                                           null=True, on_delete=models.SET_NULL)
     # デフォルト分類情報 外部キーのためこのカラム名はGBIF無関係
     default_taxon_info = models.ForeignKey(DefaultTaxon,
                                            verbose_name='デフォルト分類情報',
+                                           related_name='default_taxon_info',
                                            null=True,
                                            on_delete=models.SET_NULL)
     # 採集地点情報 外部キーのためこのカラム名はGBIF無関係
