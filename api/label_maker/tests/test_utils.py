@@ -20,7 +20,7 @@ class TestLabelCanvas(SimpleTestCase):
             'institution_code': 'FHC', 'collection_code': 34,
             'sex': 'U', 'genus': 'Hogehoogegege',
             'species': 'fuagagaensis', 'subspecies': 'ogegegeois',
-            'japanese_name': 'ホゲホゲフガホソカタムシ',
+            'japanese_name': 'ホゲホゲフガウンコブリブリホソカタムシ',
             'scientific_name_author': 'Bakaaho',
             'name_publishedin_year': 2019,
             'identified_by': 'FUJIKAWA H.', 'date_identified': 2020,
