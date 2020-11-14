@@ -1,13 +1,12 @@
 import textwrap
 import os
 from pathlib import Path
-from my_utils.japanese_textwrap import fw_wrap
 from collections import deque
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.pagesizes import portrait
-from reportlab.platypus import Table, TableStyle, PageBreak
+from reportlab.platypus import Table, TableStyle
 from reportlab.lib.units import mm
 from reportlab.lib import colors
 from box import Box
@@ -156,21 +155,24 @@ class LabelCanvas:
             author_and_descyear = ''
         # 和名は長い場合2行にまたがれるようにする
         japanese_name = textwrap.fill(label_data.japanese_name, 14)
-        while japanese_name.count('\n') < 1:
+        if japanese_name.count('\n') < 1:
             japanese_name += '\n'
         # 同定者と同定年
         det_by = label_data.identified_by + 'det., ' +\
             str(label_data.date_identified)
         return '\n'.join([label_data.genus, label_data.species,
                           label_data.subspecies, author_and_descyear,
-                          sex, label_data.japanese_name, det_by])
+                          sex, japanese_name, det_by])
 
     def _gen_note_label(self, label_dict):
         """
         備考ラベル用文字列生成
         """
         label_data = Box(label_dict)
-        return textwrap.fill(label_data.sampling_protocol, 29)
+        note = textwrap.fill(label_data.sampling_protocol, 29)
+        while note.count('\n') < 7:
+            note += '\n'
+        return note
 
     def write_label(self, data=True, coll=True, det=True, note=True):
         """
@@ -194,7 +196,7 @@ class LabelCanvas:
             label_list = [["" for c in range(self.page_col)]
                           for r in range(self.page_row)]
             # 有効なラベルタイプ分の行数×ページ全体の列数分リストを埋める
-            # 1行に1ラベルタイプ、1列に1ラベルデータずつ描画
+            # 各行にラベルタイプひとつ、各列にラベルデータをひとつ当てはめる
             row_counter = 0
             while row_counter <= 11:
                 for col in range(self.page_col):
@@ -205,6 +207,6 @@ class LabelCanvas:
                         row = row_counter + label_types.index(label_type)
                         label_list[row][col] = labeller_funcs[label_type](popdata)
                 row_counter += len(label_types)
-                # 1ページ分データ作り次第テーブルに書き込んで改ページ
+            # 1ページ分データ作り次第テーブルに書き込んで改ページ
             self._make_table(label_list)
         self.pdf_canvas.save()
