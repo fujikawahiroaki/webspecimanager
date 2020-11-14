@@ -1,17 +1,19 @@
 import textwrap
+import os
+from pathlib import Path
 from my_utils.japanese_textwrap import fw_wrap
 from collections import deque
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib.pagesizes import landscape, portrait
+from reportlab.lib.pagesizes import portrait
 from reportlab.platypus import Table, TableStyle, PageBreak
 from reportlab.lib.units import mm
 from reportlab.lib import colors
 from box import Box
 
 
-class LavelCanvas:
+class LabelCanvas:
     """
     ラベル印刷用PDFを生成
     """
@@ -22,7 +24,7 @@ class LavelCanvas:
         # ハガキサイズに設定
         self.page_width = 100*mm
         self.page_height = 148*mm
-        self.page_size = landscape((self.page_width, self.page_height))
+        self.page_size = portrait((self.page_width, self.page_height))
         # 上下左右の余白
         self.margin_width = 10*mm
         self.margin_height = 11*mm
@@ -38,7 +40,8 @@ class LavelCanvas:
         # 1行の字数(半角)
         self.one_line_limit = 29
         # フォント設定
-        self.font_file = './fonts/migmix-1m-regular.ttf'
+        self.base_dir = Path(__file__).parent
+        self.font_file = os.path.join(self.base_dir, 'fonts/migmix-1m-regular.ttf')
         self.font_size = 3.0
         pdfmetrics.registerFont(TTFont('migmix', self.font_file))
         self.pdf_canvas.setFont('migmix', self.font_size)
@@ -84,22 +87,18 @@ class LavelCanvas:
         latitude = str(label_data.latitude) + 'N '  # 緯度
         longitude = str(label_data.longitude) + 'E '  # 経度
         coordinate = latitude + ' ' + longitude
-        if label_data.latitude == '':
-            coordinate = 'GPS: NO DATA '
         # 標高
-        elv = str(label_data) + 'm'
-        if label_data.elv == '':
-            elv = ''
+        elv = str(label_data.maximum_elevation) + 'm'
         coordinate_and_elv = coordinate + elv
         # 日付と採集者
         year = str(label_data.year)
         month = str(label_data.month)
         day = str(label_data.day)
-        if year == '':
+        if year == 0:
             year = 'Y:?'
-        if month == '':
+        if month == 0:
             month = 'M:?'
-        if day == '':
+        if day == 0:
             day = 'D:?'
         # 採集月が明確な場合ローマ数字に変換
         roman_num_dict = {'1': 'I', '2': 'II', '3': 'III',
@@ -126,8 +125,8 @@ class LavelCanvas:
         label_data = Box(label_dict)
         collection_name = textwrap.fill(label_data.collection_name,
                                         self.one_line_limit)
-        while collection_name.count('/n') < 7:
-            collection_name += '/n'
+        while collection_name.count('\n') < 7:
+            collection_name += '\n'
         return collection_name + label_data.institution_code +\
             ': ' + str(label_data.collection_code).rjust(6, '0')
 
@@ -162,7 +161,7 @@ class LavelCanvas:
         # 同定者と同定年
         det_by = label_data.identified_by + 'det., ' +\
             str(label_data.date_identified)
-        return '/n'.join([label_data.genus, label_data.species,
+        return '\n'.join([label_data.genus, label_data.species,
                           label_data.subspecies, author_and_descyear,
                           sex, label_data.japanese_name, det_by])
 
@@ -192,19 +191,20 @@ class LavelCanvas:
                           "note": self._gen_note_label}
         while len(self.label_que) >= 1:
             # 空ラベル入り行×列数の二次元リストを1ページ分作る
-            label_list = [["" for r in range(self.page_row)]
-                          for c in range(self.page_col)]
+            label_list = [["" for c in range(self.page_col)]
+                          for r in range(self.page_row)]
             # 有効なラベルタイプ分の行数×ページ全体の列数分リストを埋める
             # 1行に1ラベルタイプ、1列に1ラベルデータずつ描画
             row_counter = 0
-            for label_type in label_types:
+            while row_counter <= 11:
                 for col in range(self.page_col):
                     if len(self.label_que) == 0:
                         break
                     popdata = self.label_que.popleft()
-                    row = row_counter + label_types.index(label_type)
-                    label_list[row][col] = labeller_funcs[label_type](popdata)
+                    for label_type in label_types:
+                        row = row_counter + label_types.index(label_type)
+                        label_list[row][col] = labeller_funcs[label_type](popdata)
                 row_counter += len(label_types)
-            # 1ページ分データ作り次第テーブルに書き込んで改ページ
+                # 1ページ分データ作り次第テーブルに書き込んで改ページ
             self._make_table(label_list)
         self.pdf_canvas.save()
