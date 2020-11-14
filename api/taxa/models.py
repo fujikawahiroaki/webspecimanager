@@ -68,7 +68,7 @@ class DefaultTaxon(models.Model):
                                max_length=30, blank=True, null=True)
     # 亜種
     subspecies = models.CharField(verbose_name='亜種',
-                                  default='ssp.',
+                                  default='',
                                   max_length=30, blank=True, null=True)
     # 記載者
     scientific_name_author = models.CharField(verbose_name='記載者',
