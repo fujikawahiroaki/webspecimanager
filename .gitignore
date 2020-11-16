@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # ラベル生成テストpdf
-test_alllabel.pdf
-test_onelabel.pdf
-test_threelabel.pdf
-test_twolabel.pdf
+api/test_alllabel.pdf
+api/test_onelabel.pdf
+api/test_threelabel.pdf
+api/test_twolabel.pdf
