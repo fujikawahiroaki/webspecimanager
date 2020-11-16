@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ラベル生成テストpdf
+test_alllabel.pdf
+test_onelabel.pdf
+test_threelabel.pdf
+test_twolabel.pdf
