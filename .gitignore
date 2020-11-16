@@ -133,3 +133,6 @@ api/test_alllabel.pdf
 api/test_onelabel.pdf
 api/test_threelabel.pdf
 api/test_twolabel.pdf
+
+# RSA Key
+api/rsa_certificates/certificate.pem
