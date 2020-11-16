@@ -23,7 +23,7 @@ class TestLabelCanvas(SimpleTestCase):
             'japanese_name': 'ホゲホゲフガウンコブリブリホソカタムシ',
             'scientific_name_author': 'Bakaaho',
             'name_publishedin_year': 2019,
-            'identified_by': 'FUJIKAWA H.', 'date_identified': 2020,
+            'identified_by': 'FUJIKAWA H.', 'date_identified': '2020-10-21',
             'sampling_protocol': 'Beating'
         }
         label_dict2 = {
@@ -41,7 +41,7 @@ class TestLabelCanvas(SimpleTestCase):
             'japanese_name': 'ハゲホゲゴミムシダマシ',
             'scientific_name_author': 'Buriburiman',
             'name_publishedin_year': 2019,
-            'identified_by': 'FUJIKAWA H.', 'date_identified': 2020,
+            'identified_by': 'FUJIKAWA H.', 'date_identified': '2020-03-21',
             'sampling_protocol': 'Looking'
         }
         self.label_list = []
