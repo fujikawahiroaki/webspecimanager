@@ -198,7 +198,7 @@ class LabelCanvas:
             # 有効なラベルタイプ分の行数×ページ全体の列数分リストを埋める
             # 各行にラベルタイプひとつ、各列にラベルデータをひとつ当てはめる
             row_counter = 0
-            while row_counter <= 11:
+            while row_counter <= self.page_row - 1:
                 for col in range(self.page_col):
                     if len(self.label_que) == 0:
                         break
