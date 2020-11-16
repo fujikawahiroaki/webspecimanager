@@ -65,8 +65,8 @@ class Specimen(models.Model):
                                      default='', null=True)
     # 同定年月日
     # 年月日がセットになっているDC最新版に準拠
-    date_identified = models.DateTimeField(verbose_name='同定年月日',
-                                           blank=True, null=True)
+    date_identified = models.DateField(verbose_name='同定年月日',
+                                       blank=True, null=True)
     # 採集者
     collecter = models.CharField(verbose_name='採集者',
                                  default='',

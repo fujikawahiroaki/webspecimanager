@@ -159,7 +159,7 @@ class LabelCanvas:
             japanese_name += '\n'
         # 同定者と同定年
         det_by = label_data.identified_by + 'det., ' +\
-            str(label_data.date_identified)
+            str(label_data.date_identified[0:4])  # 同定年月日から年だけ取り出す
         return '\n'.join([label_data.genus, label_data.species,
                           label_data.subspecies, author_and_descyear,
                           sex, japanese_name, det_by])
