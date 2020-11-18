@@ -35,12 +35,15 @@ class LabelCanvas:
         # 1ページあたりのラベル行数
         self.page_row = 12
         # キャンバス生成
-        self.pdf_canvas = canvas.Canvas(self.pdf_name, pagesize=self.page_size)
+        self.base_dir = Path(__file__).parent
+        self.pdf_canvas = canvas.Canvas(os.path.join(self.base_dir,
+                                        f"pdf/{self.pdf_name}"),
+                                        pagesize=self.page_size)
         # 1行の字数(半角)
         self.one_line_limit = 29
         # フォント設定
-        self.base_dir = Path(__file__).parent
-        self.font_file = os.path.join(self.base_dir, 'fonts/migmix-1m-regular.ttf')
+        self.font_file = os.path.join(self.base_dir,
+                                      'fonts/migmix-1m-regular.ttf')
         self.font_size = 3.0
         pdfmetrics.registerFont(TTFont('migmix', self.font_file))
         self.pdf_canvas.setFont('migmix', self.font_size)
