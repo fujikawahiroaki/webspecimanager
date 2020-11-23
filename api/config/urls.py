@@ -12,7 +12,7 @@ urlpatterns = [
     path('api/collect-points/', include('collect_points.urls')),
     path('api/taxa/', include('taxa.urls')),
     path('api/tours/', include('tours.urls')),
-    path('api/label-maker/', include('label_maker.urls'))
+    path('api/label-maker/', include('label_maker.urls')),
 ]
 
 # 開発中のメディアファイル配信設定
