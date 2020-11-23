@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'tours.apps.ToursConfig',
     'specimens.apps.SpecimensConfig',
     'users.apps.UsersConfig',
+    'label_maker.apps.LabelMakerConfig',
 ]
 
 MIDDLEWARE = [
