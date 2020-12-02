@@ -15,6 +15,7 @@ from django.utils.decorators import method_decorator
 from .models import SpecimenLabel
 from .serializers import SpecimenLabelSerializer
 from .utils import LabelCanvas
+from specimens.serializers import SpecimenForLabelSerializer
 
 
 @method_decorator(transaction.atomic, name='create')
@@ -31,14 +32,18 @@ class SpecimenLabelView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    @action(methods=['post'], detail=True)
+    @action(methods=['get'], detail=True)
     def make_pdf(self, request, *args, **kwargs):
         """標本ラベルPDF生成のためのカスタムアクションメソッド"""
         splabel = self.get_object()
         splabel_serializer = self.get_serializer(splabel)
         pdf_filename = splabel_serializer.instance.pdf_filename
-        canvas = LabelCanvas(splabel_serializer.instance.label_specimens,
-                             pdf_filename)
+        splabel_queryset = splabel_serializer.instance.label_specimens.all()
+        specimen_serializer = SpecimenForLabelSerializer(splabel_queryset,
+                                                         many=True)
+        splabel_dicts = specimen_serializer.data
+        splabel_dict_list = list(splabel_dicts)
+        canvas = LabelCanvas(splabel_dict_list, pdf_filename)
         canvas.write_label(data=splabel_serializer.instance.data_label_flag,
                            coll=splabel_serializer.instance.coll_label_flag,
                            det=splabel_serializer.instance.det_label_flag,

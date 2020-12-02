@@ -34,6 +34,7 @@ rest-framework-auth0 = "*"
 python-dotenv = "*"
 django-environ = "*"
 drf-writable-nested = "*"
+factory-boy = "*"
 
 [requires]
 python_version = "3.7"
