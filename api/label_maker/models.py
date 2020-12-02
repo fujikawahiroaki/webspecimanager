@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.conf import settings
 from specimens.models import Specimen
 
 
@@ -12,6 +13,12 @@ class SpecimenLabel(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     # ソート用に更新日時を利用
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='specimens_labels',
+        null=True,
+        on_delete=models.CASCADE
+    )
     # ユーザーが設定したラベル名
     name = models.CharField(verbose_name='ラベル名',
                             default='NO_NAME',

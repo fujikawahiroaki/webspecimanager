@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import DefaultTaxon, CustomTaxon
 
-# Register your models here.
+
+admin.register(DefaultTaxon, CustomTaxon)
