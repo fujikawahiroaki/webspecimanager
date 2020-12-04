@@ -41,8 +41,7 @@ class SpecimenLabelView(viewsets.ModelViewSet):
         splabel_queryset = splabel_serializer.instance.label_specimens.all()
         specimen_serializer = SpecimenForLabelSerializer(splabel_queryset,
                                                          many=True)
-        splabel_dicts = specimen_serializer.data
-        splabel_dict_list = list(splabel_dicts)
+        splabel_dict_list = list(specimen_serializer.data)
         canvas = LabelCanvas(splabel_dict_list, pdf_filename)
         canvas.write_label(data=splabel_serializer.instance.data_label_flag,
                            coll=splabel_serializer.instance.coll_label_flag,

@@ -13,6 +13,7 @@ class SpecimenSerializer(WritableNestedModelSerializer):
 
 class SpecimenForLabelSerializer(serializers.ModelSerializer):
     """標本情報モデルのラベル用シリアライザ"""
+
     def get_genus(self, instance):
         if instance.custom_taxon_info is None and \
            instance.default_taxon_info is not None:
