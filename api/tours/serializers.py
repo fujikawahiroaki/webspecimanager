@@ -7,4 +7,4 @@ class TourSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tour
         fields = '__all__'
-        read_only_fields = ('created_at', 'id')
+        read_only_fields = ('created_at', 'id', 'user')
