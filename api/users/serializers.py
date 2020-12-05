@@ -7,4 +7,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UesrProfile
         fields = '__all__'
-        read_only_fields = ('created_at', 'id')
+        read_only_fields = ('created_at', 'id', 'user')

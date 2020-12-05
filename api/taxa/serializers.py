@@ -7,7 +7,7 @@ class DefaultTaxonSerializer(serializers.ModelSerializer):
     class Meta:
         model = DefaultTaxon
         fields = '__all__'
-        read_only_fields = ('created_at', 'id')
+        read_only_fields = ('created_at', 'id', 'user')
 
 
 class CustomTaxonSerializer(serializers.ModelSerializer):
@@ -15,4 +15,4 @@ class CustomTaxonSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomTaxon
         fields = '__all__'
-        read_only_fields = ('created_at', 'id')
+        read_only_fields = ('created_at', 'id', 'user')

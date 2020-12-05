@@ -7,4 +7,4 @@ class CollectPointSerializer(serializers.ModelSerializer):
     class Meta:
         model = CollectPoint
         fields = '__all__'
-        read_only_fields = ('created_at', 'id')
+        read_only_fields = ('created_at', 'id', 'user')

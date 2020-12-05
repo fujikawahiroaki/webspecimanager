@@ -1,17 +1,22 @@
 from rest_framework import serializers
 from drf_writable_nested import WritableNestedModelSerializer
 from .models import Specimen
+from collect_points.serializers import CollectPointSerializer
+from taxa.serializers import DefaultTaxonSerializer, CustomTaxonSerializer
 
 
 class SpecimenSerializer(WritableNestedModelSerializer):
     """標本情報モデル用シリアライザ"""
+    collect_point_info = CollectPointSerializer()
+    custom_taxon_info = CustomTaxonSerializer()
+
     class Meta:
         model = Specimen
         fields = '__all__'
-        read_only_fields = ('date_last_modified', 'id')
+        read_only_fields = ('date_last_modified', 'id', 'user')
 
 
-class SpecimenForLabelSerializer(serializers.ModelSerializer):
+class SpecimenForLabelSerializer(WritableNestedModelSerializer):
     """標本情報モデルのラベル用シリアライザ"""
 
     def get_genus(self, instance):
