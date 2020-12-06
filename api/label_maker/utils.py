@@ -96,11 +96,11 @@ class LabelCanvas:
         year = str(label_data.year)
         month = str(label_data.month)
         day = str(label_data.day)
-        if year == 0:
+        if year == '0':
             year = 'Y:?'
-        if month == 0:
+        if month == '0':
             month = 'M:?'
-        if day == 0:
+        if day == '0':
             day = 'D:?'
         # 採集月が明確な場合ローマ数字に変換
         roman_num_dict = {'1': 'I', '2': 'II', '3': 'III',

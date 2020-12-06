@@ -21,80 +21,78 @@ class DefaultTaxon(models.Model):
     # 界
     kingdom = models.CharField(verbose_name='界',
                                default='Unidentified',
-                               max_length=30, blank=True, null=True)
+                               max_length=30, blank=True)
     # 門
     phylum = models.CharField(verbose_name='門',
                               default='Unidentified',
-                              max_length=30, blank=True, null=True)
+                              max_length=30, blank=True)
     # 鋼 予約語と被るため_nameを付与
     class_name = models.CharField(verbose_name='鋼',
                                   default='Unidentified',
-                                  max_length=30, blank=True, null=True)
+                                  max_length=30, blank=True)
     # 目
     order = models.CharField(verbose_name='目',
                              default='Unidentified',
-                             max_length=30, blank=True, null=True)
+                             max_length=30, blank=True)
     # 亜目(オリジナル)
     suborder = models.CharField(verbose_name='亜目',
                                 default='Unidentified',
-                                max_length=30, blank=True, null=True)
+                                max_length=30, blank=True)
     # 科
     family = models.CharField(verbose_name='科',
                               default='Unidentified',
-                              max_length=30, blank=True, null=True)
+                              max_length=30, blank=True)
     # 亜科(オリジナル)
     subfamily = models.CharField(verbose_name='亜科',
                                  default='Unidentified',
-                                 max_length=30, blank=True, null=True)
+                                 max_length=30, blank=True)
     # 族(オリジナル)
     tribe = models.CharField(verbose_name='族',
                              default='Unidentified',
-                             max_length=30, blank=True, null=True)
+                             max_length=30, blank=True)
     # 亜族(オリジナル)
     subtribe = models.CharField(verbose_name='亜族',
                                 default='Unidentified',
-                                max_length=30, blank=True, null=True)
+                                max_length=30, blank=True)
     # 属
     genus = models.CharField(verbose_name='属',
                              default='Unidentified',
-                             max_length=30, blank=True, null=True)
+                             max_length=30, blank=True)
     # 亜属
     subgenus = models.CharField(verbose_name='亜属',
                                 default='Unidentified',
-                                max_length=30, blank=True, null=True)
+                                max_length=30, blank=True)
     # 種
     species = models.CharField(verbose_name='種',
                                default='sp.',
-                               max_length=30, blank=True, null=True)
+                               max_length=30, blank=True)
     # 亜種
     subspecies = models.CharField(verbose_name='亜種',
                                   default='',
-                                  max_length=30, blank=True, null=True)
+                                  max_length=30, blank=True)
     # 記載者
     scientific_name_author = models.CharField(verbose_name='記載者',
                                               default='',
                                               max_length=50,
-                                              blank=True, null=True)
+                                              blank=True)
     # 記載年 DC最新版準拠
     name_publishedin_year = models.IntegerField(verbose_name='記載年',
                                                 default=0,
-                                                blank=True, null=True)
+                                                blank=True)
     # 以上、GBIFベースでのカラム定義終了
     # 以下はオリジナルのカラム
     # 和名
     japanese_name = models.CharField(verbose_name='和名',
                                      default='',
-                                     max_length=30, blank=True,
-                                     null=True)
+                                     max_length=30, blank=True)
     # 分布
     distribution = models.CharField(verbose_name='分布',
                                     default='',
-                                    max_length=100, blank=True,
-                                    null=True)
+                                    max_length=100, blank=True)
     # 備考
     note = models.TextField(verbose_name='備考', max_length=200,
                             default='',
-                            blank=True, null=True)
+                            blank=True)
     image1 = models.ImageField(upload_to=user_portfolio_directory_path,
                                null=True, blank=True)
     image2 = models.ImageField(upload_to=user_portfolio_directory_path,
@@ -110,7 +108,7 @@ class DefaultTaxon(models.Model):
         if self.genus == '':
             return 'Unidentified'
         else:
-            return self.genus + self.species
+            return self.genus + ' ' + self.species
 
 
 class CustomTaxon(DefaultTaxon):
