@@ -1,4 +1,5 @@
 from drf_writable_nested import WritableNestedModelSerializer
+from rest_framework import serializers
 from .models import SpecimenLabel
 from specimens.serializers import SpecimenForLabelSerializer
 
@@ -6,6 +7,7 @@ from specimens.serializers import SpecimenForLabelSerializer
 class SpecimenLabelSerializer(WritableNestedModelSerializer):
     """標本ラベルモデル用シリアライザ"""
     label_specimens = SpecimenForLabelSerializer(many=True)
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = SpecimenLabel

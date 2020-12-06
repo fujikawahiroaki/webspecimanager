@@ -9,15 +9,22 @@ class SpecimenSerializer(WritableNestedModelSerializer):
     """標本情報モデル用シリアライザ"""
     collect_point_info = CollectPointSerializer()
     custom_taxon_info = CustomTaxonSerializer()
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    collection_code = serializers.IntegerField(required=False)
+    date_identified = serializers.DateField(required=False)
+    year = serializers.IntegerField(required=False)
+    month = serializers.IntegerField(required=False)
+    day = serializers.IntegerField(required=False)
 
     class Meta:
         model = Specimen
         fields = '__all__'
-        read_only_fields = ('date_last_modified', 'id', 'user')
+        read_only_fields = ('date_last_modified', 'id')
 
 
 class SpecimenForLabelSerializer(WritableNestedModelSerializer):
     """標本情報モデルのラベル用シリアライザ"""
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     def get_genus(self, instance):
         if instance.custom_taxon_info is None and \
