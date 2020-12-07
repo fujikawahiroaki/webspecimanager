@@ -162,7 +162,7 @@ LOCATION_FIELD = {
     'map.provider': 'google',
     'search.provider': 'google',
     'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
-    'provider.google.api_key': 'AIzaSyDKaC9VoAooAB_LRgv0HSbz7A-ELH8qObk',
+    'provider.google.api_key': env('GOOGLEMAP_API_KEY'),
     'provider.google.api_libraries': '',
     'provider.google.map.type': 'ROADMAP',
 }
