@@ -1,3 +1,4 @@
+from django_filters import rest_framework as filters
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
@@ -12,6 +13,7 @@ class SpecimenViewSet(viewsets.ModelViewSet):
     serializer_class = SpecimenSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.DjangoFilterBackend]
 
     def get_queryset(self):
         user = self.request.user

@@ -2,13 +2,13 @@ from rest_framework import serializers
 from drf_writable_nested import WritableNestedModelSerializer
 from .models import Specimen
 from collect_points.serializers import CollectPointSerializer
-from taxa.serializers import DefaultTaxonSerializer, CustomTaxonSerializer
+from taxa.serializers import CustomTaxonSerializer
 
 
 class SpecimenSerializer(WritableNestedModelSerializer):
     """標本情報モデル用シリアライザ"""
-    collect_point_info = CollectPointSerializer()
-    custom_taxon_info = CustomTaxonSerializer()
+    collect_point_info = CollectPointSerializer(required=False)
+    custom_taxon_info = CustomTaxonSerializer(required=False)
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     collection_code = serializers.IntegerField(required=False)
     date_identified = serializers.DateField(required=False)
