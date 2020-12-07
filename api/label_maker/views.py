@@ -1,6 +1,7 @@
 import os
 from urllib.parse import quote
 
+from django_filters import rest_framework as filters
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -24,6 +25,8 @@ class SpecimenLabelView(viewsets.ModelViewSet):
     serializer_class = SpecimenLabelSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_fields = ['name']
 
     def get_queryset(self):
         user = self.request.user
