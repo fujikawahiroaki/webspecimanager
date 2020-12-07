@@ -1,3 +1,4 @@
+import datetime
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
@@ -23,19 +24,19 @@ class Tour(models.Model):
     # 採集行のタイトル
     title = models.CharField(verbose_name='採集行のタイトル',
                              max_length=30, blank=True,
-                             default='',
-                             null=True)
+                             default='')
     # 採集行開始日
     start_date = models.DateField(verbose_name='採集行開始日',
-                                  null=True, blank=True)
+                                  default=datetime.date.today,
+                                  blank=True)
     # 採集行終了日
     end_date = models.DateField(verbose_name='採集行終了日',
-                                blank=True, null=True)
+                                default=datetime.date.today,
+                                blank=True)
     # 採集ルート等をgeojsonで保持するフィールドを作る予定
     # 備考
     note = models.TextField(verbose_name='備考', max_length=200,
-                            default='',
-                            blank=True, null=True)
+                            default='', blank=True)
     # 画像
     image1 = models.ImageField(upload_to=user_portfolio_directory_path,
                                null=True, blank=True)

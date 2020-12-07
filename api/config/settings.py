@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'rest_framework_auth0',
     'location_field.apps.DefaultConfig',
+    'django_filters',
     # 自作アプリ
     'my_utils',
     'collect_points.apps.CollectPointsConfig',
@@ -63,6 +64,7 @@ INSTALLED_APPS = [
     'tours.apps.ToursConfig',
     'specimens.apps.SpecimensConfig',
     'users.apps.UsersConfig',
+    'label_maker.apps.LabelMakerConfig',
 ]
 
 MIDDLEWARE = [
@@ -100,7 +102,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db()
+    'default': env.db(),
+    'TEST': {
+            'NAME': 'test_database',
+        },
 }
 
 # Password validation

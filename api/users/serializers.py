@@ -4,6 +4,8 @@ from .models import UesrProfile
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """ユーザープロファイルモデル用シリアライザ"""
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = UesrProfile
         fields = '__all__'
