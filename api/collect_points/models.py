@@ -46,7 +46,7 @@ class CollectPoint(models.Model):
     # 州・県など
     state_provice = models.CharField(verbose_name='県(州)',
                                      default='',
-                                     max_length=20, blank=True)
+                                     max_length=30, blank=True)
     # 海外における郡・区など
     county = models.CharField(verbose_name='海外における郡・区(市より上の単位)',
                               default='',

@@ -1,8 +1,9 @@
 from rest_framework import serializers
+from django.core.validators import RegexValidator
 from django_countries.serializer_fields import CountryField
 from drf_extra_fields.geo_fields import PointField
 from django.contrib.gis.geos import Point
-from rest_framework_gis.serializers import GeoFeatureModelSerializer
+# from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from .models import CollectPoint
 
 
@@ -30,3 +31,29 @@ class CollectPointSerializer(serializers.ModelSerializer):
         model = CollectPoint
         fields = '__all__'
         read_only_fields = ('created_at', 'id')
+        extra_kwargs = {
+            'contient': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'island_group': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'island': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'state_provice': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'county': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'municipality': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+        }
