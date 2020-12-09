@@ -55,17 +55,7 @@ class CollectPointViewSet(viewsets.ModelViewSet):
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend]
-<<<<<<< HEAD
-    filterset_fields = ['contient', 'island_group', 'island',
-                        'country', 'state_provice', 'county',
-                        'municipality', 'verbatim_locality',
-                        'japanese_place_name',
-                        'longitude', 'latitude', 'coordinate_precision',
-                        'minimum_elevation', 'maximum_elevation',
-                        'minimum_depth', 'maximum_depth', 'note']
-=======
     filterset_class = CollectPointFilter
->>>>>>> label_maker_develop
 
     def get_queryset(self):
         user = self.request.user
