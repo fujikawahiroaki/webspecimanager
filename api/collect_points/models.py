@@ -35,24 +35,6 @@ class CollectPoint(models.Model):
                                 max_length=20, blank=True)
     # 島郡 DC最新版準拠
     island_group = models.CharField(verbose_name='島郡', default='',
-<<<<<<< HEAD
-                                    max_length=50, blank=True)
-    # 島 DC最新版準拠
-    island = models.CharField(verbose_name='島', default='',
-                              max_length=50, blank=True)
-    # 国名コード(ISO 3166-1基準の2文字のコード)
-    country = models.CharField(verbose_name='国名コード(2文字 ISO 3166-1)',
-                               default='',
-                               max_length=2, blank=True)
-    # 州・県など
-    state_provice = models.CharField(verbose_name='県(州)',
-                                     default='',
-                                     max_length=50, blank=True)
-    # 海外における郡・区など
-    county = models.CharField(verbose_name='海外における郡・区(市より上の単位)',
-                              default='',
-                              max_length=50, blank=True)
-=======
                                     max_length=30, blank=True)
     # 島 DC最新版準拠
     island = models.CharField(verbose_name='島', default='',
@@ -69,7 +51,6 @@ class CollectPoint(models.Model):
     county = models.CharField(verbose_name='海外における郡・区(市より上の単位)',
                               default='',
                               max_length=30, blank=True)
->>>>>>> label_maker_develop
     # 市名以下の詳細行政地名 DC最新版準拠
     municipality = models.CharField(verbose_name='市名以下の詳細地名(カンマ+半角スペースで区切る)',
                                     default='',
@@ -77,25 +58,6 @@ class CollectPoint(models.Model):
     # 採集地の自由な説明
     verbatim_locality = models.TextField(verbose_name='採集地の説明',
                                          default='',
-<<<<<<< HEAD
-                                         blank=True)
-    # 日本語地名(オリジナル)
-    japanese_place_name = models.CharField(verbose_name='日本語地名',
-                                           max_length=30, blank=True,
-                                           default='')
-    # 採集地の経度(10進法9桁小数点以下6桁)
-    longitude = models.DecimalField(verbose_name='経度',
-                                    max_digits=9,
-                                    decimal_places=6,
-                                    blank=True,
-                                    default=0.0)
-    # 採集地の緯度(10進法9桁小数点以下6桁)
-    latitude = models.DecimalField(verbose_name='緯度',
-                                   max_digits=9,
-                                   decimal_places=6,
-                                   blank=True,
-                                   default=0.0)
-=======
                                          max_length=200,
                                          blank=True)
     # 日本語地名(オリジナル)
@@ -106,19 +68,14 @@ class CollectPoint(models.Model):
     japanese_place_name_detail = models.CharField(verbose_name='日本語地名(詳細)',
                                                   max_length=50, blank=True,
                                                   default='')
->>>>>>> label_maker_develop
     # 採集地の範囲(緯度・経度座標を囲んだ地域の半径をメートル単位で指定)
     coordinate_precision = models.FloatField(verbose_name='採集地の範囲',
                                              blank=True,
                                              default=0.0)
     # 地点情報(オリジナル)
-<<<<<<< HEAD
-    # geom = models.PointField(srid=4326, blank=True, null=True)
-=======
     location = models.PointField(srid=4326, geography=True,
                                  default=Point(0.0, 0.0),
                                  blank=True)
->>>>>>> label_maker_develop
     # 採集地の最低海抜距離(メートル)
     minimum_elevation = models.FloatField(verbose_name='採集地の最低海抜距離',
                                           blank=True,
