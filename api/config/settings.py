@@ -164,13 +164,8 @@ LOCATION_FIELD = {
     'map.provider': 'google',
     'search.provider': 'google',
     'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
-<<<<<<< HEAD
-    'provider.google.api_key': '',
-    'provider.google.api_libraries': env('GOOGLEMAP_API_KEY'),
-=======
     'provider.google.api_key': env('GOOGLEMAP_API_KEY'),
     'provider.google.api_libraries': '',
->>>>>>> label_maker_develop
     'provider.google.map.type': 'ROADMAP',
 }
 
