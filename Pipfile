@@ -36,6 +36,9 @@ django-environ = "*"
 drf-writable-nested = "*"
 factory-boy = "*"
 wheel = "*"
+django-countries = "*"
+django-extra-fields = "*"
+django-property-filter = "*"
 
 [requires]
 python_version = "3.7"
