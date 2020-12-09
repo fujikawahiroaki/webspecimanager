@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'rest_framework_auth0',
     'location_field.apps.DefaultConfig',
     'django_filters',
+    'django_property_filter',
+    'django_countries',
     # 自作アプリ
     'my_utils',
     'collect_points.apps.CollectPointsConfig',
@@ -162,8 +164,13 @@ LOCATION_FIELD = {
     'map.provider': 'google',
     'search.provider': 'google',
     'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
+<<<<<<< HEAD
     'provider.google.api_key': '',
     'provider.google.api_libraries': env('GOOGLEMAP_API_KEY'),
+=======
+    'provider.google.api_key': env('GOOGLEMAP_API_KEY'),
+    'provider.google.api_libraries': '',
+>>>>>>> label_maker_develop
     'provider.google.map.type': 'ROADMAP',
 }
 
