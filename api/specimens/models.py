@@ -1,6 +1,7 @@
 import datetime
 from django.contrib.gis.db import models
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
 from my_utils.file_tools import user_portfolio_directory_path
 from taxa.models import CustomTaxon, DefaultTaxon
@@ -50,19 +51,21 @@ class Specimen(models.Model):
                                            on_delete=models.SET_NULL)
     # コレクション名のフルネーム オリジナルのカラム
     collection_name = models.CharField(verbose_name='コレクション名',
-                                       max_length=50, blank=True,
+                                       max_length=174, blank=True,
                                        default='')
     # 機関コード
     institution_code = models.CharField(verbose_name='機関コード',
-                                        max_length=50, blank=True,
+                                        max_length=10, blank=True,
                                         default='')
     # 標本ID
     collection_code = models.IntegerField(verbose_name='標本ID',
                                           blank=True,
+                                          validators=[MinValueValidator(0),
+                                                      MaxValueValidator(999999999999999999)],
                                           default=0)
     # 同定者
     identified_by = models.CharField(verbose_name='同定者',
-                                     max_length=50, blank=True,
+                                     max_length=19, blank=True,
                                      default='')
     # 同定年月日
     # 年月日がセットになっているDC最新版に準拠
@@ -72,21 +75,27 @@ class Specimen(models.Model):
     # 採集者
     collecter = models.CharField(verbose_name='採集者',
                                  default='',
-                                 max_length=50, blank=True)
+                                 max_length=18, blank=True)
     # 採集年
     # 項目名のシンプルなDC最新版に準拠
-    year = models.IntegerField(verbose_name='採集年',
+    year = models.IntegerField(verbose_name='採集年(不明な場合0を指定)',
                                default=0,
+                               validators=[MinValueValidator(0),
+                                           MaxValueValidator(9999)],
                                blank=True)
     # 採集月
     # 同上
-    month = models.IntegerField(verbose_name='採集月',
+    month = models.IntegerField(verbose_name='採集月(不明な場合0を指定)',
                                 default=0,
+                                validators=[MinValueValidator(0),
+                                            MaxValueValidator(12)],
                                 blank=True)
     # 採集日
     # 同上
-    day = models.IntegerField(verbose_name='採集日',
+    day = models.IntegerField(verbose_name='採集日(不明な場合0を指定)',
                               default=0,
+                              validators=[MinValueValidator(0),
+                                          MaxValueValidator(31)],
                               blank=True)
     # 標本の性別
     # M=オス、F=メス、H=両性、I=不確定、U=不明、T=転移

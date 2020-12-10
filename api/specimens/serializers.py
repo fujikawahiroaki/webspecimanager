@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.core.validators import RegexValidator
 from drf_writable_nested import WritableNestedModelSerializer
 from .models import Specimen
 from collect_points.serializers import CollectPointSerializer
@@ -20,6 +21,52 @@ class SpecimenSerializer(WritableNestedModelSerializer):
         model = Specimen
         fields = '__all__'
         read_only_fields = ('date_last_modified', 'id')
+        extra_kwargs = {
+            'collection_name': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'institution_code': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'identified_by': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'collecter': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'preparation_type': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'disposition': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'sampling_protocol': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'sampling_effort': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'lifestage': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'establishment_means': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+            'rights': {
+                'validators': [RegexValidator(r'^[!-~ ]+$',
+                                              message='半角英数記号のみ使用可')]
+            },
+        }
 
 
 class SpecimenForLabelSerializer(WritableNestedModelSerializer):

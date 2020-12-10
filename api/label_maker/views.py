@@ -19,6 +19,18 @@ from .utils import LabelCanvas
 from specimens.serializers import SpecimenForLabelSerializer
 
 
+class SpecimenLabelFilter(filters.FilterSet):
+    """
+    標本ラベルのフィルタセット
+    """
+    name = filters.CharFilter(lookup_expr='icontains')
+    created_at = filters.DateTimeFromToRangeFilter()
+
+    class Meta:
+        model = SpecimenLabel
+        fields = ['name', 'created_at']
+
+
 @method_decorator(transaction.atomic, name='create')
 class SpecimenLabelView(viewsets.ModelViewSet):
     """標本ラベルビュー"""
@@ -26,7 +38,7 @@ class SpecimenLabelView(viewsets.ModelViewSet):
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend]
-    filterset_fields = ['name']
+    filterset_class = SpecimenLabelFilter
 
     def get_queryset(self):
         user = self.request.user
