@@ -6,6 +6,8 @@ from . import views
 router = routers.DefaultRouter()
 router.register('own-specimens', views.SpecimenViewSet,
                 basename='Specimen')
+router.register('own-specimens-with-geoinfo', views.SpecimenWithGeoInfoViewSet,
+                basename='SpecimenWithGeoInfo')
 
 
 app_name = 'specimens'
