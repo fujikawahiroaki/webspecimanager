@@ -63,3 +63,31 @@ class CollectPointViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class CollectPointWithGeoInfoViewSet(CollectPointViewSet):
+    """
+    認証されたユーザーが所有する採集ポイント情報取得ビュー
+    クエリ文字列で緯度・経度・半径を指定し、その緯度・経度から
+    半径内にある位置情報を所持する標本情報を返す
+    """
+    def get_queryset(self):
+        user = self.request.user
+        lon = self.request.query_params.get('longitude')
+        if lon is not None:
+            lon = float(lon)
+        lat = self.request.query_params.get('latitude')
+        if lat is not None:
+            lat = float(lat)
+        rad = self.request.query_params.get('radius')
+        if rad is not None:
+            rad = float(rad)
+        if lon is not None and lat is not None and rad is not None:
+            collect_point_within_radius = CollectPoint.objects.filter(
+                location__distance_lt=(
+                    Point(lon, lat),
+                    Distance(m=rad)
+                )
+            )
+            return collect_point_within_radius.filter(user=user)
+        return CollectPoint.objects.filter(user=user)

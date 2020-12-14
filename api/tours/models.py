@@ -1,9 +1,8 @@
 import datetime
+import uuid
 from django.conf import settings
 from django.contrib.gis.db import models
-from django.contrib.gis.geos import Point
-from location_field.models.spatial import LocationField
-import uuid
+from django.contrib.gis.geos import LineString
 from my_utils.file_tools import user_portfolio_directory_path
 
 
@@ -33,6 +32,10 @@ class Tour(models.Model):
     end_date = models.DateField(verbose_name='採集行終了日',
                                 default=datetime.date.today,
                                 blank=True)
+    # 採集ルートのトラック
+    track = models.LineStringField(srid=4326, geography=True,
+                                   blank=True, null=True)
+    # 所属する標本データ
     # 採集ルート等をgeojsonで保持するフィールドを作る予定
     # 備考
     note = models.TextField(verbose_name='備考', max_length=200,

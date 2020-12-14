@@ -5,6 +5,7 @@ from django.conf import settings
 # from location_field.models.spatial import LocationField
 from django_countries.fields import CountryField
 from my_utils.file_tools import user_portfolio_directory_path
+from tours.models import Tour
 
 
 class CollectPoint(models.Model):
@@ -25,6 +26,9 @@ class CollectPoint(models.Model):
         on_delete=models.CASCADE,
         verbose_name='ユーザーモデル'
     )
+    tour = models.ManyToManyField(Tour, verbose_name='所属する採集行',
+                                  related_name='tours',
+                                  blank=True)
     # 以下、分類データのカラムをGBIFベースで定義
     # カラム項目はDarwin Core 1.2に概ね準拠
     # カラム名はDarwin Core 1.2をPEP8準拠の表記に変更したもの

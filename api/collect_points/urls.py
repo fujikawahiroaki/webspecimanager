@@ -6,6 +6,9 @@ from . import views
 router = routers.DefaultRouter()
 router.register('own-collect-points', views.CollectPointViewSet,
                 basename='CollectPoint')
+router.register('own-collect-points-with-geoinfo',
+                views.CollectPointWithGeoInfoViewSet,
+                basename='CollectPointWithGeoInfo')
 
 
 app_name = 'collect_points'
