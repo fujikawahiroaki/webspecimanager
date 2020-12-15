@@ -62,12 +62,13 @@ class SpecimenFilter(PropertyFilterSet):
                   'collect_point_info__maximum_depth',
                   'collect_point_info__note',
                   'tour__title',
-                  'collection_name', 'institution_code', 'collection_code',
-                  'identified_by', 'date_identified', 'collecter',
-                  'year', 'month', 'day', 'sex', 'preparation_type',
-                  'disposition', 'sampling_protocol', 'sampling_effort',
-                  'lifestage', 'establishment_means', 'rights',
-                  'note'
+                  'collection_settings_info__collection_name',
+                  'collection_settings_info__institution_code',
+                  'collection_code', 'identified_by', 'date_identified',
+                  'collecter', 'year', 'month', 'day', 'sex',
+                  'preparation_type', 'disposition', 'sampling_protocol',
+                  'sampling_effort', 'lifestage', 'establishment_means',
+                  'rights', 'note'
                   ]
         property_fields = [
             ('collect_point_info__longitude', PropertyRangeFilter, ['range']),

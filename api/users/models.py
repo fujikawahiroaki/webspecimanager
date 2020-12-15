@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django_countries.fields import CountryField
 import uuid
 
@@ -39,16 +38,6 @@ class UserProfile(models.Model):
     state_provice = models.CharField(verbose_name='県(州)',
                                      default='',
                                      max_length=30, blank=True)
-    # 機関コード
-    institution_code = models.CharField(verbose_name='機関コード',
-                                        max_length=10, blank=True,
-                                        default='')
-    # 標本ID
-    collection_code = models.IntegerField(verbose_name='標本ID',
-                                          blank=True,
-                                          validators=[MinValueValidator(0),
-                                                      MaxValueValidator(999999999999999999)],
-                                          default=0)
     # 同定者
     identified_by = models.CharField(verbose_name='同定者',
                                      max_length=19, blank=True,

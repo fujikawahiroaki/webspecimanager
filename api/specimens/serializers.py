@@ -1,16 +1,24 @@
 from rest_framework import serializers
 from django.core.validators import RegexValidator
 from drf_writable_nested import WritableNestedModelSerializer
+from django_countries.serializer_fields import CountryField
+from django_countries.serializers import CountryFieldMixin
 from .models import Specimen
 from collect_points.serializers import CollectPointSerializer
 from taxa.serializers import CustomTaxonSerializer
+from collection_settings.serializers import CollectionSettingSerializer
 
 
-class SpecimenSerializer(WritableNestedModelSerializer):
+class SpecimenSerializer(CountryFieldMixin, WritableNestedModelSerializer):
     """標本情報モデル用シリアライザ"""
     collect_point_info = CollectPointSerializer(required=False)
     custom_taxon_info = CustomTaxonSerializer(required=False)
+    collection_settings_info = CollectionSettingSerializer(required=False)
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    collection_name = serializers.ReadOnlyField(
+        source='collection_settings_info.collection_name')
+    institution_code = serializers.ReadOnlyField(
+        source='collection_settings_info.institution_code')
     collection_code = serializers.IntegerField(required=False)
     date_identified = serializers.DateField(required=False)
     year = serializers.IntegerField(required=False)
@@ -22,14 +30,6 @@ class SpecimenSerializer(WritableNestedModelSerializer):
         fields = '__all__'
         read_only_fields = ('date_last_modified', 'id')
         extra_kwargs = {
-            'collection_name': {
-                'validators': [RegexValidator(r'^[!-~ ]+$',
-                                              message='半角英数記号のみ使用可')]
-            },
-            'institution_code': {
-                'validators': [RegexValidator(r'^[!-~ ]+$',
-                                              message='半角英数記号のみ使用可')]
-            },
             'identified_by': {
                 'validators': [RegexValidator(r'^[!-~ ]+$',
                                               message='半角英数記号のみ使用可')]
@@ -69,7 +69,8 @@ class SpecimenSerializer(WritableNestedModelSerializer):
         }
 
 
-class SpecimenForLabelSerializer(WritableNestedModelSerializer):
+class SpecimenForLabelSerializer(CountryFieldMixin,
+                                 WritableNestedModelSerializer):
     """標本情報モデルのラベル用シリアライザ"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
@@ -127,13 +128,27 @@ class SpecimenForLabelSerializer(WritableNestedModelSerializer):
         else:
             return ''
 
+    def get_collection_name(self, instance):
+        if instance.collection_settings_info is not None:
+            return instance.collection_settings_info.collection_name
+        else:
+            return ''
+
+    def get_institution_code(self, instance):
+        if instance.collection_settings_info is not None:
+            return instance.collection_settings_info.institution_code
+        else:
+            return 0
+
     genus = serializers.SerializerMethodField()
     species = serializers.SerializerMethodField()
     subspecies = serializers.SerializerMethodField()
     scientific_name_author = serializers.SerializerMethodField()
     name_publishedin_year = serializers.SerializerMethodField()
     japanese_name = serializers.SerializerMethodField()
-    country = serializers.ReadOnlyField(source='collect_point_info.country')
+    collection_name = serializers.SerializerMethodField()
+    institution_code = serializers.SerializerMethodField()
+    country = CountryField(source='collect_point_info.country')
     island = serializers.ReadOnlyField(source='collect_point_info.island')
     state_provice = serializers.ReadOnlyField(
         source='collect_point_info.state_provice')

@@ -44,14 +44,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
                 'validators': [RegexValidator(r'^[A-Z][a-z]+$',
                                               message='先頭のみ大文字、以降小文字の半角英字1単語のみ使用可')]
             },
-            'collection_name': {
-                'validators': [RegexValidator(r'^[!-~ ]+$',
-                                              message='半角英数記号のみ使用可')]
-            },
-            'institution_code': {
-                'validators': [RegexValidator(r'^[!-~ ]+$',
-                                              message='半角英数記号のみ使用可')]
-            },
             'identified_by': {
                 'validators': [RegexValidator(r'^[!-~ ]+$',
                                               message='半角英数記号のみ使用可')]

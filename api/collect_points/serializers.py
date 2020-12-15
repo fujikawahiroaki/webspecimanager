@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from django.core.validators import RegexValidator
 from django_countries.serializer_fields import CountryField
+from django_countries.serializers import CountryFieldMixin
 from drf_extra_fields.geo_fields import PointField
 from django.contrib.gis.geos import Point
 # from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from .models import CollectPoint
 
 
-class CollectPointSerializer(serializers.ModelSerializer):
+class CollectPointSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """採集地点モデル用シリアライザ"""
 
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())

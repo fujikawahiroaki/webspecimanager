@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'specimens.apps.SpecimensConfig',
     'users.apps.UsersConfig',
     'label_maker.apps.LabelMakerConfig',
+    'collection_settings.apps.CollectionSettingsConfig',
 ]
 
 MIDDLEWARE = [

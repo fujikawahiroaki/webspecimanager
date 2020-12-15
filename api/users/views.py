@@ -15,19 +15,16 @@ class UserProfileFilter(filters.FilterSet):
     class Meta:
         model = UserProfile
         fields = ['contient', 'island_group', 'island', 'country',
-                  'state_provice', 'institution_code', 'collection_code',
-                  'identified_by', 'collecter', 'preparation_type',
-                  'disposition', 'lifestage', 'establishment_means',
-                  'rights', 'kingdom', 'phylum', 'class_name', 'order']
+                  'state_provice', 'identified_by', 'collecter',
+                  'preparation_type', 'disposition', 'lifestage',
+                  'establishment_means', 'rights', 'kingdom',
+                  'phylum', 'class_name', 'order']
         filter_overrides = {
             models.CharField: {
                 'filter_class': filters.CharFilter,
                 'extra': lambda f: {
                     'lookup_expr': 'icontains',
                 },
-            },
-            models.IntegerField: {
-                'filter_class': filters.RangeFilter,
             },
         }
 

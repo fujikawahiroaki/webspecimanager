@@ -7,6 +7,7 @@ from my_utils.file_tools import user_portfolio_directory_path
 from taxa.models import CustomTaxon, DefaultTaxon
 from tours.models import Tour
 from collect_points.models import CollectPoint
+from collection_settings.models import CollectionSetting
 
 
 class Specimen(models.Model):
@@ -49,14 +50,11 @@ class Specimen(models.Model):
                                            verbose_name='採集地点情報',
                                            null=True,
                                            on_delete=models.SET_NULL)
-    # コレクション名のフルネーム オリジナルのカラム
-    collection_name = models.CharField(verbose_name='コレクション名',
-                                       max_length=174, blank=True,
-                                       default='')
-    # 機関コード
-    institution_code = models.CharField(verbose_name='機関コード',
-                                        max_length=10, blank=True,
-                                        default='')
+    # コレクション設定情報 外部キーのためこのカラム名はGBIF無関係
+    collection_settings_info = models.ForeignKey(CollectionSetting,
+                                                 verbose_name='コレクション設定情報',
+                                                 null=True,
+                                                 on_delete=models.SET_NULL)
     # 標本ID
     collection_code = models.IntegerField(verbose_name='標本ID',
                                           blank=True,
@@ -151,4 +149,8 @@ class Specimen(models.Model):
                                null=True, blank=True)
 
     def __str__(self):
-        return self.institution_code + ' ' + str(self.collection_code).zfill(6)
+        if self.collection_settings_info is not None:
+            return self.collection_settings_info.institution_code + \
+                ' ' + str(self.collection_code).zfill(6)
+        else:
+            return 'Colletion: ? ' + str(self.collection_code).zfill(6)
