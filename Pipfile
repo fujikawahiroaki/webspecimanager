@@ -39,6 +39,8 @@ wheel = "*"
 django-countries = "*"
 django-extra-fields = "*"
 django-property-filter = "*"
+django-extensions = "*"
+pygraphviz = "*"
 
 [requires]
 python_version = "3.7"

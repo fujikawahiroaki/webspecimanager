@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_property_filter',
     'django_countries',
+    'django_extensions',
     # 自作アプリ
     'my_utils',
     'collect_points.apps.CollectPointsConfig',
