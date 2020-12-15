@@ -71,7 +71,7 @@ class CustomTaxonFilter(filters.FilterSet):
         }
 
 
-class DefaultTaxonViewset(viewsets.ModelViewSet):
+class DefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
     """
     デフォルト分類情報モデル用ビュー(全ユーザー共有)
     """
