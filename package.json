@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@auth0/auth0-react": "^1.2.0",
+    "prop-types": "^15.7.2",
+    "ra-data-django-rest-framework": "^0.1.5",
+    "ra-data-json-server": "^3.11.1",
+    "react-admin": "^3.11.1"
+  }
+}
