@@ -139,3 +139,4 @@ api/rsa_certificates/certificate.pem
 get_test_authtoken.py
 
 node_modules
+frontend/.eslintcache
