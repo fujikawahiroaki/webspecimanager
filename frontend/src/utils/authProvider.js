@@ -6,8 +6,7 @@ const auth0 = new Auth0Client({
     client_id: authConfig.clientID,
     redirect_uri: authConfig.redirectURI,
     audience: "http://www.fujikawa-h.net",
-    cacheLocation: 'localstorage',
-    useRefreshTokens: true,
+    cacheLocation: "localstorage",
     scope: "openid profile read:specimens create:specimens delete:specimens" 
 });
 
@@ -23,6 +22,9 @@ export default {
     logout: () => {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
             if (isAuthenticated) { // need to check for this as react-admin calls logout in case checkAuth failed
+                if(localStorage.hasOwnProperty('wsat')) {
+                    localStorage.removeItem('wsat');
+                };
                 return auth0.logout({
                     redirect_uri: window.location.origin,
                     federated: true // have to be enabled to invalidate refresh token
@@ -42,6 +44,7 @@ export default {
     checkAuth: () => {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
             if (isAuthenticated) {
+                auth0.getTokenSilently().then(access_token => localStorage.setItem('wsat', access_token));
                 return Promise.resolve();
             }
             return auth0.getTokenSilently()

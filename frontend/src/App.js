@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import {Admin, Resource, ListGuesser, EditGuesser, fetchUtils} from 'react-admin';
 
 // drf
-import drfProvider, { tokenAuthProvider, fetchJsonWithAuthToken } from 'ra-data-django-rest-framework';
+import drfProvider from 'ra-data-django-rest-framework';
 
 // pages
 import loginPage from "./pages/login";
@@ -18,19 +18,29 @@ import authProvider from './utils/authProvider';
 import { createBrowserHistory as createHistory } from 'history';
 const history = createHistory();
 
+
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
-    const token = localStorage.getItem('access_token');
-    options.headers.set('Authorization', `Bearer ${token}`);
+    if (localStorage.hasOwnProperty('access_token')) {
+
+        console.log('このキーは存在しています');
+    
+    }
+    const token =  localStorage.getItem('wsat');
+    console.log( `Bearer ${token}`);
+    options.headers.set('Authorization',  `Bearer ${token}`);
+    options.user = {
+        authenticated: true
+    };
     return fetchUtils.fetchJson(url, options);
 }
 
 const App = () => (
     <Admin
         authProvider={authProvider}
-        dataProvider={drfProvider("http://localhost:8000/api", httpClient)}
+        dataProvider={drfProvider('http://localhost:8000/api', httpClient)}
         history={history}
         dashboard={Dashboard}
         loginPage={loginPage}
