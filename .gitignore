@@ -137,8 +137,5 @@ api/label_maker/pdf/*.pdf
 # RSA Key
 api/rsa_certificates/certificate.pem
 get_test_authtoken.py
+
 node_modules
-<<<<<<< HEAD
-=======
-node_modules
->>>>>>> 63d26efa4d75752e8093b6f7fbb2645c29896a0b
