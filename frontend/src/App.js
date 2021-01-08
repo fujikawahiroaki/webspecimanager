@@ -2,17 +2,20 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 
 // react admin
-import {Admin, Resource, ListGuesser, EditGuesser, fetchUtils} from 'react-admin';
+import {Admin, Resource, ListGuesser, EditGuesser, ShowGuesser, fetchUtils} from 'react-admin';
 
 // drf
 import drfProvider from 'ra-data-django-rest-framework';
 
 // pages
 import loginPage from "./pages/login";
+import {SpecimenList} from "./pages/specimens";
 
 // components
 import Dashboard from './components/Dashboard';
 import authProvider from './utils/authProvider';
+
+import { theme } from "./themes/theme";
 
 // browser history
 import { createBrowserHistory as createHistory } from 'history';
@@ -23,13 +26,7 @@ const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
-    if (localStorage.hasOwnProperty('access_token')) {
-
-        console.log('このキーは存在しています');
-    
-    }
     const token =  localStorage.getItem('wsat');
-    console.log( `Bearer ${token}`);
     options.headers.set('Authorization',  `Bearer ${token}`);
     options.user = {
         authenticated: true
@@ -44,14 +41,15 @@ const App = () => (
         history={history}
         dashboard={Dashboard}
         loginPage={loginPage}
+        theme={theme}
     >
-        <Resource name="specimens/own-specimens" list={ListGuesser} edit={EditGuesser}/>
-        <Resource name="taxa/own-taxa" list={ListGuesser} edit={EditGuesser}/>
-        <Resource name="taxa/shared-taxa" list={ListGuesser} edit={EditGuesser}/>
-        <Resource name="collect-points/own-collect-points" list={ListGuesser} edit={EditGuesser}/>
-        <Resource name="tours/own-tours" list={ListGuesser} edit={EditGuesser}/>
-        <Resource name="user-profiles/own-user-profiles" list={ListGuesser} edit={EditGuesser}/>
-        <Resource name="label-maker/own-labels" list={ListGuesser} edit={EditGuesser}/>
+        <Resource name="specimens/own-specimens"  options={{ label: '標本' }} list={SpecimenList} show={ShowGuesser}/>
+        <Resource name="taxa/own-taxa" options={{ label: 'カスタム分類情報' }} list={ListGuesser} />
+        <Resource name="taxa/shared-taxa" options={{ label: 'デフォルト分類情報' }} list={ListGuesser} />
+        <Resource name="collect-points/own-collect-points" options={{ label: '採集地点' }} list={ListGuesser} />
+        <Resource name="tours/own-tours" options={{ label: '採集行' }} list={ListGuesser} />
+        <Resource name="user-profiles/own-user-profiles" options={{ label: 'ユーザー設定' }} list={ListGuesser} />
+        <Resource name="label-maker/own-labels" options={{ label: 'ラベル' }} list={ListGuesser} />
     </Admin>
 );
 export default App;

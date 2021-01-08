@@ -10,6 +10,7 @@ const auth0 = new Auth0Client({
     scope: "openid profile read:specimens create:specimens delete:specimens" 
 });
 
+
 export default {
     // called when the user attempts to log in
     login: (url) => {
