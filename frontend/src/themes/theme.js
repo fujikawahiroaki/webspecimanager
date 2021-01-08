@@ -6,7 +6,7 @@ import merge from "lodash/merge";
 
 const rawTheme = {
   typography: {
-      fontSize: 10
+      fontSize: 12
   },
 };
 

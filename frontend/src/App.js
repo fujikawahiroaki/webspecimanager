@@ -9,7 +9,7 @@ import drfProvider from 'ra-data-django-rest-framework';
 
 // pages
 import loginPage from "./pages/login";
-import {SpecimenList} from "./pages/specimens";
+import {SpecimenList, SpecimenShow} from "./pages/specimens";
 
 // components
 import Dashboard from './components/Dashboard';
@@ -43,7 +43,7 @@ const App = () => (
         loginPage={loginPage}
         theme={theme}
     >
-        <Resource name="specimens/own-specimens"  options={{ label: '標本' }} list={SpecimenList} show={ShowGuesser}/>
+        <Resource name="specimens/own-specimens"  options={{ label: '標本' }} list={SpecimenList} show={SpecimenShow}/>
         <Resource name="taxa/own-taxa" options={{ label: 'カスタム分類情報' }} list={ListGuesser} />
         <Resource name="taxa/shared-taxa" options={{ label: 'デフォルト分類情報' }} list={ListGuesser} />
         <Resource name="collect-points/own-collect-points" options={{ label: '採集地点' }} list={ListGuesser} />

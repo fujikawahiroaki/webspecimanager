@@ -8,12 +8,16 @@ import {
     ExportButton,
     Button,
     sanitizeListRestProps,
+    EditActions,
+    DeleteButton,
+    Tab,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 import {
     Show,
     ShowButton,
     SimpleShowLayout,
+    TabbedShowLayout,
     RichTextField,
     DateField,
     List,
@@ -97,9 +101,9 @@ export const SpecimenList = props => (
             <ReferenceField source="custom_taxon_info.id" label="種" reference="taxa/own-taxa" >
                 <TextField source="species" />
             </ReferenceField>
-            <NumberField source="採集年" />
-            <NumberField source="採集月" />
-            <NumberField source="採集日" />
+            <NumberField source="year" label="採集年" />
+            <NumberField source="month" label="採集月"/>
+            <NumberField source="day" label="採集日"/>
             <TextField source="collecter" label="採集者" />
             <ReferenceField source="collect_point_info.id" label="採集地点" reference="collect-points/own-collect-points" >
                 <TextField source="japanese_place_name" />
@@ -109,4 +113,61 @@ export const SpecimenList = props => (
             <ShowButton/>
         </Datagrid>
     </List>
+);
+
+export const SpecimenEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            
+        </SimpleForm>
+    </Edit>
+);
+
+const SpecimenShowActions = ({ basePath, data, resource }) => (
+    <TopToolbar>
+        <EditButton basePath={basePath} record={data} />
+    </TopToolbar>
+);
+
+export const SpecimenShow = props => (
+    <Show {...props} title="標本" actions={<SpecimenShowActions/>}>
+        <TabbedShowLayout>
+            <Tab label='管理情報'>
+                <TextField source="collection_name" />
+                <TextField source="institution_code" />
+                <NumberField source="collection_code" />
+                <TextField source="collection_settings_info.id" />
+                <DateField source="date_last_modified" />
+                <TextField source="preparation_type" />
+                <TextField source="disposition" />
+                <TextField source="rights" />
+                <TextField source="note" />
+            </Tab>
+            <Tab label='分類情報'>
+                <TextField source="collect_point_info.id" />
+                <TextField source="custom_taxon_info.id" />
+                <DateField source="date_identified" />
+                <TextField source="identified_by" />
+                <TextField source="sex" />
+                <TextField source="lifestage" />
+                <TextField source="establishment_means" />
+            </Tab>
+            <Tab label='採集情報'>
+                <NumberField source="year" />
+                <NumberField source="month" />
+                <NumberField source="day" />
+                <TextField source="collecter" />
+                <TextField source="sampling_protocol" />
+                <TextField source="sampling_effort" />
+                <TextField source="tour" />
+            </Tab>
+            <Tab label='画像'>
+                <TextField source="image1" />
+                <TextField source="image2" />
+                <TextField source="image3" />
+                <TextField source="image4" />
+                <TextField source="image5" />
+            </Tab>
+        </TabbedShowLayout>
+    </Show>
 );
