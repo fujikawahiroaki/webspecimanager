@@ -110,7 +110,7 @@ const SpecimenList = props => (
             </ReferenceField>
             <TextField source="sex" label="性別"/>
             <EditButton/>
-            <ShowButton/>
+            <ShowButton label="詳細"/>
         </Datagrid>
     </List>
 );

@@ -1,15 +1,18 @@
 from django.db import models
 from django.conf import settings
 import uuid
+from model_utils.managers import InheritanceManager
 from my_utils.file_tools import user_portfolio_directory_path
 
 
-class DefaultTaxon(models.Model):
-    """デフォルト分類情報(共有)"""
+class Taxon(models.Model):
+    """分類情報のベースモデル"""
     class Meta:
-        db_table = 'default_taxa'
+        db_table = 'all_taxa'
         ordering = ['-created_at']
 
+    # デフォルト分類情報でもカスタム分類情報でも取得できるようにする
+    objects = InheritanceManager()
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     # ソート用に更新日時を利用
     created_at = models.DateTimeField(auto_now_add=True)
@@ -111,10 +114,19 @@ class DefaultTaxon(models.Model):
             return self.genus + ' ' + self.species
 
 
-class CustomTaxon(DefaultTaxon):
+class DefaultTaxon(Taxon):
+    """デフォルト分類情報(共有)"""
+    class Meta:
+        db_table = 'default_taxa'
+        ordering = ['-created_at']
+
+    is_private = models.BooleanField(default=False, editable=False)
+
+
+class CustomTaxon(Taxon):
     """カスタム分類情報(個人所有)"""
     class Meta:
-        db_table = 'cunstom_taxa'
+        db_table = 'custom_taxa'
         ordering = ['-created_at']
 
     user = models.ForeignKey(
@@ -123,3 +135,5 @@ class CustomTaxon(DefaultTaxon):
         null=True,
         on_delete=models.CASCADE
     )
+    # デフォルト分類情報とカスタム分類情報の区別
+    is_private = models.BooleanField(default=True, editable=False)

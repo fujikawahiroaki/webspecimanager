@@ -17,15 +17,14 @@ import {
 } from 'react-admin';
 
 
-const CustomTaxonShowActions = ({ basePath, data}) => (
+const DefaultTaxonShowActions = ({ basePath, data}) => (
     <TopToolbar>
-        <EditButton basePath={basePath} record={data}/>
         <ListButton basePath={basePath} />
     </TopToolbar>
 );
 
-const CustomTaxonShow = props => (
-    <Show actions={<CustomTaxonShowActions/>} {...props} title="カスタム分類情報">
+const DefaultTaxonShow = props => (
+    <Show actions={<DefaultTaxonShowActions/>} {...props} title="デフォルト分類情報">
         <TabbedShowLayout>
             <Tab label='下位分類・記載者(年)・和名'>
                 <TextField source="genus" label="属"/>
@@ -65,4 +64,4 @@ const CustomTaxonShow = props => (
     </Show>
 );
 
-export default CustomTaxonShow;
+export default DefaultTaxonShow;

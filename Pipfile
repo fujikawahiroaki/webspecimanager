@@ -41,6 +41,7 @@ django-extra-fields = "*"
 django-property-filter = "*"
 django-extensions = "*"
 pygraphviz = "*"
+django-model-utils = "*"
 
 [requires]
 python_version = "3.7"

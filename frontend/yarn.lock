@@ -1143,6 +1143,13 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@bicstone/ra-language-japanese@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@bicstone/ra-language-japanese/-/ra-language-japanese-3.8.0.tgz#eac0215706ba59fe94ef184b12054cbb8a2ce8f3"
+  integrity sha512-EOtRmofNYMKBPM7r/DtcZCw5wuw/evT74zGYz+Exd+mS5zAN8fwrUksT7LZt0ZPmKvIwUtinQjW/mxRpKOjK3Q==
+  dependencies:
+    ra-language-english "^3.8.0"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -9390,6 +9397,26 @@ ra-core@^3.11.1:
     query-string "^5.1.1"
     reselect "~3.0.0"
 
+ra-core@^3.11.2:
+  version "3.11.2"
+  resolved "https://registry.yarnpkg.com/ra-core/-/ra-core-3.11.2.tgz#22a6b93e093ddcbbb45f04904f74020c6c4d8fde"
+  integrity sha512-1oYCnXER5iSmEwHi3Hy2CkAuJXkC/6AjkJlVf0trnhzvUxkzusMOV9dm4ONyyrPDwGFc7oStNA793F7qNZbXog==
+  dependencies:
+    "@testing-library/react" "^8.0.7"
+    classnames "~2.2.5"
+    date-fns "^1.29.0"
+    eventemitter3 "^3.0.0"
+    inflection "~1.12.0"
+    lodash "~4.17.5"
+    prop-types "^15.6.1"
+    query-string "^5.1.1"
+    reselect "~3.0.0"
+
+ra-customizable-datagrid@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ra-customizable-datagrid/-/ra-customizable-datagrid-1.1.0.tgz#2d7d26b08e6226c323aaa3d1d3fea660f08a4ceb"
+  integrity sha512-xIS/xIYcM1/IjnoCms4pHXv3/eRDRui0BXcpnFwfRT9RTD5HzF+VZt9ygb9fFpa8Vb2eu/7FSPYT1wc+T8KoSw==
+
 ra-data-simple-rest@^3.10.4:
   version "3.10.4"
   resolved "https://registry.yarnpkg.com/ra-data-simple-rest/-/ra-data-simple-rest-3.10.4.tgz#94bbcb8d08fa2aedcacf4561421fa5a3d59047a7"
@@ -9411,6 +9438,13 @@ ra-language-english@^3.11.1:
   integrity sha512-6MAuEM7mFoxdwa2lKcJh+tldviLevzn31EM8IbqKVU8kqHkxGk5KTfUMDcZcbIRWa68AenN/WjLM9CthRqJrOQ==
   dependencies:
     ra-core "^3.11.1"
+
+ra-language-english@^3.8.0:
+  version "3.11.2"
+  resolved "https://registry.yarnpkg.com/ra-language-english/-/ra-language-english-3.11.2.tgz#eeab5aefaadae4e064dfd8df4fb041477b9936ea"
+  integrity sha512-ainBiE4+4ITJgU4+nLu0I3Lu+nsDzYOW8iFU+T+xcXW/Dni4lfUr5PGzvCefhNx5E5mXzUxJUkmpbYzUaMlILg==
+  dependencies:
+    ra-core "^3.11.2"
 
 ra-ui-materialui@^3.11.1:
   version "3.11.1"

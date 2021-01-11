@@ -10,18 +10,27 @@ import drfProvider from 'ra-data-django-rest-framework';
 // pages
 import loginPage from "./pages/login";
 import specimens from "./pages/specimens";
-import taxa from "./pages/taxa/customTaxa";
+import customTaxa from "./pages/taxa/customTaxa";
+import defaultTaxa from './pages/taxa/defaultTaxa'
 
 // components
 import Dashboard from './components/Dashboard';
 import authProvider from './utils/authProvider';
 
+// themes
 import { theme } from "./themes/theme";
+
+// 日本語化
+import japaneseMessages from '@bicstone/ra-language-japanese';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 // browser history
 import { createBrowserHistory as createHistory } from 'history';
+
+
 const history = createHistory();
 
+const i18nProvider = polyglotI18nProvider(() => japaneseMessages, 'ja');
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -36,7 +45,7 @@ const httpClient = (url, options = {}) => {
 }
 
 const App = () => (
-    <Admin
+    <Admin locale="ja" i18nProvider={i18nProvider}
         authProvider={authProvider}
         dataProvider={drfProvider('http://localhost:8000/api', httpClient)}
         history={history}
@@ -45,8 +54,8 @@ const App = () => (
         theme={theme}
     >
         <Resource name="specimens/own-specimens"  options={{ label: '標本' }} {...specimens}/>
-        <Resource name="taxa/own-taxa" options={{ label: 'カスタム分類情報' }} {...taxa} />
-        <Resource name="taxa/shared-taxa" options={{ label: 'デフォルト分類情報' }} list={ListGuesser} />
+        <Resource name="taxa/own-taxa" options={{ label: 'カスタム分類情報' }} {...customTaxa} />
+        <Resource name="taxa/shared-taxa" options={{ label: 'デフォルト分類情報' }} {...defaultTaxa} />
         <Resource name="collect-points/own-collect-points" options={{ label: '採集地点' }} list={ListGuesser} />
         <Resource name="tours/own-tours" options={{ label: '採集行' }} list={ListGuesser} />
         <Resource name="user-profiles/own-user-profiles" options={{ label: 'ユーザー設定' }} list={ListGuesser} />

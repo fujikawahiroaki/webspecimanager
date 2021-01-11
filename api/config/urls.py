@@ -14,7 +14,7 @@ urlpatterns = [
     path('api/taxa/', include('taxa.urls')),
     path('api/tours/', include('tours.urls')),
     path('api/label-maker/', include('label_maker.urls')),
-    path('api/collection-settings', include('collection_settings.urls')),
+    path('api/collection-settings/', include('collection_settings.urls')),
 ]
 
 # 開発中のメディアファイル配信設定

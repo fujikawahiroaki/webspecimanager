@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.core.validators import RegexValidator
-from .models import CustomTaxon, DefaultTaxon
+from .models import CustomTaxon, DefaultTaxon, Taxon
 
 
 class DefaultTaxonSerializer(serializers.ModelSerializer):

@@ -1,9 +1,8 @@
 import * as React from "react";
 import {
-    TopToolbar,
     TabbedForm,
     FormTab,
-    Edit,
+    Create,
     Datagrid,
     TextField,
     DateField,
@@ -12,10 +11,9 @@ import {
     NumberInput,    
     DateInput,
     BooleanInput,
-    EditButton,
-    ShowButton,
-    ListButton,
     ImageInput,
+    TopToolbar,
+    ListButton,
     required,
     minLength,
     maxLength,
@@ -26,9 +24,8 @@ import {
 } from 'react-admin';
 
 
-const CustomTaxonEditActions = ({ basePath, data}) => (
+const CustomTaxonCreateActions = ({ basePath, data}) => (
     <TopToolbar>
-        <ShowButton basePath={basePath} record={data}/>
         <ListButton basePath={basePath} />
     </TopToolbar>
 );
@@ -36,8 +33,9 @@ const CustomTaxonEditActions = ({ basePath, data}) => (
 const validateCamelCase = [regex(/^[A-Z][a-z]+$/, '先頭のみ大文字の半角英字にしてください'), minLength(0), maxLength(30)]
 const validateLowerCase = [regex(/^[a-z]+$/, '全て小文字の半角英字にしてください'), minLength(0), maxLength(30)]
 
-const CustomTaxonEdit = (props) => (
-    <Edit actions={<CustomTaxonEditActions/>} {...props} title="カスタム分類情報">
+
+const CustomTaxonCreate = (props) => (
+    <Create actions={<CustomTaxonCreateActions/>} {...props} title="カスタム分類情報">
         <TabbedForm>
             <FormTab label="下位分類・記載者(年)・和名">
                 <TextInput source="genus" label="属" helperText='先頭のみ大文字の半角英字30字以内' resettable validate={validateCamelCase}/>
@@ -71,7 +69,7 @@ const CustomTaxonEdit = (props) => (
                 <ImageInput source="image5" label="画像5" />
             </FormTab>
         </TabbedForm>
-    </Edit>
+    </Create>
 );
 
-export default CustomTaxonEdit;
+export default CustomTaxonCreate;

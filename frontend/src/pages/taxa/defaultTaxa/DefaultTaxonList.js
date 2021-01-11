@@ -27,21 +27,20 @@ import {
     TextField,
     NumberField,
     EditButton,
-    CloneButton,
     ReferenceInput,
     SelectInput,
     SimpleForm,
     TextInput,
-    SearchInput,
-    Filter,
     NumberInput,
+    Filter,
     DateInput,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
 
 
-const CustomTaxonListActions = (props) => {
+
+const DefaultTaxonListActions = (props) => {
     const {
         className,
         exporter,
@@ -69,7 +68,6 @@ const CustomTaxonListActions = (props) => {
                 filterValues,
                 context: 'button',
             })}
-            <CreateButton basePath={basePath} />
             <ExportButton
                 disabled={total === 0}
                 resource={resource}
@@ -77,12 +75,12 @@ const CustomTaxonListActions = (props) => {
                 filterValues={filterValues}
                 maxResults={maxResults}
             />
-            {/* Add your custom actions */}
+            {/* Add your Default actions */}
         </TopToolbar>
     );
 };
 
-const CustomTaxonFilter = props => (
+const DefaultTaxonFilter = props => (
     <Filter {...props}>
         <TextInput source="genus" label="属" alwaysOn />
         <TextInput source="species" label="種" alwaysOn/>
@@ -90,7 +88,7 @@ const CustomTaxonFilter = props => (
         <TextInput source="japanese_name" label="和名" alwaysOn/>
         <TextInput source="subgenus" label="亜属" resettable/>
         <TextInput source="scientific_name_author" label="記載者" resettable/>
-        <TextInput source="name_publishedin_year" label="記載年"/>
+        <NumberInput source="name_publishedin_year" label="記載年"resettable/>
         <TextInput source="kingdom" label="界" resettable/>
         <TextInput source="phylum" label="門" resettable/>
         <TextInput source="class_name" label="綱" resettable/>
@@ -106,8 +104,8 @@ const CustomTaxonFilter = props => (
     </Filter>
 );
 
-const CustomTaxonList = props => (
-    <List {...props} title="カスタム分類情報" actions={<CustomTaxonListActions/>} filters={<CustomTaxonFilter />} perPage={20}
+const DefaultTaxonList = props => (
+    <List {...props} title="デフォルト分類情報" actions={<DefaultTaxonListActions/>} filters={<DefaultTaxonFilter />} perPage={20}
         sort={{ field: 'genus', order: 'DESC' }}>
         <CustomizableDatagrid defaultColumns={['genus', 'subgenus', 'species', 'subspecies', 'scientific_name_author',
                                                'name_publishedin_year', 'japanese_name']}>
@@ -116,7 +114,7 @@ const CustomTaxonList = props => (
             <TextField source="species" label="種"/>
             <TextField source="subspecies" label="亜種"/>
             <TextField source="scientific_name_author" label="記載者"/>
-            <TextField source="name_publishedin_year" label="記載年"/>
+            <NumberField source="name_publishedin_year" label="記載年"/>
             <TextField source="japanese_name" label="和名"/>
             <TextField source="kingdom" label="界" />
             <TextField source="phylum" label="門" />
@@ -130,11 +128,9 @@ const CustomTaxonList = props => (
             <TextField source="distribution" label="分布" />
             <TextField source="note" label="備考" />
             <DateField source="created_at" label="作成日"/>
-            <EditButton label="編集" />
-            <CloneButton label="これをベースに作成"/>
             <ShowButton label="詳細"/>
         </CustomizableDatagrid>
     </List>
 );
 
-export default CustomTaxonList;
+export default DefaultTaxonList;

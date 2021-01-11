@@ -71,9 +71,9 @@ class CustomTaxonFilter(filters.FilterSet):
         }
 
 
-class DefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
+class WritableDefaultTaxonViewSet(viewsets.ModelViewSet):
     """
-    デフォルト分類情報モデル用ビュー(全ユーザー共有)
+    デフォルト分類情報モデル書き込み可能ビュー(管理者のみ)
     """
     queryset = DefaultTaxon.objects.all()
     serializer_class = DefaultTaxonSerializer
@@ -81,6 +81,27 @@ class DefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = DefaultTaxonFilter
+
+    def get_queryset(self):
+        return DefaultTaxon.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+class ReadOnlyDefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    デフォルト分類情報モデル読み込み専用ビュー(全ユーザー共有)
+    """
+    queryset = DefaultTaxon.objects.all()
+    serializer_class = DefaultTaxonSerializer
+    authentication_classes = [Auth0JSONWebTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = DefaultTaxonFilter
+
+    def get_queryset(self):
+        return DefaultTaxon.objects.all()
 
 
 class CustomTaxonViewSet(viewsets.ModelViewSet):
