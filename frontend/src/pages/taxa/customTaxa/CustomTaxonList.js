@@ -36,6 +36,7 @@ import {
     Filter,
     NumberInput,
     DateInput,
+    BooleanField,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
@@ -84,13 +85,14 @@ const CustomTaxonListActions = (props) => {
 
 const CustomTaxonFilter = props => (
     <Filter {...props}>
-        <TextInput source="genus" label="属" alwaysOn />
-        <TextInput source="species" label="種" alwaysOn/>
-        <TextInput source="subspecies" label="亜種" alwaysOn/>
-        <TextInput source="japanese_name" label="和名" alwaysOn/>
+        <TextInput source="genus" label="属" alwaysOn resettable/>
+        <TextInput source="species" label="種" alwaysOn resettable/>
+        <TextInput source="subspecies" label="亜種" alwaysOn resettable/>
+        <TextInput source="japanese_name" label="和名" alwaysOn resettable/>
         <TextInput source="subgenus" label="亜属" resettable/>
         <TextInput source="scientific_name_author" label="記載者" resettable/>
-        <TextInput source="name_publishedin_year" label="記載年"/>
+        <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable/>
+        <NumberInput source="name_publishedin_year_max" label="記載年の範囲(入力年以前)" resettable/>
         <TextInput source="kingdom" label="界" resettable/>
         <TextInput source="phylum" label="門" resettable/>
         <TextInput source="class_name" label="綱" resettable/>
@@ -102,7 +104,7 @@ const CustomTaxonFilter = props => (
         <TextInput source="subtribe" label="亜族" resettable/>
         <TextInput source="distribution" label="分布" resettable/>
         <TextInput source="note" label="備考" resettable/>
-        <DateInput source="created_at" label="作成日"/>
+        <DateInput source="created_at" label="作成日" resettable/>
     </Filter>
 );
 

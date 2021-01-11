@@ -2,6 +2,7 @@ from django_filters import rest_framework as filters
 from django.contrib.gis.db import models
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import OrderingFilter
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from .models import CustomTaxon, DefaultTaxon
 from .serializers import CustomTaxonSerializer, DefaultTaxonSerializer
@@ -19,6 +20,7 @@ class DefaultTaxonFilter(filters.FilterSet):
             'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
             'species', 'subspecies', 'scientific_name_author',
             'name_publishedin_year', 'japanese_name', 'distribution', 'note',
+            'created_at',
         ]
         filter_overrides = {
             models.CharField: {
@@ -36,6 +38,12 @@ class DefaultTaxonFilter(filters.FilterSet):
             models.IntegerField: {
                 'filter_class': filters.RangeFilter,
             },
+            models.DateTimeField: {
+                'filter_class': filters.DateTimeFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'date',
+                }
+            }
         }
 
 
@@ -51,6 +59,7 @@ class CustomTaxonFilter(filters.FilterSet):
             'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
             'species', 'subspecies', 'scientific_name_author',
             'name_publishedin_year', 'japanese_name', 'distribution', 'note',
+            'created_at',
         ]
         filter_overrides = {
             models.CharField: {
@@ -68,6 +77,12 @@ class CustomTaxonFilter(filters.FilterSet):
             models.IntegerField: {
                 'filter_class': filters.RangeFilter,
             },
+            models.DateTimeField: {
+                'filter_class': filters.DateTimeFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'date',
+                }
+            }
         }
 
 
@@ -97,8 +112,15 @@ class ReadOnlyDefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = DefaultTaxonSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = DefaultTaxonFilter
+    ordering_fields = [
+            'kingdom', 'phylum', 'class_name', 'order', 'suborder',
+            'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
+            'species', 'subspecies', 'scientific_name_author',
+            'name_publishedin_year', 'japanese_name', 'distribution', 'note',
+            'created_at'
+        ]
 
     def get_queryset(self):
         return DefaultTaxon.objects.all()
@@ -111,8 +133,15 @@ class CustomTaxonViewSet(viewsets.ModelViewSet):
     serializer_class = CustomTaxonSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = CustomTaxonFilter
+    ordering_fields = [
+            'kingdom', 'phylum', 'class_name', 'order', 'suborder',
+            'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
+            'species', 'subspecies', 'scientific_name_author',
+            'name_publishedin_year', 'japanese_name', 'distribution', 'note',
+            'created_at'
+        ]
 
     def get_queryset(self):
         user = self.request.user
