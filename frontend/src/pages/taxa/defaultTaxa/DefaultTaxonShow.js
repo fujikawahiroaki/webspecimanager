@@ -32,7 +32,7 @@ const DefaultTaxonShow = props => (
                 <TextField source="species" label="種"/>
                 <TextField source="subspecies" label="亜種"/>
                 <TextField source="scientific_name_author" label="記載者"/>
-                <NumberField source="name_publishedin_year" label="記載年"/>
+                <TextField source="name_publishedin_year" label="記載年"/>
                 <TextField source="japanese_name" label="和名"/>
             </Tab>
             <Tab label='上位分類'>
