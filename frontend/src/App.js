@@ -6,6 +6,7 @@ import {Admin, Resource, ListGuesser, EditGuesser, ShowGuesser, fetchUtils} from
 
 // drf
 import drfProvider from 'ra-data-django-rest-framework';
+import addUploadCapabilities from './utils/addUploadFeature';
 
 // pages
 import loginPage from "./pages/login";
@@ -41,13 +42,16 @@ const httpClient = (url, options = {}) => {
     options.user = {
         authenticated: true
     };
+    console.log(options)
     return fetchUtils.fetchJson(url, options);
 }
+
+const dataProvider = addUploadCapabilities(drfProvider('http://localhost:8000/api', httpClient))
 
 const App = () => (
     <Admin locale="ja" i18nProvider={i18nProvider}
         authProvider={authProvider}
-        dataProvider={drfProvider('http://localhost:8000/api', httpClient)}
+        dataProvider={dataProvider}
         history={history}
         dashboard={Dashboard}
         loginPage={loginPage}

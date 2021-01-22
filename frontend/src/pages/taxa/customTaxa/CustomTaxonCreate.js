@@ -12,6 +12,7 @@ import {
     DateInput,
     BooleanInput,
     ImageInput,
+    ImageField,
     TopToolbar,
     ListButton,
     required,
@@ -62,7 +63,9 @@ const CustomTaxonCreate = (props) => (
                 <TextInput multiline source="note" label="備考" helperText='200字以内 改行可' resettable validate={minLength(0), maxLength(200)}/>
             </FormTab>
             <FormTab label="画像">
-                <ImageInput source="image1" label="画像1" />
+                <ImageInput source="image1" label="画像1" >
+                    <ImageField source="src" title="title" />
+                </ImageInput>
                 <ImageInput source="image2" label="画像2" />
                 <ImageInput source="image3" label="画像3" />
                 <ImageInput source="image4" label="画像4" />

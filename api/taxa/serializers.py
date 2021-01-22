@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.core.validators import RegexValidator
+from drf_extra_fields.fields import Base64ImageField
 from .models import CustomTaxon, DefaultTaxon, Taxon
 
 
@@ -71,6 +72,11 @@ class CustomTaxonSerializer(serializers.ModelSerializer):
     """カスタム分類モデル用シリアライザ"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     name_publishedin_year = serializers.IntegerField(required=False)
+    image1 = Base64ImageField(required=False)
+    image2 = Base64ImageField(required=False)
+    image3 = Base64ImageField(required=False)
+    image4 = Base64ImageField(required=False)
+    image5 = Base64ImageField(required=False)
 
     class Meta:
         model = CustomTaxon
