@@ -36,6 +36,38 @@ const addUploadCapabilities = dataProvider => ({
                 })
             );
     },
+
+    update: (resource, params) => {
+        if (resource == 'user-profiles/own-user-profiles' || resource == 'label-maker/own-labels') {
+            // fallback to the default implementation
+            return dataProvider.update(resource, params);
+        }
+        // The posts edition form uses a file upload widget for the pictures field.
+        // Freshly dropped pictures are File objects
+        // and must be converted to base64 strings
+        if (!params.data.image1) {
+            return dataProvider.update(resource, params);
+        }
+        const image1 = params.data.image1;
+        if (!image1.rawFile instanceof File){
+            return Promise.reject('Error: Not a file...');
+        }
+
+        return Promise.resolve(convertFileToBase64(image1)
+            .then( (picture64) => ({
+                    src: picture64,
+                    title: `${params.data.title}`,
+                }))
+            )
+            .then(transformedNewPicture =>
+                dataProvider.update(resource, {
+                    ...params,
+                    data: {
+                        image1: transformedNewPicture['src']
+                    },
+                })
+            );
+    },
 });
 
 /**
