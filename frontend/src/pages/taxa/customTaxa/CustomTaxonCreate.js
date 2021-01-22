@@ -35,6 +35,15 @@ const validateCamelCase = [regex(/^[A-Z][a-z]+$/, '先頭のみ大文字の半�
 const validateLowerCase = [regex(/^[a-z]+$/, '全て小文字の半角英字にしてください'), minLength(0), maxLength(30)]
 
 
+function formatImage(value) {
+    if (!value ||  typeof value === "string") {
+     return { url: value };
+    } else {
+      return value;
+    }
+}
+
+
 const CustomTaxonCreate = (props) => (
     <Create actions={<CustomTaxonCreateActions/>} {...props} title="カスタム分類情報">
         <TabbedForm>
@@ -63,13 +72,9 @@ const CustomTaxonCreate = (props) => (
                 <TextInput multiline source="note" label="備考" helperText='200字以内 改行可' resettable validate={minLength(0), maxLength(200)}/>
             </FormTab>
             <FormTab label="画像">
-                <ImageInput source="image1" label="画像1" >
-                    <ImageField source="src" title="title" />
+                <ImageInput format={formatImage} source="image1" label="画像" >
+                    <ImageField source="url" title="title" />
                 </ImageInput>
-                <ImageInput source="image2" label="画像2" />
-                <ImageInput source="image3" label="画像3" />
-                <ImageInput source="image4" label="画像4" />
-                <ImageInput source="image5" label="画像5" />
             </FormTab>
         </TabbedForm>
     </Create>

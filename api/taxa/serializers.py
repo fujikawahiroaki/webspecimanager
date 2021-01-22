@@ -7,6 +7,11 @@ from .models import CustomTaxon, DefaultTaxon, Taxon
 class DefaultTaxonSerializer(serializers.ModelSerializer):
     """デフォルト分類モデル用シリアライザ"""
     name_publishedin_year = serializers.IntegerField(required=False)
+    image1 = Base64ImageField(required=False)
+    image2 = Base64ImageField(required=False)
+    image3 = Base64ImageField(required=False)
+    image4 = Base64ImageField(required=False)
+    image5 = Base64ImageField(required=False)
 
     class Meta:
         model = DefaultTaxon

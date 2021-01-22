@@ -55,11 +55,7 @@ const CustomTaxonShow = props => (
                 <DateField source="created_at" label="作成日"/>
             </Tab>
             <Tab label='画像'>
-                <ImageField source="image1" label="画像1" />
-                <ImageField source="image2" label="画像2" />
-                <ImageField source="image3" label="画像3" />
-                <ImageField source="image4" label="画像4" />
-                <ImageField source="image5" label="画像5" />
+                <ImageField source="image1" label="画像" />
             </Tab>
         </TabbedShowLayout>
     </Show>
