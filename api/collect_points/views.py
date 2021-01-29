@@ -2,6 +2,7 @@ from django_filters import rest_framework as filters
 from django_property_filter import PropertyFilterSet, PropertyRangeFilter
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import OrderingFilter
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from django.contrib.gis.db import models
 from django.contrib.gis.measure import Distance
@@ -26,11 +27,15 @@ class CollectPointFilter(PropertyFilterSet):
                   'municipality', 'verbatim_locality',
                   'japanese_place_name', 'japanese_place_name_detail',
                   'minimum_elevation', 'maximum_elevation',
-                  'minimum_depth', 'maximum_depth', 'note']
+                  'minimum_depth', 'maximum_depth', 'note', 'created_at']
         property_fields = [
             ('longitude', PropertyRangeFilter, ['range']),
             ('latitude', PropertyRangeFilter, ['range'])
         ]
+        minimum_elevation = filters.RangeFilter(field_name='minimum_elevation')
+        maximum_elevation = filters.RangeFilter(field_name='maximum_elevation')
+        minimum_depth = filters.RangeFilter(field_name='minimum_depth')
+        maximum_depth = filters.RangeFilter(field_name='maximum_depth')
         filter_overrides = {
             models.CharField: {
                 'filter_class': filters.CharFilter,
@@ -44,6 +49,12 @@ class CollectPointFilter(PropertyFilterSet):
                     'lookup_expr': 'icontains',
                 },
             },
+            models.DateTimeField: {
+                'filter_class': filters.DateTimeFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'date',
+                }
+            },
         }
 
 
@@ -54,11 +65,28 @@ class CollectPointViewSet(viewsets.ModelViewSet):
     serializer_class = CollectPointSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = CollectPointFilter
 
     def get_queryset(self):
         user = self.request.user
+        lon = self.request.query_params.get('longitude')
+        if lon is not None:
+            lon = float(lon)
+        lat = self.request.query_params.get('latitude')
+        if lat is not None:
+            lat = float(lat)
+        rad = self.request.query_params.get('radius')
+        if rad is not None:
+            rad = float(rad)
+        if lon is not None and lat is not None and rad is not None:
+            collect_point_within_radius = CollectPoint.objects.filter(
+                location__distance_lt=(
+                    Point(lon, lat),
+                    Distance(m=rad)
+                )
+            )
+            return collect_point_within_radius.filter(user=user)
         return CollectPoint.objects.filter(user=user)
 
     def perform_create(self, serializer):

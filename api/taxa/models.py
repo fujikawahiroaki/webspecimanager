@@ -67,7 +67,7 @@ class Taxon(models.Model):
                                 max_length=30, blank=True)
     # 種
     species = models.CharField(verbose_name='種',
-                               default='sp.',
+                               default='sp',
                                max_length=30, blank=True)
     # 亜種
     subspecies = models.CharField(verbose_name='亜種',

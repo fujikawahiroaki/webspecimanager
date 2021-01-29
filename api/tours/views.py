@@ -2,6 +2,7 @@ from django_filters import rest_framework as filters
 from django.contrib.gis.db import models
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import OrderingFilter
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from .models import Tour
 from .serializers import TourSerializer
@@ -30,6 +31,9 @@ class TourFilter(filters.FilterSet):
             },
             models.DateField: {
                 'filter_class': filters.DateFromToRangeFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'date',
+                }
             },
         }
 
@@ -41,7 +45,7 @@ class TourViewSet(viewsets.ModelViewSet):
     serializer_class = TourSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = TourFilter
 
     def get_queryset(self):

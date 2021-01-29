@@ -88,7 +88,8 @@ const DefaultTaxonFilter = props => (
         <TextInput source="japanese_name" label="和名" alwaysOn/>
         <TextInput source="subgenus" label="亜属" resettable/>
         <TextInput source="scientific_name_author" label="記載者" resettable/>
-        <NumberInput source="name_publishedin_year" label="記載年"resettable/>
+        <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable/>
+        <NumberInput source="name_publishedin_year_max" label="記載年の範囲(入力年以前)" resettable/>
         <TextInput source="kingdom" label="界" resettable/>
         <TextInput source="phylum" label="門" resettable/>
         <TextInput source="class_name" label="綱" resettable/>

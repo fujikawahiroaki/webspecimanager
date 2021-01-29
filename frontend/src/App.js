@@ -5,14 +5,16 @@ import { Provider } from 'react-redux';
 import {Admin, Resource, ListGuesser, EditGuesser, ShowGuesser, fetchUtils} from 'react-admin';
 
 // drf
-import drfProvider from 'ra-data-django-rest-framework';
+import drfProvider from './utils/drfProvider';
 import addUploadCapabilities from './utils/addUploadFeature';
 
 // pages
 import loginPage from "./pages/login";
 import specimens from "./pages/specimens";
 import customTaxa from "./pages/taxa/customTaxa";
-import defaultTaxa from './pages/taxa/defaultTaxa'
+import defaultTaxa from './pages/taxa/defaultTaxa';
+import tours from './pages/tours';
+import collectPoints from './pages/collectPoints';
 
 // components
 import Dashboard from './components/Dashboard';
@@ -60,8 +62,8 @@ const App = () => (
         <Resource name="specimens/own-specimens"  options={{ label: '標本' }} {...specimens}/>
         <Resource name="taxa/own-taxa" options={{ label: 'カスタム分類情報' }} {...customTaxa} />
         <Resource name="taxa/shared-taxa" options={{ label: 'デフォルト分類情報' }} {...defaultTaxa} />
-        <Resource name="collect-points/own-collect-points" options={{ label: '採集地点' }} list={ListGuesser} />
-        <Resource name="tours/own-tours" options={{ label: '採集行' }} list={ListGuesser} />
+        <Resource name="collect-points/own-collect-points" options={{ label: '採集地点' }} {...collectPoints} />
+        <Resource name="tours/own-tours" options={{ label: '採集行' }} {...tours} />
         <Resource name="user-profiles/own-user-profiles" options={{ label: 'ユーザー設定' }} list={ListGuesser} />
         <Resource name="label-maker/own-labels" options={{ label: 'ラベル' }} list={ListGuesser} />
     </Admin>

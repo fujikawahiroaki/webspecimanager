@@ -32,6 +32,7 @@ import {
     SimpleForm,
     TextInput,
     Filter,
+    DateInput,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
@@ -79,7 +80,12 @@ const TourListActions = (props) => {
 
 const TourFilter = props => (
     <Filter {...props}>
-        <TextInput label="検索" source="q" alwaysOn />
+        <TextInput label="タイトル" source="title" alwaysOn resettable/>
+        <DateInput label="開始日の範囲(入力年以降)" source="start_date_after" alwaysOn resettable/>
+        <DateInput label="開始日の範囲(入力年以前)" source="start_date_before" alwaysOn resettable/>
+        <DateInput label="終了日の範囲(入力年以降)" source="end_date_after" alwaysOn resettable/>
+        <DateInput label="終了日の範囲(入力年以前)" source="end_date_before" alwaysOn resettable/>
+        <DateInput label="作成日" source="created_at" alwaysOn resettable/> 
     </Filter>
 );
 
@@ -87,20 +93,12 @@ const TourList = props => (
     <List {...props} title="採集行" actions={<TourListActions/>} filters={<TourFilter />} perPage={20}
         sort={{ field: 'start_date', order: 'DESC' }} bulkActionButtons={<BulkDeleteButton/>}>
         <Datagrid >
-        <TextField source="id" />
-            <DateField source="created_at" />
-            <TextField source="title" />
-            <DateField source="start_date" />
-            <DateField source="end_date" />
-            <TextField source="track" />
-            <TextField source="note" />
-            <TextField source="image1" />
-            <TextField source="image2" />
-            <TextField source="image3" />
-            <TextField source="image4" />
-            <TextField source="image5" />
-            <TextField source="specimens.id" />
-            <TextField source="collect_points.id" />
+            <TextField source="title" label="タイトル"/>
+            <DateField source="start_date" label="開始日"/>
+            <DateField source="end_date" label="終了日"/>
+            <DateField source="created_at" label="作成日"/>
+            <EditButton label="編集"/>
+            <ShowButton label="詳細"/>
         </Datagrid>
     </List>
 );
