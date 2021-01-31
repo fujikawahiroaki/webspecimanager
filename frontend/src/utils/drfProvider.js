@@ -104,6 +104,17 @@ export default (
       ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
 
     create: async (resource, params) => {
+      if (resource == 'taxa/shared-taxa') {
+        delete params.data.is_private
+        const { json } = await httpClient(`${apiUrl}/taxa/own-taxa/`, {
+          method: 'POST',
+          body: JSON.stringify(params.data),
+        });
+        return {
+          data: { ...json },
+        };
+      };
+
       const { json } = await httpClient(`${apiUrl}/${resource}/`, {
         method: 'POST',
         body: JSON.stringify(params.data),

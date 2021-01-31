@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from django_countries.serializer_fields import CountryField
 from django_countries.serializers import CountryFieldMixin
 from drf_extra_fields.geo_fields import PointField
+from drf_extra_fields.fields import Base64ImageField
 from django.contrib.gis.geos import Point
 # from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from .models import CollectPoint
@@ -27,6 +28,11 @@ class CollectPointSerializer(CountryFieldMixin, serializers.ModelSerializer):
     maximum_elevation = serializers.FloatField(required=False)
     minimum_depth = serializers.FloatField(required=False)
     maximum_depth = serializers.FloatField(required=False)
+    image1 = Base64ImageField(required=False)
+    image2 = Base64ImageField(required=False)
+    image3 = Base64ImageField(required=False)
+    image4 = Base64ImageField(required=False)
+    image5 = Base64ImageField(required=False)
 
     class Meta:
         model = CollectPoint

@@ -15,6 +15,7 @@ import {
     ShowActions,
     Show,
     ShowButton,
+    CloneButton,
     SimpleShowLayout,
     TabbedShowLayout,
     RichTextField,
@@ -129,6 +130,7 @@ const DefaultTaxonList = props => (
             <TextField source="distribution" label="分布" />
             <TextField source="note" label="備考" />
             <DateField source="created_at" label="作成日"/>
+            <CloneButton label="これをベースにカスタム分類情報を作成"/>
             <ShowButton label="詳細"/>
         </CustomizableDatagrid>
     </List>
