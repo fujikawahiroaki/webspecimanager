@@ -1,7 +1,8 @@
 const addUploadCapabilities = dataProvider => ({
     ...dataProvider,
     create: (resource, params) => {
-        if (resource == 'user-profiles/own-user-profiles' || resource == 'label-maker/own-labels') {
+        if (resource == 'user-profiles/own-user-profiles' || resource == 'label-maker/own-labels'
+            || resource == 'collection-settings/own-collection-settings') {
             return dataProvider.create(resource, params);
         }
 
@@ -68,7 +69,8 @@ const addUploadCapabilities = dataProvider => ({
     },
 
     update: (resource, params) => {
-        if (resource == 'user-profiles/own-user-profiles' || resource == 'label-maker/own-labels') {
+        if (resource == 'user-profiles/own-user-profiles' || resource == 'label-maker/own-labels'
+            || resource == 'collection-settings/own-collection-settings') {
             return dataProvider.update(resource, params);
         };
 

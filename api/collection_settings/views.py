@@ -2,6 +2,7 @@ from django_filters import rest_framework as filters
 from django.contrib.gis.db import models
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import OrderingFilter
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from .models import CollectionSetting
 from .serializers import CollectionSettingSerializer
@@ -42,7 +43,7 @@ class CollectionSettingViewset(viewsets.ModelViewSet):
     serializer_class = CollectionSettingSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = CollectionSettingFilter
 
     def get_queryset(self):
