@@ -2,8 +2,8 @@ from rest_framework import serializers
 from drf_extra_fields.fields import Base64ImageField
 from .models import Tour
 from specimens.models import Specimen
+from specimens.serializers_for_tour import SpecimenForTourSerializer
 from collect_points.models import CollectPoint
-from specimens.serializers import SpecimenSerializer
 from collect_points.serializers import CollectPointSerializer
 
 
@@ -21,7 +21,7 @@ class TourSerializer(serializers.ModelSerializer):
     image5 = Base64ImageField(required=False)
 
     def get_specimens(self, obj):
-        specimens_data = SpecimenSerializer(Specimen.objects.all().filter(
+        specimens_data = SpecimenForTourSerializer(Specimen.objects.all().filter(
             tour=Tour.objects.get(id=obj.id)), many=True).data
         return specimens_data
 
