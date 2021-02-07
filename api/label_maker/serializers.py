@@ -4,9 +4,8 @@ from .models import SpecimenLabel
 from specimens.serializers import SpecimenForLabelSerializer
 
 
-class SpecimenLabelSerializer(WritableNestedModelSerializer):
+class SpecimenLabelSerializer(serializers.ModelSerializer):
     """標本ラベルモデル用シリアライザ"""
-    label_specimens = SpecimenForLabelSerializer(many=True)
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
