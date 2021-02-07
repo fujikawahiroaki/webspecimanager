@@ -52,9 +52,6 @@ function formatImage(value) {
 }
 
 
-
-
-
 const SpecimenCreate = (props) => (
     <Create actions={<SpecimenCreateActions/>} {...props} title="標本">
         <TabbedForm>

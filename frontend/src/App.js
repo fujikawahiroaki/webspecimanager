@@ -16,6 +16,7 @@ import defaultTaxa from './pages/taxa/defaultTaxa';
 import tours from './pages/tours';
 import collectPoints from './pages/collectPoints';
 import collectionSettings from './pages/collectionSettings';
+import labels from "./pages/labels";
 
 // components
 import Dashboard from './components/Dashboard';
@@ -66,8 +67,7 @@ const App = () => (
         <Resource name="collect-points/own-collect-points" options={{ label: '採集地点' }} {...collectPoints} />
         <Resource name="tours/own-tours" options={{ label: '採集行' }} {...tours} />
         <Resource name="collection-settings/own-collection-settings" options={{label: 'コレクション設定'}} {...collectionSettings} />
-        <Resource name="user-profiles/own-user-profiles" options={{ label: 'ユーザー設定' }} list={ListGuesser} />
-        <Resource name="label-maker/own-labels" options={{ label: 'ラベル' }} list={ListGuesser} />
+        <Resource name="label-maker/own-labels" options={{ label: 'ラベル' }} {...labels} />
     </Admin>
 );
 export default App;

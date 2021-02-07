@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.core.validators import RegexValidator
-# from drf_writable_nested import WritableNestedModelSerializer
+from drf_writable_nested import WritableNestedModelSerializer
 from django_countries.serializer_fields import CountryField
 from django_countries.serializers import CountryFieldMixin
 from drf_extra_fields.geo_fields import PointField
@@ -222,6 +222,12 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
             return getattr(instance.custom_taxon_info, field_name)
         else:
             return ''
+    
+    def make_collect_point_field(self, instance, field_name):
+        if instance.collect_point_info is None:
+            return ''
+        else:
+            return getattr(instance.collect_point_info, field_name)
 
     def get_genus(self, instance):
         return self.make_taxon_field(instance, "genus")
@@ -251,7 +257,34 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
         if instance.collection_settings_info is not None:
             return instance.collection_settings_info.institution_code
         else:
-            return 0
+            return ''
+
+    def get_country(self, instance):
+        return self.make_collect_point_field(instance, 'country')
+
+    def get_island(self, instance):
+        return self.make_collect_point_field(instance, 'island')
+
+    def get_state_provice(self, instance):
+        return self.make_collect_point_field(instance, 'state_provice')
+
+    def get_county(self, instance):
+        return self.make_collect_point_field(instance, 'county')
+
+    def get_municipality(self, instance):
+        return self.make_collect_point_field(instance, 'municipality')
+
+    def get_japanese_place_name(self, instance):
+        return self.make_collect_point_field(instance, 'japanese_name')
+
+    def get_longitude(self, instance):
+        return self.make_collect_point_field(instance, 'longitude')
+
+    def get_latitude(self, instance):
+        return self.make_collect_point_field(instance, 'latitude')
+
+    def get_maximum_elevation(self, instance):
+        return self.make_collect_point_field(instance, 'maximum_elevation')
 
     genus = serializers.SerializerMethodField()
     species = serializers.SerializerMethodField()
@@ -261,19 +294,15 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
     japanese_name = serializers.SerializerMethodField()
     collection_name = serializers.SerializerMethodField()
     institution_code = serializers.SerializerMethodField()
-    country = CountryField(source='collect_point_info.country')
-    island = serializers.ReadOnlyField(source='collect_point_info.island')
-    state_provice = serializers.ReadOnlyField(
-        source='collect_point_info.state_provice')
-    county = serializers.ReadOnlyField(source='collect_point_info.county')
-    municipality = serializers.ReadOnlyField(
-        source='collect_point_info.municipality')
-    japanese_place_name = serializers.ReadOnlyField(
-        source='collect_point_info.japanese_place_name')
-    longitude = serializers.ReadOnlyField(source='collect_point_info.longitude')
-    latitude = serializers.ReadOnlyField(source='collect_point_info.latitude')
-    maximum_elevation = serializers.ReadOnlyField(
-        source='collect_point_info.maximum_elevation')
+    country = serializers.SerializerMethodField()
+    island = serializers.SerializerMethodField()
+    state_provice = serializers.SerializerMethodField()
+    county = serializers.SerializerMethodField()
+    municipality = serializers.SerializerMethodField()
+    japanese_place_name = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+    latitude = serializers.SerializerMethodField()
+    maximum_elevation = serializers.SerializerMethodField()
 
     class Meta:
         model = Specimen
