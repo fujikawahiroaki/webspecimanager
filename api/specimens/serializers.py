@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from django.core.validators import RegexValidator
-from drf_writable_nested import WritableNestedModelSerializer
+# from drf_writable_nested import WritableNestedModelSerializer
 from django_countries.serializer_fields import CountryField
 from django_countries.serializers import CountryFieldMixin
+from drf_extra_fields.geo_fields import PointField
+from drf_extra_fields.fields import Base64ImageField
 from .models import Specimen
 from collect_points.serializers import CollectPointSerializer
 from taxa.serializers import CustomTaxonSerializer, DefaultTaxonSerializer
@@ -10,7 +12,7 @@ from collection_settings.serializers import CollectionSettingSerializer
 from tours.serializers import TourSerializer
 
 
-class SpecimenSerializer(CountryFieldMixin, WritableNestedModelSerializer):
+class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """標本情報モデル用シリアライザ"""
 
     def make_taxon_field(self, instance, field_name):
@@ -69,33 +71,40 @@ class SpecimenSerializer(CountryFieldMixin, WritableNestedModelSerializer):
 
     def get_japanese_name(self, instance):
         return self.make_taxon_field(instance, "japanese_name")
-
-    def get_collection_name(self, instance):
-        if instance.collection_settings_info is not None:
-            return instance.collection_settings_info.collection_name
-        else:
-            return ''
-
-    def get_institution_code(self, instance):
-        if instance.collection_settings_info is not None:
-            return instance.collection_settings_info.institution_code
-        else:
-            return 0
-
-    collect_point_info = CollectPointSerializer(required=False)
-    custom_taxon_info = CustomTaxonSerializer(required=False)
-    collection_settings_info = CollectionSettingSerializer(required=False)
-    tour = TourSerializer(required=False)
+    # 外部キー`
+    # collect_point_info = CollectPointSerializer(required=False)
+    # custom_taxon_info = CustomTaxonSerializer(required=False)
+    # default_taxon_info = DefaultTaxonSerializer(required=False, read_only=True)
+    # collection_settings_info = CollectionSettingSerializer(required=False)
+    # tour = TourSerializer(required=False)
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    # 分類情報
+    kingdom = serializers.SerializerMethodField()
+    phylum = serializers.SerializerMethodField()
+    class_name = serializers.SerializerMethodField()
+    order = serializers.SerializerMethodField()
+    suborder = serializers.SerializerMethodField()
+    family = serializers.SerializerMethodField()
+    subfamily = serializers.SerializerMethodField()
+    tribe = serializers.SerializerMethodField()
+    subtribe = serializers.SerializerMethodField()
     genus = serializers.SerializerMethodField()
+    subgenus = serializers.SerializerMethodField()
     species = serializers.SerializerMethodField()
     subspecies = serializers.SerializerMethodField()
     scientific_name_author = serializers.SerializerMethodField()
     name_publishedin_year = serializers.SerializerMethodField()
     japanese_name = serializers.SerializerMethodField()
-    collection_name = serializers.SerializerMethodField()
-    institution_code = serializers.SerializerMethodField()
-    country = CountryField(source='collect_point_info.country')
+    # コレクション設定
+    collection_name = serializers.ReadOnlyField(
+        source='collection_settings_info.collection_name')
+    institution_code = serializers.ReadOnlyField(
+        source='collection_settings_info.institution_code')
+    # 採集地点
+    contient = serializers.ReadOnlyField(source='collect_point_info.contient')
+    island_group = serializers.ReadOnlyField(
+        source='collect_point_info.island_group')
+    country = CountryField(source='collect_point_info.country', required=False)
     island = serializers.ReadOnlyField(source='collect_point_info.island')
     state_provice = serializers.ReadOnlyField(
         source='collect_point_info.state_provice')
@@ -104,28 +113,59 @@ class SpecimenSerializer(CountryFieldMixin, WritableNestedModelSerializer):
         source='collect_point_info.municipality')
     japanese_place_name = serializers.ReadOnlyField(
         source='collect_point_info.japanese_place_name')
-    longitude = serializers.ReadOnlyField(source='collect_point_info.longitude')
-    latitude = serializers.ReadOnlyField(source='collect_point_info.latitude')
+    japanese_place_name_detail = serializers.ReadOnlyField(
+        source='collect_point_info.japanese_place_name_detail')
+    coordinate_precision = serializers.ReadOnlyField(
+        source='collect_point_info.coodinate_precision')
+    location = PointField(source='collect_point_info.location', required=False)
+    longitude = serializers.ReadOnlyField(
+        source='collect_point_info.longitude')
+    latitude = serializers.ReadOnlyField(
+        source='collect_point_info.latitude')
+    minimum_elevation = serializers.ReadOnlyField(
+        source='collect_point_info.minimum_eleavation')
     maximum_elevation = serializers.ReadOnlyField(
         source='collect_point_info.maximum_elevation')
+    minimum_depth = serializers.ReadOnlyField(
+        source='collect_point_info.minimum_depth')
+    maximum_depth = serializers.ReadOnlyField(
+        source='collect_point_info.maximum_depth')
+    # 採集行
+    title = serializers.ReadOnlyField(source='tour.title')
+    # モデル固有フィールド
     collection_code = serializers.IntegerField(required=False)
     date_identified = serializers.DateField(required=False)
     year = serializers.IntegerField(required=False)
     month = serializers.IntegerField(required=False)
     day = serializers.IntegerField(required=False)
+    image1 = Base64ImageField(required=False)
+    image2 = Base64ImageField(required=False)
+    image3 = Base64ImageField(required=False)
+    image4 = Base64ImageField(required=False)
+    image5 = Base64ImageField(required=False)
 
     class Meta:
         model = Specimen
-        fields = ['id', 'date_last_modified', 'user',
+        fields = ['id', 'date_last_modified', 'user', 'default_taxon_info',
                   'custom_taxon_info', 'collect_point_info', 'tour',
-                  'collection_settings_info', 'genus', 'species', 'subspecies',
+                  'collection_settings_info', 'kingdom', 'phylum',
+                  'class_name', 'order', 'suborder', 'family',
+                  'subfamily', 'tribe', 'subtribe',
+                  'genus', 'subgenus', 'species', 'subspecies',
                   'scientific_name_author', 'name_publishedin_year',
-                  'japanese_name', 'country', 'island', 'state_provice',
-                  'county', 'municipality', 'japanese_place_name',
-                  'longitude', 'latitude', 'maximum_elevation',
-                  'collection_name', 'institution_code', 'collection_code',
+                  'japanese_name', 'contient', 'island_group',
+                  'country', 'island', 'state_provice',
+                  'county', 'municipality',
+                  'japanese_place_name', 'japanese_place_name_detail',
+                  'coordinate_precision', 'location',
+                  'longitude', 'latitude', 'minimum_elevation',
+                  'maximum_elevation', 'minimum_depth', 'maximum_depth',
+                  'collection_name', 'institution_code',
+                  'title', 'collection_code',
                   'identified_by', 'date_identified', 'collecter',
-                  'year', 'month', 'day', 'sex', 'sampling_protocol']
+                  'year', 'month', 'day', 'sex', 'sampling_protocol',
+                  'lifestage', 'rights', 'image1', 'image2', 'image3',
+                  'image4', 'image5']
         read_only_fields = ('date_last_modified', 'id')
         extra_kwargs = {
             'identified_by': {
@@ -168,7 +208,7 @@ class SpecimenSerializer(CountryFieldMixin, WritableNestedModelSerializer):
 
 
 class SpecimenForLabelSerializer(CountryFieldMixin,
-                                 WritableNestedModelSerializer):
+                                 serializers.ModelSerializer):
     """標本情報モデルのラベル用シリアライザ"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
@@ -198,18 +238,6 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
 
     def get_japanese_name(self, instance):
         return self.make_taxon_field(instance, "japanese_name")
-
-    def get_collection_name(self, instance):
-        if instance.collection_settings_info is not None:
-            return instance.collection_settings_info.collection_name
-        else:
-            return ''
-
-    def get_institution_code(self, instance):
-        if instance.collection_settings_info is not None:
-            return instance.collection_settings_info.institution_code
-        else:
-            return 0
 
     def get_collection_name(self, instance):
         if instance.collection_settings_info is not None:

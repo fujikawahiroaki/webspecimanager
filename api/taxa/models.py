@@ -107,11 +107,15 @@ class Taxon(models.Model):
     image5 = models.ImageField(upload_to=user_portfolio_directory_path,
                                null=True, blank=True)
 
+    @property
+    def scientific_name(self):
+        return self.genus + ' ' + self.species
+
     def __str__(self):
         if self.genus == '':
             return 'Unidentified'
         else:
-            return self.genus + ' ' + self.species
+            return self.genus + ' ' + self.species + self.subspecies
 
 
 class DefaultTaxon(Taxon):

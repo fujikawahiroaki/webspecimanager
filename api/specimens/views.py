@@ -5,6 +5,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.measure import Distance
 from django.contrib.gis.geos import Point
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import OrderingFilter
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from .models import Specimen
 from .serializers import SpecimenSerializer
@@ -109,11 +110,28 @@ class SpecimenViewSet(viewsets.ModelViewSet):
     serializer_class = SpecimenSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = SpecimenFilter
 
     def get_queryset(self):
         user = self.request.user
+        lon = self.request.query_params.get('longitude')
+        if lon is not None:
+            lon = float(lon)
+        lat = self.request.query_params.get('latitude')
+        if lat is not None:
+            lat = float(lat)
+        rad = self.request.query_params.get('radius')
+        if rad is not None:
+            rad = float(rad)
+        if lon is not None and lat is not None and rad is not None:
+            specimen_within_radius = Specimen.objects.filter(
+                collect_point_info__location__distance_lt=(
+                    Point(lon, lat),
+                    Distance(m=rad)
+                )
+            )
+            return specimen_within_radius.filter(user=user)
         return Specimen.objects.filter(user=user)
 
     def perform_create(self, serializer):
