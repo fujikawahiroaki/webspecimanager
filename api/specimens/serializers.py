@@ -100,6 +100,8 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
         source='collection_settings_info.collection_name')
     institution_code = serializers.ReadOnlyField(
         source='collection_settings_info.institution_code')
+    latest_collection_code = serializers.ReadOnlyField(
+        source='collection_settings_info.latest_collection_code')
     # 採集地点
     contient = serializers.ReadOnlyField(source='collect_point_info.contient')
     island_group = serializers.ReadOnlyField(
@@ -161,7 +163,7 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
                   'longitude', 'latitude', 'minimum_elevation',
                   'maximum_elevation', 'minimum_depth', 'maximum_depth',
                   'collection_name', 'institution_code',
-                  'title', 'collection_code',
+                  'latest_collection_code', 'title', 'collection_code',
                   'identified_by', 'date_identified', 'collecter',
                   'year', 'month', 'day', 'sex', 'sampling_protocol',
                   'lifestage', 'rights', 'image1', 'image2', 'image3',

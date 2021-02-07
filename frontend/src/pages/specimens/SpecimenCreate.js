@@ -14,6 +14,7 @@ import {
     ImageInput,
     ReferenceInput,
     AutocompleteInput,
+    FormDataConsumer,
     ImageField,
     TopToolbar,
     ListButton,
@@ -24,8 +25,13 @@ import {
     maxValue,
     number,
     regex,
+    useQuery,
+    Loading,
+    Error,
+    NumberField,
 } from 'react-admin';
 
+import { useFormState } from 'react-final-form';
 
 const identity = value => (value)
 
@@ -46,6 +52,9 @@ function formatImage(value) {
 }
 
 
+
+
+
 const SpecimenCreate = (props) => (
     <Create actions={<SpecimenCreateActions/>} {...props} title="標本">
         <TabbedForm>
@@ -57,7 +66,11 @@ const SpecimenCreate = (props) => (
                     filterToQuery={searchText => ({ q: searchText })}>
                     <AutocompleteInput optionText="institution_code" helperText="機関コードで検索"/>
                 </ReferenceInput>
-                <NumberInput source="collection_code" label="標本ID" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(999999999999999999)]}/>
+                <FormDataConsumer>
+                    {({ formData, ...rest }) => formData.collection_settings_info &&
+                        <NumberInput source="collection_code" {...rest} label="標本ID 自動連番にする場合は入力しないでください" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(999999999999999999)]}/>
+                    }
+                </FormDataConsumer>
                 <DateInput source="date_identified" label="同定日"/>
                 <NumberInput source="year" label="採集年" helperText='半角数字4桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(9999)]}/>
                 <NumberInput source="month" label="採集月" helperText='半角数字12以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(12)]}/>

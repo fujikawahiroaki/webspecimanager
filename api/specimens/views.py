@@ -9,6 +9,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from .models import Specimen
 from .serializers import SpecimenSerializer
+from collection_settings.models import CollectionSetting
 
 
 class SpecimenFilter(PropertyFilterSet):

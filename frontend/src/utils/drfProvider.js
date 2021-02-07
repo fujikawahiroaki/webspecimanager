@@ -115,6 +115,26 @@ export default (
         };
       };
 
+      if (resource == 'specimens/own-specimens') {
+          if (!(params.data.collection_settings_info == null)) {
+            if (params.data.collection_code == null || params.data.collection_code == '') {
+              const collection_settings = await getOneJson('collection-settings/own-collection-settings', params.data.collection_settings_info);
+              params.data.collection_code = collection_settings['latest_collection_code'] + 1
+              const { new_latest_collection_code } = await httpClient(`${apiUrl}/collection-settings/own-collection-settings/${params.data.collection_settings_info}/`, {
+                method: 'PATCH',
+                body: `{"latest_collection_code": ${params.data.collection_code}}`,
+              });
+              const { json } = await httpClient(`${apiUrl}/${resource}/`, {
+                method: 'POST',
+                body: JSON.stringify(params.data),
+              });
+              return {
+                data: { ...json },
+              };
+            };
+          };
+      };
+
       const { json } = await httpClient(`${apiUrl}/${resource}/`, {
         method: 'POST',
         body: JSON.stringify(params.data),
