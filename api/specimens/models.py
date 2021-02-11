@@ -148,6 +148,14 @@ class Specimen(models.Model):
     image5 = models.ImageField(upload_to=user_portfolio_directory_path,
                                null=True, blank=True)
 
+    @property
+    def name(self):
+        if self.collection_settings_info is not None:
+            return self.collection_settings_info.institution_code + \
+                ' ' + str(self.collection_code).zfill(6)
+        else:
+            return 'Colletion: ? ' + str(self.collection_code).zfill(6)
+
     def __str__(self):
         if self.collection_settings_info is not None:
             return self.collection_settings_info.institution_code + \

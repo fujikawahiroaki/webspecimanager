@@ -1,15 +1,16 @@
 import os
-from urllib.parse import quote
+import base64
 
 from django_filters import rest_framework as filters
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import OrderingFilter
 
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 
 from django.conf import settings
-from django.http import HttpResponse
 from django.db import transaction
 from django.utils.decorators import method_decorator
 
@@ -24,7 +25,7 @@ class SpecimenLabelFilter(filters.FilterSet):
     標本ラベルのフィルタセット
     """
     name = filters.CharFilter(lookup_expr='icontains')
-    created_at = filters.DateTimeFromToRangeFilter()
+    created_at = filters.DateTimeFilter(lookup_expr='date')
 
     class Meta:
         model = SpecimenLabel
@@ -37,7 +38,7 @@ class SpecimenLabelView(viewsets.ModelViewSet):
     serializer_class = SpecimenLabelSerializer
     authentication_classes = [Auth0JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = SpecimenLabelFilter
 
     def get_queryset(self):
@@ -77,8 +78,5 @@ def _pdf_download_response(filename, filepath):
         HttpResponse: HttpResponse
     """
     with open(filepath, 'rb') as pdf:
-        response = HttpResponse(content=pdf)
-    response['Content-Type'] = 'application/pdf'
-    response['Content-Disposition'] =\
-        f"attachment; filename*=UTF-8''{quote(filename.encode('utf-8'))}"
-    return response
+        pdf_encoded = base64.b64encode(pdf.read())
+    return Response({'detail': 'label pdf', 'pdf': pdf_encoded})

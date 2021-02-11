@@ -15,6 +15,7 @@ import {
     ImageField,
     TopToolbar,
     ListButton,
+    ShowButton,
     required,
     minLength,
     maxLength,
@@ -30,6 +31,7 @@ const identity = value => (value)
 
 const TourEditActions = ({ basePath, data}) => (
     <TopToolbar>
+        <ShowButton basePath={basePath} record={data}/>
         <ListButton basePath={basePath} />
     </TopToolbar>
 );

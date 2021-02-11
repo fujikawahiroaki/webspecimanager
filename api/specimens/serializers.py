@@ -145,6 +145,7 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
     image3 = Base64ImageField(required=False)
     image4 = Base64ImageField(required=False)
     image5 = Base64ImageField(required=False)
+    name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Specimen
@@ -167,7 +168,7 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
                   'identified_by', 'date_identified', 'collecter',
                   'year', 'month', 'day', 'sex', 'sampling_protocol',
                   'lifestage', 'rights', 'image1', 'image2', 'image3',
-                  'image4', 'image5']
+                  'image4', 'image5', 'name']
         read_only_fields = ('date_last_modified', 'id')
         extra_kwargs = {
             'identified_by': {
@@ -227,7 +228,7 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
         if instance.collect_point_info is None:
             return ''
         else:
-            return getattr(instance.collect_point_info, field_name)
+            return str(getattr(instance.collect_point_info, field_name))
 
     def get_genus(self, instance):
         return self.make_taxon_field(instance, "genus")
@@ -275,7 +276,7 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
         return self.make_collect_point_field(instance, 'municipality')
 
     def get_japanese_place_name(self, instance):
-        return self.make_collect_point_field(instance, 'japanese_name')
+        return self.make_collect_point_field(instance, 'japanese_place_name')
 
     def get_longitude(self, instance):
         return self.make_collect_point_field(instance, 'longitude')

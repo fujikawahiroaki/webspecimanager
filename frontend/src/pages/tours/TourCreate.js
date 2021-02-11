@@ -48,7 +48,6 @@ const TourCreate = (props) => (
                 <TextInput source="title" label="タイトル"/>
                 <DateInput source="start_date" label="開始日"/>
                 <DateInput source="end_date" label="終了日"/>
-                <DateInput source="created_at" label="作成日"/>
             </FormTab>
             <FormTab label="画像">
                 <ImageInput format={formatImage} source="image1" label="画像" >

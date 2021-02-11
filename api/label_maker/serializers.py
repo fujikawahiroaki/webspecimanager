@@ -15,4 +15,4 @@ class SpecimenLabelSerializer(serializers.ModelSerializer):
                   'data_label_flag', 'coll_label_flag',
                   'det_label_flag', 'note_label_flag',
                   'pdf_filename']
-        read_only_fields = ('created_at', 'id')
+        read_only_fields = ('created_at', 'id', 'pdf_filename', 'user')

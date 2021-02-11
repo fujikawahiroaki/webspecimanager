@@ -63,6 +63,24 @@ export default (
       };
     },
 
+    getLabelPdf: async (resource, params) => {
+      const data = await httpClient(`${apiUrl}/${resource}/${params.id}/make_pdf`).then(
+        (response) => response.json['pdf']
+      );
+      const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+      const bin = atob(data.replace(/^.*,/, ''));
+      const buffer = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) {
+          buffer[i] = bin.charCodeAt(i);
+      }
+      const blob = new Blob([bom, buffer.buffer], {
+        type: "application/pdf",
+      });
+      const pdfUrl = window.URL.createObjectURL(blob)
+      window.open(pdfUrl, '_blank')
+      return {data};
+    },
+
     getMany: (resource, params) => {
       return Promise.all(
         params.ids.map(id => getOneJson(resource, id))
