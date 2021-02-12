@@ -31,7 +31,7 @@ const MakePDFButton = ({ record }) => {
         payload: {id: record.id},
     });
     return <Button
-        label="ラベル生成"
+        label="ラベルPDF生成"
         onClick={pdfLink}
         disabled={loading}
     />;
