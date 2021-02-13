@@ -49,7 +49,7 @@ const LabelEdit = (props) => (
                 <BooleanInput source="note_label_flag" label="備考ラベル作成の可否"/>
             </FormTab>
             <FormTab label="所属標本">
-                <ReferenceArrayInput source="label_specimens" reference="specimens/own-specimens" perPage={100}>
+                <ReferenceArrayInput source="label_specimens" reference="specimens/own-specimens" sort={{ field: 'date_last_modified', order: 'DESC' }} perPage={100}>
                     <SelectArrayInput optionText="name" />
                 </ReferenceArrayInput>
             </FormTab>
