@@ -22,6 +22,7 @@ import {
     maxValue,
     number,
     regex,
+    useNotify, useRefresh, useRedirect,
 } from 'react-admin';
 
 
@@ -44,8 +45,18 @@ function formatImage(value) {
 }
 
 
-const DefaultTaxonCreate = (props) => (
-    <Create actions={<DefaultTaxonCreateActions/>} {...props} title="デフォルト分類情報をベースにカスタム分類情報を作成">
+const DefaultTaxonCreate = (props) => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+    const onSuccess = () => {
+        notify(`入力値を元にカスタム分類情報を作成しました`)
+        redirect('/taxa/own-taxa');
+        refresh();
+    };
+    return (
+    <Create onSuccess={onSuccess} mutationMode="pessimistic" actions={<DefaultTaxonCreateActions/>} {...props} title="デフォルト分類情報をベースにカスタム分類情報を作成">
         <TabbedForm>
             <FormTab label="下位分類・記載者(年)・和名">
                 <TextInput source="genus" label="属" helperText='先頭のみ大文字の半角英字30字以内' resettable validate={validateCamelCase}/>
@@ -78,6 +89,6 @@ const DefaultTaxonCreate = (props) => (
             </FormTab>
         </TabbedForm>
     </Create>
-);
-
+    );
+}
 export default DefaultTaxonCreate;

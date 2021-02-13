@@ -35,12 +35,13 @@ export default {
         })
     },
     // called when the API returns an error
-    // checkError: ({status}) => {
-    //     if (status === 401 || status === 403) {
-    //         return Promise.reject();
-    //     }
-    //     return Promise.resolve();
-    // },
+    checkError: ({status}) => {
+        if (status === 401 || status === 403) {
+            alert("サーバーエラーが発生しました")
+            return Promise.reject();
+        }
+        return Promise.resolve();
+    },
     // called when the user navigates to a new location, to check for authentication
     checkAuth: () => {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
