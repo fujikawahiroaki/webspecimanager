@@ -37,6 +37,7 @@ import {
     BooleanInput,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
+import {MakePDFButton} from './MakeLabelPDF';
 
 
 const LabelListActions = (props) => {
@@ -80,6 +81,7 @@ const LabelListActions = (props) => {
     );
 };
 
+
 const LabelFilter = props => (
     <Filter {...props}>
         <TextInput label="ラベル名" source="name" alwaysOn resettable/>
@@ -99,6 +101,7 @@ const LabelList = props => (
             <DateField source="created_at" label="作成日"/>
             <EditButton label="編集"/>
             <ShowButton label="詳細"/>
+            <MakePDFButton {...props}/>
         </Datagrid>
     </List>
 );
