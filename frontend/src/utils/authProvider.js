@@ -37,8 +37,8 @@ export default {
     // called when the API returns an error
     checkError: ({status}) => {
         if (status === 401 || status === 403) {
-            alert("サーバーエラーが発生しました")
-            return Promise.reject();
+            alert("サーバーエラーが発生しました 再読込してみてください")
+            return Promise.resolve();
         }
         return Promise.resolve();
     },
