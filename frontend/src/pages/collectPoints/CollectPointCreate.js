@@ -37,10 +37,10 @@ const CollectPointCreateActions = ({ basePath, data}) => (
     </TopToolbar>
 );
 
-const validateASCII = [regex(/^[!-~ ]+$/, '半角英数記号のみにしてください'), minLength(0), maxLength(30)]
+const validateASCII = [regex(/^[!-~ À-ÖØ-öø-ÿ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(30)]
 const validateASCIIforContient = [regex(/^[!-~ ]+$/, '半角英数記号のみにしてください'), minLength(0), maxLength(20)]
-const validateASCIIforIsland = [regex(/^[!-~ ]+$/, '半角英数記号のみにしてください'), minLength(0), maxLength(24)]
-const validateASCIIforMunicipality = [regex(/^[!-~ ]+$/, '半角英数記号のみにしてください'), minLength(0), maxLength(50)]
+const validateASCIIforIsland = [regex(/^[!-~ À-ÖØ-öø-ÿ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(24)]
+const validateASCIIforMunicipality = [regex(/^[!-~ À-ÖØ-öø-ÿ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(50)]
 
 
 
@@ -61,11 +61,11 @@ const CollectPointCreate = (props) => (
                 <AutocompleteInput source="country" label="国名コード(ISO 3166-1)" helperText="ISO 3166-1準拠の半角英字2字の国名コード(リストから国名を選択すると自動入力されます)" resettable
                 choices={iso3166list}/>
                 <TextInput source="contient" label="大陸" helperText="半角英数記号20字以内" resettable validate={validateASCIIforContient}/>
-                <TextInput source="island_group" label="島群" helperText="半角英数記号30字以内" resettable validate={validateASCII}/>
-                <TextInput source="island" label="島" helperText="半角英数記号24字以内" resettable validate={validateASCIIforIsland}/>
-                <TextInput source="state_provice" label="県(州)" helperText="半角英数記号30字以内" resettable validate={validateASCII}/>
-                <TextInput source="county" label="海外における群・区" helperText="半角英数記号30字以内" resettable validate={validateASCII}/>
-                <TextInput source="municipality" label="市名以下の詳細地名" helperText="半角英数記号50字以内 大地名から順にカンマ区切り" resettable validate={validateASCIIforMunicipality}/>
+                <TextInput source="island_group" label="島群" helperText="半角英数記号およびアクセント記号付き文字30字以内" resettable validate={validateASCII}/>
+                <TextInput source="island" label="島" helperText="半角英数記号およびアクセント記号付き文字24字以内" resettable validate={validateASCIIforIsland}/>
+                <TextInput source="state_provice" label="県(州)" helperText="半角英数記号およびアクセント記号付き文字30字以内" resettable validate={validateASCII}/>
+                <TextInput source="county" label="海外における群・区" helperText="半角英数記号およびアクセント記号付き文字30字以内" resettable validate={validateASCII}/>
+                <TextInput source="municipality" label="市名以下の詳細地名" helperText="半角英数記号およびアクセント記号付き文字50字以内 大地名から順にカンマ区切り" resettable validate={validateASCIIforMunicipality}/>
                 <TextInput multiple source="verbatim_locality" label="採集地の説明" helperText="200字以内 改行可" resettable validate={[minLength(0), maxLength(200)]}/>
                 <TextInput source="japanese_place_name" label="日本語地名(ラベル用)" helperText="14字以内" resettable validate={[minLength(0), maxLength(14)]}/>
                 <TextInput source="japanese_place_name_detail" label="日本語地名(詳細)" helperText="50字以内" resettable validate={[minLength(0), maxLength(50)]}/>

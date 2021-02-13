@@ -167,17 +167,19 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
                   'latest_collection_code', 'title', 'collection_code',
                   'identified_by', 'date_identified', 'collecter',
                   'year', 'month', 'day', 'sex', 'sampling_protocol',
+                  'sampling_effort', 'note', 'preparation_type',
+                  'disposition', 'establishment_means',
                   'lifestage', 'rights', 'image1', 'image2', 'image3',
                   'image4', 'image5', 'name']
         read_only_fields = ('date_last_modified', 'id')
         extra_kwargs = {
             'identified_by': {
-                'validators': [RegexValidator(r'^[!-~ ]+$',
-                                              message='半角英数記号のみ使用可')]
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                                              message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
             'collecter': {
-                'validators': [RegexValidator(r'^[!-~ ]+$',
-                                              message='半角英数記号のみ使用可')]
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                                              message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
             'preparation_type': {
                 'validators': [RegexValidator(r'^[!-~ ]+$',
@@ -188,11 +190,11 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
                                               message='半角英数記号のみ使用可')]
             },
             'sampling_protocol': {
-                'validators': [RegexValidator(r'^[!-~ ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
                                               message='半角英数記号のみ使用可')]
             },
             'sampling_effort': {
-                'validators': [RegexValidator(r'^[!-~ ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
                                               message='半角英数記号のみ使用可')]
             },
             'lifestage': {
