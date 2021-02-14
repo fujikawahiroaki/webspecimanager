@@ -102,9 +102,9 @@ const SpecimenCreate = (props) => (
                 ]} />
                 <TextInput source="sampling_protocol" label="採集方法" helperText='半角英数記号およびアクセント記号付き文字20字以内' parse={identity} validate={validateforSamplingProtocol}/>
                 <TextInput multiline source="sampling_effort" label="採集中の作業メモ" helperText='半角英数記号およびアクセント記号付き文字100字以内 改行可' parse={identity} validate={validateforSamplingEffort}/>
-                <TextInput source="lifestage" label="ライフステージ" helperText='半角英数記号20字以内' parse={identity} validate={validateforLifeStage}/>
-                <TextInput source="establishment_means" label="生成プロセス(wildなど)" helperText='半角英数記号20字以内' parse={identity} validate={validateforLifeStage}/>
-                <TextInput source="rights" label="ライセンス" helperText='半角英数記号10字以内' parse={identity} validate={validateforRights}/>
+                <TextInput source="lifestage" label="ライフステージ" defaultValue="adult" helperText='半角英数記号20字以内' parse={identity} validate={validateforLifeStage}/>
+                <TextInput source="establishment_means" label="生成プロセス(wildなど)" defaultValue="wild" helperText='半角英数記号20字以内' parse={identity} validate={validateforLifeStage}/>
+                <TextInput source="rights" label="ライセンス" defaultValue="CC BY" helperText='半角英数記号10字以内' parse={identity} validate={validateforRights}/>
                 <TextInput multiline source="note" label="備考" helperText='200字以内 改行可' resettable validate={minLength(0), maxLength(200)}/>
             </FormTab>
             <FormTab label="分類情報">

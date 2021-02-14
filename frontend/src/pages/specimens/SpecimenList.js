@@ -129,9 +129,9 @@ const SpecimenFilter = props => (
         <TextInput source="collect_point_info__verbatim_locality" label="採集地の説明" resettable/>
         <TextInput source="collect_point_info__japanese_place_name" label="日本語地名(ラベル用)" alwaysOn resettable/>
         <TextInput source="collect_point_info__japanese_place_name_detail" label="日本語地名(詳細)" resettable/>
-        <NumberInput source="longitude" label="経度(指定座標から指定半径内にある地点を探すセット検索1/3)" alwaysOn resettable/>
-        <NumberInput source="latitude" label="緯度(指定座標から指定半径内にある地点を探すセット検索2/3)" alwaysOn resettable/>
-        <NumberInput source="radius" label="半径(指定座標から指定半径内にある地点を探すセット検索3/3)" alwaysOn resettable/>
+        <NumberInput source="longitude" label="経度(指定座標から指定半径m内にある地点を探すセット検索1/3)" alwaysOn resettable/>
+        <NumberInput source="latitude" label="緯度(指定座標から指定半径m内にある地点を探すセット検索2/3)" alwaysOn resettable/>
+        <NumberInput source="radius" label="半径(指定座標から指定半径m内にある地点を探すセット検索3/3)" alwaysOn resettable/>
         <NumberInput source="collect_point_info__longitude__range_min" label="経度の範囲(入力値以上)"  resettable/>
         <NumberInput source="collect_point_info__longitude__range_max" label="経度の範囲(入力値以下)"  resettable/>
         <NumberInput source="collect_point_info__latitude__range_min" label="緯度の範囲(入力値以上)"  resettable/>

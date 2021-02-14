@@ -101,7 +101,7 @@ const LabelList = props => (
             <DateField source="created_at" label="作成日"/>
             <EditButton label="編集"/>
             <ShowButton label="詳細"/>
-            <MakePDFButton {...props}/>
+            <MakePDFButton label="ラベルPDF生成"/>
         </Datagrid>
     </List>
 );

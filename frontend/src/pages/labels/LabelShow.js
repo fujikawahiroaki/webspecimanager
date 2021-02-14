@@ -45,9 +45,13 @@ const LabelShow = props => (
             </Tab>
             <Tab label='所属標本'>
                 <ReferenceArrayField label="所属標本" reference="specimens/own-specimens" source="label_specimens">
-                    <SingleFieldList>
-                        <ChipField source="name"/>
-                    </SingleFieldList>
+                    <Datagrid>
+                        <DateField source="date_last_modified" label="作成日"/>
+                        <TextField source="name" label="標本ID"/>
+                        <TextField source="genus" label="属"/>
+                        <TextField source="species" label="種"/>
+                        <EditButton />
+                    </Datagrid>
                 </ReferenceArrayField>
             </Tab>
         </TabbedShowLayout>
