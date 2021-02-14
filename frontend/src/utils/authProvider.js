@@ -5,7 +5,7 @@ const auth0 = new Auth0Client({
     domain: authConfig.domain,
     client_id: authConfig.clientID,
     redirect_uri: authConfig.redirectURI,
-    audience: "http://www.fujikawa-h.net",
+    audience: authConfig.audience,
     cacheLocation: "localstorage",
     scope: "openid profile read:specimens create:specimens delete:specimens" 
 });

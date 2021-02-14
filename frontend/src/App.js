@@ -50,7 +50,7 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 }
 
-const dataProvider = addUploadCapabilities(drfProvider('http://localhost:8000/api', httpClient))
+const dataProvider = addUploadCapabilities(drfProvider(process.env.REACT_APP_BACKEND_API, httpClient))
 
 const App = () => (
     <Admin locale="ja" i18nProvider={i18nProvider}
