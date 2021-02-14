@@ -127,3 +127,18 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ラベル生成テストpdf
+api/label_maker/pdf/test_alllabel.pdf
+api/label_maker/pdf/test_onelabel.pdf
+api/label_maker/pdf/test_threelabel.pdf
+api/label_maker/pdf/test_twolabel.pdf
+api/label_maker/pdf/*.pdf
+# RSA Key
+api/rsa_certificates/certificate.pem
+get_test_authtoken.py
+
+node_modules
+frontend/.eslintcache
+frontend/.eslintcache
+frontend/.eslintcache

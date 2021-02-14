@@ -1,0 +1,4 @@
+api/* -linguist-vendored
+api/* -linguist-documentation
+frontend/* -linguist-vendored
+frontend/* -linguist-documentation

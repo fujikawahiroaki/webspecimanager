@@ -1,0 +1,48 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+autopep8 = "*"
+flake8 = "*"
+
+[packages]
+django = "==3.1.3"
+pillow = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+django-cleanup = "*"
+psycopg2-binary = "*"
+django-location-field = "*"
+django-allauth = "*"
+django-rest-auth = "*"
+djangorestframework-jwt = "*"
+coreapi = "*"
+coreapi-cli = "*"
+reportlab = "*"
+python-box = "*"
+geopy = "*"
+djangorestframework-gis = "*"
+django-filter = "*"
+markdown = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
+cryptography = "*"
+python-jose = "*"
+rest-framework-auth0 = "*"
+python-dotenv = "*"
+django-environ = "*"
+drf-writable-nested = "*"
+factory-boy = "*"
+wheel = "*"
+django-countries = "*"
+django-extra-fields = "*"
+django-property-filter = "*"
+django-extensions = "*"
+pygraphviz = "*"
+django-model-utils = "*"
+drf-pdf = "*"
+
+[requires]
+python_version = "3.7"
