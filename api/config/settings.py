@@ -31,10 +31,10 @@ env.read_env(os.path.join(BASE_DIR, ('.env')))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env.bool('DEBUG')
 
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+ALLOWED_HOSTS = env.get_value('ALLOWED_HOSTS', tuple)
 
 
 # Application definition
@@ -156,7 +156,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = '/var/www/{}/static'.format(PROJECT_NAME)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/var/www/{}/media'.format(PROJECT_NAME)
 
 
 SITE_ID = 1
@@ -218,4 +218,44 @@ AUTH0 = {
     },
     'JWT_AUTH_HEADER_PREFIX': 'JWT',  # default prefix used by djangorestframework_jwt
     'AUTHORIZATION_EXTENSION': False,  # default to False
+}
+
+LOGGING = {
+    # バージョンは「1」固定
+    'version': 1,
+    # 既存のログ設定を無効化しない
+    'disable_existing_loggers': False,
+    # ログフォーマット
+    'formatters': {
+        # 本番用
+        'production': {
+            'format': '%(asctime)s [%(levelname)s] %(process)d %(thread)d '
+                      '%(pathname)s:%(lineno)d %(message)s'
+        },
+    },
+    # ハンドラ
+    'handlers': {
+        # ファイル出力用ハンドラ
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/{}/app.log'.format(PROJECT_NAME),
+            'formatter': 'production',
+        },
+    },
+    # ロガー
+    'loggers': {
+        # 自作アプリケーション全般のログを拾うロガー
+        '': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        # Django本体が出すログ全般を拾うロガー
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
 }

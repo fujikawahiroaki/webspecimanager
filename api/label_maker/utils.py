@@ -1,5 +1,6 @@
 import textwrap
 import os
+import math
 from pathlib import Path
 from collections import deque
 from reportlab.pdfgen import canvas
@@ -90,7 +91,7 @@ class LabelCanvas:
         longitude = str(label_data.longitude) + 'E '  # 経度
         coordinate = latitude + ' ' + longitude
         # 標高
-        elv = str(label_data.maximum_elevation) + 'm'
+        elv = str(math.floor(float(label_data.maximum_elevation))) + 'm'
         coordinate_and_elv = coordinate + elv
         # 日付と採集者
         year = str(label_data.year)
