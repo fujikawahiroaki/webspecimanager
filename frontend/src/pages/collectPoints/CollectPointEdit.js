@@ -13,6 +13,7 @@ import {
     BooleanInput,
     ImageInput,
     ImageField,
+    AutocompleteArrayInput,
     AutocompleteInput,
     ReferenceArrayInput,
     SelectArrayInput,
@@ -80,9 +81,13 @@ const CollectPointEdit = (props) => (
                 <NumberInput source="minimum_depth" label="水面からの最浅の距離(m)" resettable/>
                 <NumberInput source="maximum_depth" label="水面からの最深の距離(m)" resettable/>
             </FormTab>
-            <FormTab label="管理情報">
-                <ReferenceArrayInput source="tour" reference="tours/own-tours" label="所属する採集行">
-                    <SelectArrayInput optionText="title" />
+            <FormTab label="採集行情報">
+                <ReferenceArrayInput
+                    source="tour"
+                    label="登録された採集行"
+                    reference="tours/own-tours"
+                    filterToQuery={searchText => ({ q: searchText })}>
+                    <AutocompleteArrayInput optionText="title" helperText="採集行のタイトルで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceArrayInput>
             </FormTab>
             <FormTab label="画像">
