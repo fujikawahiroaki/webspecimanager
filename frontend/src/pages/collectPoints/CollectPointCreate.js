@@ -68,7 +68,7 @@ const CollectPointCreate = (props) => (
                 <TextInput source="municipality" label="市名以下の詳細地名" helperText="半角英数記号およびアクセント記号付き文字50字以内 大地名から順にカンマ区切り" resettable validate={validateASCIIforMunicipality}/>
                 <TextInput multiple source="verbatim_locality" label="採集地の説明" helperText="200字以内 改行可" resettable validate={[minLength(0), maxLength(200)]}/>
                 <TextInput source="japanese_place_name" label="日本語地名(ラベル用)" helperText="14字以内" resettable validate={[minLength(0), maxLength(14)]}/>
-                <TextInput source="japanese_place_name_detail" label="日本語地名(詳細)" helperText="50字以内" resettable validate={[minLength(0), maxLength(50)]}/>
+                <TextInput source="japanese_place_name_detail" label="日本語地名(詳細) 標本との紐付けの際の検索に利用されるので、検索しやすい内容にしてください" helperText="50字以内" resettable validate={[minLength(0), maxLength(50)]}/>
             </FormTab>
             <FormTab label="緯度・経度・標高・水深">
                 <NumberInput source="location.longitude" label="経度" helperText="半角数字 小数点以下6桁まで可" resettable/>

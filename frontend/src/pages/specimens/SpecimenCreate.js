@@ -129,7 +129,7 @@ const SpecimenCreate = (props) => (
                     label="登録された採集地点"
                     reference="collect-points/own-collect-points"
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="japanese_place_name" helperText="日本語地名で検索"/>
+                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索"/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集行">
