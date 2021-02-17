@@ -66,7 +66,7 @@ const SpecimenEdit = (props) => (
                     label="登録されたコレクション設定情報"
                     reference="collection-settings/own-collection-settings"
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="institution_code" helperText="機関コードで検索"/>
+                    <AutocompleteInput optionText="institution_code" helperText="機関コードで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
                 <NumberInput source="collection_code" label="標本ID" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(999999999999999999)]}/>
                 <DateInput source="date_identified" label="同定日"/>
@@ -106,14 +106,14 @@ const SpecimenEdit = (props) => (
                     label="登録されたカスタム分類情報"
                     reference="taxa/own-taxa"
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 の組み合わせで検索"/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 の組み合わせで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
                 <ReferenceInput
                     source="default_taxon_info"
                     label="登録されたデフォルト分類情報"
                     reference="taxa/shared-taxa"
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 の組み合わせで検索"/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 の組み合わせで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集地点">
@@ -122,7 +122,7 @@ const SpecimenEdit = (props) => (
                     label="登録された採集地点"
                     reference="collect-points/own-collect-points"
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索"/>
+                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集行">
@@ -131,7 +131,7 @@ const SpecimenEdit = (props) => (
                     label="登録された採集行"
                     reference="tours/own-tours"
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="title" helperText="採集行のタイトルで検索"/>
+                    <AutocompleteInput optionText="title" helperText="採集行のタイトルで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="画像">
