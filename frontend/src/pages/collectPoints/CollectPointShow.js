@@ -48,6 +48,11 @@ const CollectPointShow = props => (
                 <NumberField source="minimum_depth" label="水面からの最浅の距離"/>
                 <NumberField source="maximum_depth" label="水面からの最深の距離"/>
             </Tab>
+            <Tab label='採集行'>
+                <ReferenceField label="登録された採集行" source="tour" reference="tours/own-tours" link="show">
+                    <TextField source="title"/>
+                </ReferenceField>
+            </Tab>
             <Tab label="管理情報">
                 <DateField source="created_at" label="作成日"/>
             </Tab>
