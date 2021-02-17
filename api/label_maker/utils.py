@@ -88,10 +88,17 @@ class LabelCanvas:
             place_name += '\n'
         # GPS座標 dddd形式
         latitude = str(label_data.latitude) + 'N '  # 緯度
+        if label_data.latitude == '0.0':
+            latitude = 'N:? '
         longitude = str(label_data.longitude) + 'E '  # 経度
+        if label_data.longitude == '0.0':
+            longitude = 'E:? '
         coordinate = latitude + ' ' + longitude
         # 標高
-        elv = str(math.floor(float(label_data.maximum_elevation))) + 'm'
+        if label_data.maximum_elevation == '':
+            elv = '?'
+        else:
+            elv = str(math.floor(float(label_data.maximum_elevation))) + 'm'
         coordinate_and_elv = coordinate + elv
         # 日付と採集者
         year = str(label_data.year)

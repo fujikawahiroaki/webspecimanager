@@ -49,7 +49,7 @@ const CollectPointShow = props => (
                 <NumberField source="maximum_depth" label="水面からの最深の距離"/>
             </Tab>
             <Tab label='採集行'>
-                <ReferenceField label="登録された採集行" source="tour" reference="tours/own-tours" link="show">
+                <ReferenceField label="登録された採集行" source="tour" reference="tours/own-tours" link="show"  sort={{ field: 'created_at', order: 'DESC' }} perPage={100}>
                     <TextField source="title"/>
                 </ReferenceField>
             </Tab>
