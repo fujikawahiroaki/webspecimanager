@@ -54,7 +54,7 @@ const CustomTaxonCreate = (props) => (
                 <TextInput source="subspecies" label="亜種" helperText='全て小文字の半角英字30字以内' resettable validate={validateLowerCase}/>
                 <TextInput source="scientific_name_author" label="記載者" helperText='50字以内' resettable validate={[minLength(0), maxLength(50)]}/>
                 <NumberInput source="name_publishedin_year" label="記載年" helperText='半角数字4桁(不明な場合0を入力してください)' validate={[minValue(0), maxValue(9999)]}/>
-                <TextInput source="japanese_name" label="和名" helperText='30字以内' resettable validate={[minLength(0), maxLength(30)]}/>
+                <TextInput source="japanese_name" label="和名" helperText='30字以内 標本との紐付け検索時にも利用されるので、上位分類のみの入力の場合はここに区別に必要な情報を入力してください' resettable validate={[minLength(0), maxLength(30)]}/>
             </FormTab>
             <FormTab label="上位分類">
                 <TextInput source="kingdom" label="界" defaultValue="Animalia" helperText='先頭のみ大文字の半角英字30字以内' resettable validate={validateCamelCase}/>

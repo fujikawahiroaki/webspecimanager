@@ -109,8 +109,9 @@ const DefaultTaxonFilter = props => (
 const DefaultTaxonList = props => (
     <List {...props} title="デフォルト分類情報" actions={<DefaultTaxonListActions/>} filters={<DefaultTaxonFilter />} perPage={20}
         sort={{ field: 'genus', order: 'DESC' }} bulkActionButtons={false}>
-        <CustomizableDatagrid defaultColumns={['genus', 'subgenus', 'species', 'subspecies', 'scientific_name_author',
+        <CustomizableDatagrid defaultColumns={['family', 'genus', 'species', 'subspecies', 'scientific_name_author',
                                                'name_publishedin_year', 'japanese_name']}>
+            <TextField source="family" label="科" />
             <TextField source="genus" label="属"/>
             <TextField source="subgenus" label="亜属"/>
             <TextField source="species" label="種"/>
@@ -123,7 +124,6 @@ const DefaultTaxonList = props => (
             <TextField source="class_name" label="綱" />
             <TextField source="order" label="目" />
             <TextField source="suborder" label="亜目" />
-            <TextField source="family" label="科" />
             <TextField source="subfamily" label="亜科" />
             <TextField source="tribe" label="族" />
             <TextField source="subtribe" label="亜族" />
