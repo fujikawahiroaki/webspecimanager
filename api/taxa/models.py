@@ -109,7 +109,7 @@ class Taxon(models.Model):
 
     @property
     def scientific_name(self):
-        return self.genus + ' ' + self.species
+        return self.genus + ' ' + self.species + self.japanese_name
 
     def __str__(self):
         if self.genus == '':
