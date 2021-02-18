@@ -106,14 +106,14 @@ const SpecimenEdit = (props) => (
                     label="登録されたカスタム分類情報"
                     reference="taxa/own-taxa"
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 の組み合わせで検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
                 <ReferenceInput
                     source="default_taxon_info"
                     label="登録されたデフォルト分類情報"
                     reference="taxa/shared-taxa"
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 の組み合わせで検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集地点">
