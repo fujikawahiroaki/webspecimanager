@@ -51,6 +51,7 @@ const TourCreate = (props) => (
                 <TextInput source="title" label="タイトル" parse={identity}/>
                 <DateInput source="start_date" label="開始日"/>
                 <DateInput source="end_date" label="終了日"/>
+                <TextInput multiline source="note" label="備考" helperText='200字以内 改行可' parse={identity} resettable validate={minLength(0), maxLength(200)}/>
             </FormTab>
             <FormTab label="画像">
                 <ImageInput format={formatImage} source="image1" label="画像" >
