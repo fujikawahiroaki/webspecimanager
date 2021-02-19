@@ -32,6 +32,9 @@ const TourCreateActions = ({ basePath, data}) => (
 );
 
 
+const identity = value => (value)
+
+
 function formatImage(value) {
     if (!value ||  typeof value === "string") {
      return { url: value };
@@ -45,7 +48,7 @@ const TourCreate = (props) => (
     <Create actions={<TourCreateActions/>} {...props} title="採集行">
         <TabbedForm>
             <FormTab label="基本情報">
-                <TextInput source="title" label="タイトル"/>
+                <TextInput source="title" label="タイトル" parse={identity}/>
                 <DateInput source="start_date" label="開始日"/>
                 <DateInput source="end_date" label="終了日"/>
             </FormTab>

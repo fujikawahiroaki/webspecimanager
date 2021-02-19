@@ -30,6 +30,9 @@ import {
 } from 'react-admin';
 
 
+const identity = value => (value)
+
+
 const LabelEditActions = ({ basePath, data}) => (
     <TopToolbar>
         <ShowButton basePath={basePath} record={data}/>
@@ -42,7 +45,7 @@ const LabelEdit = (props) => (
     <Edit actions={<LabelEditActions/>} {...props} title="ラベル">
         <TabbedForm>
             <FormTab label="基本情報">
-                <TextInput source="name" label="ラベル名"/>
+                <TextInput source="name" label="ラベル名" parse={identity}/>
                 <BooleanInput source="data_label_flag" label="データラベル作成の可否"/>
                 <BooleanInput source="coll_label_flag" label="コレクションラベル作成の可否"/>
                 <BooleanInput source="det_label_flag" label="同定ラベル作成の可否"/>
