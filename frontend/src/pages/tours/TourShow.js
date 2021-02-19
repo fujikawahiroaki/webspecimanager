@@ -32,6 +32,7 @@ const TourShow = props => (
                 <DateField source="start_date" label="開始日"/>
                 <DateField source="end_date" label="終了日"/>
                 <DateField source="created_at" label="作成日"/>
+                <TextField multiline source="note" label="備考" />
             </Tab>
             <Tab label='画像'>
                 <ImageField source="image1" label="画像" />
