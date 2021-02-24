@@ -91,7 +91,7 @@ class Taxon(models.Model):
     # 分布
     distribution = models.CharField(verbose_name='分布',
                                     default='',
-                                    max_length=100, blank=True)
+                                    max_length=200, blank=True)
     # 備考
     note = models.TextField(verbose_name='備考', max_length=200,
                             default='',
