@@ -6,7 +6,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from .models import CustomTaxon, DefaultTaxon
 from .serializers import CustomTaxonSerializer, DefaultTaxonSerializer
-
+from my_utils.post_many import multi_create
 
 class DefaultTaxonFilter(filters.FilterSet):
     """
@@ -102,6 +102,10 @@ class WritableDefaultTaxonViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
+
+    @multi_create(serializer_class=DefaultTaxonSerializer)
+    def create(self, request):
+        pass
 
 
 class ReadOnlyDefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
