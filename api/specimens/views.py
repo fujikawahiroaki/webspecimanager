@@ -6,10 +6,15 @@ from django.contrib.gis.measure import Distance
 from django.contrib.gis.geos import Point
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from .models import Specimen
 from .serializers import SpecimenSerializer
 from collection_settings.models import CollectionSetting
+
+
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size_query_param = 'page_size'
 
 
 class SpecimenFilter(PropertyFilterSet):
@@ -113,6 +118,7 @@ class SpecimenViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = SpecimenFilter
+    pagination_class = CustomPageNumberPagination
 
     def get_queryset(self):
         user = self.request.user

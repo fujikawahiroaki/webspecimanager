@@ -86,6 +86,8 @@ const CollectPointCreate = (props) => (
                     source="tour"
                     label="登録された採集行"
                     reference="tours/own-tours"
+                    perPage={15000}
+                    suggestionLimit={100}
                     filterToQuery={searchText => ({ q: searchText })}>
                     <AutocompleteArrayInput optionText="title" helperText="採集行のタイトルで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceArrayInput>

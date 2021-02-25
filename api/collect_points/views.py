@@ -3,12 +3,17 @@ from django_property_filter import PropertyFilterSet, PropertyRangeFilter
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from django.contrib.gis.db import models
 from django.contrib.gis.measure import Distance
 from django.contrib.gis.geos import Point
 from .models import CollectPoint
 from .serializers import CollectPointSerializer
+
+
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size_query_param = 'page_size'
 
 
 class CollectPointFilter(PropertyFilterSet):
@@ -67,6 +72,7 @@ class CollectPointViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = CollectPointFilter
+    pagination_class = CustomPageNumberPagination
 
     def get_queryset(self):
         user = self.request.user

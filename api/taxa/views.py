@@ -3,10 +3,15 @@ from django.contrib.gis.db import models
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from .models import CustomTaxon, DefaultTaxon
 from .serializers import CustomTaxonSerializer, DefaultTaxonSerializer
-from my_utils.post_many import multi_create
+
+
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size_query_param = 'page_size'
+
 
 class DefaultTaxonFilter(filters.FilterSet):
     """
@@ -96,16 +101,13 @@ class WritableDefaultTaxonViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = DefaultTaxonFilter
+    pagination_class = CustomPageNumberPagination
 
     def get_queryset(self):
         return DefaultTaxon.objects.all()
 
     def perform_create(self, serializer):
         serializer.save()
-
-    @multi_create(serializer_class=DefaultTaxonSerializer)
-    def create(self, request):
-        pass
 
 
 class ReadOnlyDefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
@@ -118,6 +120,7 @@ class ReadOnlyDefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = DefaultTaxonFilter
+    pagination_class = CustomPageNumberPagination
     ordering_fields = [
             'kingdom', 'phylum', 'class_name', 'order', 'suborder',
             'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
@@ -139,6 +142,7 @@ class CustomTaxonViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = CustomTaxonFilter
+    pagination_class = CustomPageNumberPagination
     ordering_fields = [
             'kingdom', 'phylum', 'class_name', 'order', 'suborder',
             'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',

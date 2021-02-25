@@ -68,6 +68,8 @@ const SpecimenCreate = (props) => (
                     source="collection_settings_info"
                     label="登録されたコレクション設定情報"
                     reference="collection-settings/own-collection-settings"
+                    perPage={15000}
+                    suggestionLimit={100}
                     filterToQuery={searchText => ({ q: searchText })}>
                     <AutocompleteInput optionText="institution_code" helperText="機関コードで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
@@ -112,15 +114,21 @@ const SpecimenCreate = (props) => (
                     source="custom_taxon_info"
                     label="登録されたカスタム分類情報"
                     reference="taxa/own-taxa"
+                    perPage={15000}
+                    suggestionLimit={100}
+                    shouldRenderSuggestions={(val) => { return val.trim().length > 5 }}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索  5文字以上入力してから検索が開始されます" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
                 <ReferenceInput
                     source="default_taxon_info"
                     label="登録されたデフォルト分類情報"
                     reference="taxa/shared-taxa"
+                    perPage={15000}
+                    suggestionLimit={100}
+                    shouldRenderSuggestions={(val) => { return val.trim().length > 5 }}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索  5文字以上入力してから検索が開始されます  データ量が非常に多いため表示や検索に時間がかかります  画面右上の読み込みアイコンが回転を停止するまでしばらくお待ちください" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集地点">
@@ -128,8 +136,11 @@ const SpecimenCreate = (props) => (
                     source="collect_point_info"
                     label="登録された採集地点"
                     reference="collect-points/own-collect-points"
+                    perPage={15000}
+                    suggestionLimit={100}
+                    shouldRenderSuggestions={(val) => { return val.trim().length > 5 }}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索  5文字以上入力してから検索が開始されます" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集行">
@@ -137,6 +148,8 @@ const SpecimenCreate = (props) => (
                     source="tour"
                     label="登録された採集行"
                     reference="tours/own-tours"
+                    perPage={15000}
+                    suggestionLimit={100}
                     filterToQuery={searchText => ({ q: searchText })}>
                     <AutocompleteInput optionText="title" helperText="採集行のタイトルで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>

@@ -91,9 +91,9 @@ class Taxon(models.Model):
     # 分布
     distribution = models.CharField(verbose_name='分布',
                                     default='',
-                                    max_length=200, blank=True)
+                                    max_length=500, blank=True)
     # 備考
-    note = models.TextField(verbose_name='備考', max_length=200,
+    note = models.TextField(verbose_name='備考', max_length=500,
                             default='',
                             blank=True)
     image1 = models.ImageField(upload_to=user_portfolio_directory_path,
