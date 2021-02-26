@@ -70,7 +70,7 @@ const SpecimenEdit = (props) => (
                     filterToQuery={searchText => ({ q: searchText })}>
                     <AutocompleteInput optionText="institution_code" helperText="機関コードで検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
-                <NumberInput source="collection_code" label="標本ID" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(999999999999999999)]}/>
+                <NumberInput source="collection_code" label="標本ID" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} allowEmpty={true} validate={[minValue(0), maxValue(999999999999999999)]}/>
                 <DateInput source="date_identified" label="同定日"/>
                 <TextInput source="identified_by" label="同定者" helperText='半角英数記号およびアクセント記号付き文字19字以内' parse={identity} validate={validateforIdentifiedBy}/>
                 <NumberInput source="year" label="採集年" helperText='半角数字4桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(9999)]}/>
@@ -109,9 +109,8 @@ const SpecimenEdit = (props) => (
                     reference="taxa/own-taxa"
                     perPage={15000}
                     suggestionLimit={100}
-                    shouldRenderSuggestions={(val) => { return val.trim().length > 5 }}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索  5文字以上入力してから検索が開始されます" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
                 <ReferenceInput
                     source="default_taxon_info"
@@ -131,9 +130,8 @@ const SpecimenEdit = (props) => (
                     reference="collect-points/own-collect-points"
                     perPage={15000}
                     suggestionLimit={100}
-                    shouldRenderSuggestions={(val) => { return val.trim().length > 5 }}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索    5文字以上入力してから検索が開始されます" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集行">
