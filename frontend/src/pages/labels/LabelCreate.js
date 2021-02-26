@@ -42,10 +42,10 @@ const LabelCreate = (props) => (
         <TabbedForm>
             <FormTab label="基本情報">
                 <TextInput source="name" label="ラベル名" parse={identity}/>
-                <BooleanInput source="data_label_flag" label="データラベル作成の可否"/>
-                <BooleanInput source="coll_label_flag" label="コレクションラベル作成の可否"/>
-                <BooleanInput source="det_label_flag" label="同定ラベル作成の可否"/>
-                <BooleanInput source="note_label_flag" label="備考ラベル作成の可否"/>
+                <BooleanInput source="data_label_flag" label="データラベル作成の可否" initialValue={false}/>
+                <BooleanInput source="coll_label_flag" label="コレクションラベル作成の可否" initialValue={false}/>
+                <BooleanInput source="det_label_flag" label="同定ラベル作成の可否" initialValue={false}/>
+                <BooleanInput source="note_label_flag" label="備考ラベル作成の可否" initialValue={false}/>
             </FormTab>
             <FormTab label="所属標本">
                 <ReferenceArrayInput source="label_specimens" label="所属標本 直近に登録した標本200件のリストから選択" reference="specimens/own-specimens" sort={{ field: 'date_last_modified', order: 'DESC' }} perPage={200}>
