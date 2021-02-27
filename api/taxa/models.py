@@ -39,7 +39,7 @@ class Taxon(models.Model):
                              max_length=30, blank=True)
     # 亜目(オリジナル)
     suborder = models.CharField(verbose_name='亜目',
-                                default='Unidentified',
+                                default='',
                                 max_length=30, blank=True)
     # 科
     family = models.CharField(verbose_name='科',
@@ -47,15 +47,15 @@ class Taxon(models.Model):
                               max_length=30, blank=True)
     # 亜科(オリジナル)
     subfamily = models.CharField(verbose_name='亜科',
-                                 default='Unidentified',
+                                 default='',
                                  max_length=30, blank=True)
     # 族(オリジナル)
     tribe = models.CharField(verbose_name='族',
-                             default='Unidentified',
+                             default='',
                              max_length=30, blank=True)
     # 亜族(オリジナル)
     subtribe = models.CharField(verbose_name='亜族',
-                                default='Unidentified',
+                                default='',
                                 max_length=30, blank=True)
     # 属
     genus = models.CharField(verbose_name='属',
@@ -63,7 +63,7 @@ class Taxon(models.Model):
                              max_length=30, blank=True)
     # 亜属
     subgenus = models.CharField(verbose_name='亜属',
-                                default='Unidentified',
+                                default='',
                                 max_length=30, blank=True)
     # 種
     species = models.CharField(verbose_name='種',
