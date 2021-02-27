@@ -108,7 +108,7 @@ const DefaultTaxonFilter = props => (
 
 const DefaultTaxonList = props => (
     <List {...props} title="デフォルト分類情報" actions={<DefaultTaxonListActions/>} filters={<DefaultTaxonFilter />} perPage={20}
-        sort={{ field: 'genus', order: 'DESC' }} bulkActionButtons={false}>
+        sort={{ field: 'family', order: 'DESC' }} bulkActionButtons={false}>
         <CustomizableDatagrid defaultColumns={['family', 'genus', 'species', 'subspecies', 'scientific_name_author',
                                                'name_publishedin_year', 'japanese_name']}>
             <TextField source="family" label="科" />

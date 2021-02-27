@@ -110,7 +110,7 @@ const CustomTaxonFilter = props => (
 
 const CustomTaxonList = props => (
     <List {...props} title="カスタム分類情報" actions={<CustomTaxonListActions/>} filters={<CustomTaxonFilter />} perPage={20}
-        sort={{ field: 'genus', order: 'DESC' }}>
+        sort={{ field: 'family', order: 'DESC' }}>
         <CustomizableDatagrid defaultColumns={['family', 'genus', 'species', 'subspecies', 'scientific_name_author',
                                                'name_publishedin_year', 'japanese_name']}>
             <TextField source="family" label="科" />
