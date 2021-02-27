@@ -83,10 +83,10 @@ const DefaultTaxonListActions = (props) => {
 
 const DefaultTaxonFilter = props => (
     <Filter {...props}>
-        <TextInput source="genus" label="属" alwaysOn />
-        <TextInput source="species" label="種" alwaysOn/>
-        <TextInput source="subspecies" label="亜種" alwaysOn/>
-        <TextInput source="japanese_name" label="和名" alwaysOn/>
+        <TextInput source="genus" label="属" alwaysOn resettable/>
+        <TextInput source="species" label="種" alwaysOn resettable/>
+        <TextInput source="subspecies" label="亜種" alwaysOn resettable/>
+        <TextInput source="japanese_name" label="和名" alwaysOn resettable/>
         <TextInput source="subgenus" label="亜属" resettable/>
         <TextInput source="scientific_name_author" label="記載者" resettable/>
         <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable/>
