@@ -89,7 +89,7 @@ const CollectPointCreate = (props) => (
                     perPage={15000}
                     suggestionLimit={100}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteArrayInput optionText="title" helperText="採集行のタイトルで検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteArrayInput optionText="title" helperText="採集行のタイトルで検索  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true}/>
                 </ReferenceArrayInput>
             </FormTab>
             <FormTab label="画像">

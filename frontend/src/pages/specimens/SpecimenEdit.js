@@ -68,7 +68,7 @@ const SpecimenEdit = (props) => (
                     perPage={15000}
                     suggestionLimit={100}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="institution_code" helperText="機関コードで検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="institution_code" helperText="機関コードで検索  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
                 <NumberInput source="collection_code" label="標本ID" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} allowEmpty={true} validate={[minValue(0), maxValue(999999999999999999)]}/>
                 <DateInput source="date_identified" label="同定日"/>
@@ -110,7 +110,7 @@ const SpecimenEdit = (props) => (
                     perPage={15000}
                     suggestionLimit={100}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
                 <ReferenceInput
                     source="default_taxon_info"
@@ -120,7 +120,7 @@ const SpecimenEdit = (props) => (
                     suggestionLimit={100}
                     shouldRenderSuggestions={(val) => { return val.trim().length >= 5 }}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索    5文字以上入力してから検索が開始されます  データが非常に多いため表示や検索に時間がかかります  画面右上の読み込みアイコンが回転を停止するまでしばらくお待ちください" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索    5文字以上入力してから検索が開始されます  データが非常に多いため表示や検索に時間がかかります  画面右上の読み込みアイコンが回転を停止するまでしばらくお待ちください  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集地点">
@@ -131,7 +131,7 @@ const SpecimenEdit = (props) => (
                     perPage={15000}
                     suggestionLimit={100}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="japanese_place_name_detail" helperText="日本語地名(詳細)で検索  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="採集行">
@@ -142,7 +142,7 @@ const SpecimenEdit = (props) => (
                     perPage={15000}
                     suggestionLimit={100}
                     filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="title" helperText="採集行のタイトルで検索" resettable={true} allowEmpty={true}/>
+                    <AutocompleteInput optionText="title" helperText="採集行のタイトルで検索  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
             </FormTab>
             <FormTab label="画像">
