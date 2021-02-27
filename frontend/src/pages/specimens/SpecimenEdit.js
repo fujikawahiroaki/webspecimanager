@@ -118,7 +118,7 @@ const SpecimenEdit = (props) => (
                     reference="taxa/shared-taxa"
                     perPage={15000}
                     suggestionLimit={100}
-                    shouldRenderSuggestions={(val) => { return val.trim().length > 5 }}
+                    shouldRenderSuggestions={(val) => { return val.trim().length >= 5 }}
                     filterToQuery={searchText => ({ q: searchText })}>
                     <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索    5文字以上入力してから検索が開始されます  データが非常に多いため表示や検索に時間がかかります  画面右上の読み込みアイコンが回転を停止するまでしばらくお待ちください" resettable={true} allowEmpty={true}/>
                 </ReferenceInput>
