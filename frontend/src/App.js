@@ -46,7 +46,6 @@ const httpClient = (url, options = {}) => {
     options.user = {
         authenticated: true
     };
-    console.log(options)
     return fetchUtils.fetchJson(url, options);
 }
 
