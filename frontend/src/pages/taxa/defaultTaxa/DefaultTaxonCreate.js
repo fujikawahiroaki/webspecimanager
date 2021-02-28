@@ -33,7 +33,7 @@ const DefaultTaxonCreateActions = ({ basePath, data}) => (
 );
 
 const validateCamelCase = [regex(/^[A-Z][a-z]+$/, '先頭のみ大文字の半角英字にしてください'), minLength(0), maxLength(30)]
-const validateLowerCase = [regex(/^[a-z]+$/, '全て小文字の半角英字にしてください'), minLength(0), maxLength(30)]
+const validateLowerCase = [regex(/^[a-z-]+$/, '全て小文字の半角英字にしてください 記号はハイフンのみ使用可能'), minLength(0), maxLength(30)]
 
 
 const identity = value => (value)
@@ -64,8 +64,8 @@ const DefaultTaxonCreate = (props) => {
             <FormTab label="下位分類・記載者(年)・和名">
                 <TextInput source="genus" label="属" helperText='先頭のみ大文字の半角英字30字以内' parse={identity} resettable validate={validateCamelCase}/>
                 <TextInput source="subgenus" label="亜属" helperText='先頭のみ大文字の半角英字30字以内' parse={identity} resettable validate={validateCamelCase}/>
-                <TextInput source="species" label="種" helperText='全て小文字の半角英字30字以内' parse={identity} resettable validate={validateLowerCase}/>
-                <TextInput source="subspecies" label="亜種" helperText='全て小文字の半角英字30字以内' parse={identity} resettable validate={validateLowerCase}/>
+                <TextInput source="species" label="種" helperText='全て小文字の半角英字30字以内 記号はハイフンのみ使用可能' parse={identity} resettable validate={validateLowerCase}/>
+                <TextInput source="subspecies" label="亜種" helperText='全て小文字の半角英字30字以内 記号はハイフンのみ使用可能' parse={identity} resettable validate={validateLowerCase}/>
                 <TextInput source="scientific_name_author" label="記載者" helperText='50字以内' parse={identity} resettable validate={[minLength(0), maxLength(50)]}/>
                 <NumberInput source="name_publishedin_year" label="記載年" helperText='半角数字4桁(不明な場合0を入力してください)' validate={[minValue(0), maxValue(9999)]}/>
                 <TextInput source="japanese_name" label="和名" helperText='30字以内' parse={identity} resettable validate={[minLength(0), maxLength(30)]}/>
