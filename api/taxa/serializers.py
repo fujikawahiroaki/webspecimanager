@@ -135,11 +135,11 @@ class CustomTaxonSerializer(serializers.ModelSerializer):
                                               message='先頭のみ大文字、以降小文字の半角英字1単語のみ使用可')]
             },
             'species': {
-                'validators': [RegexValidator(r'^[a-z]+$',
+                'validators': [RegexValidator(r'^[a-z-]+$',
                                               message='小文字の半角英字1単語のみ使用可')]
             },
             'subspecies': {
-                'validators': [RegexValidator(r'^[a-z]+$',
+                'validators': [RegexValidator(r'^[a-z-]+$',
                                               message='小文字の半角英字1単語のみ使用可')]
             },
         }
