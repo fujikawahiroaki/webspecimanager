@@ -1,5 +1,7 @@
 from django_filters import rest_framework as filters
-from django_property_filter import PropertyFilterSet, PropertyRangeFilter
+from django_property_filter import (PropertyFilterSet,
+                                    PropertyRangeFilter,
+                                    PropertyCharFilter)
 from rest_framework import viewsets
 from django.contrib.gis.db import models
 from django.contrib.gis.measure import Distance
@@ -17,11 +19,44 @@ class CustomPageNumberPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
 
 
+class SpecimenNameFilter(PropertyFilterSet):
+    name = PropertyCharFilter(field_name='name', lookup_expr='icontains')
+
+    class Meta:
+        model = Specimen
+        fields = ['name']
+
+
 class SpecimenFilter(PropertyFilterSet):
     """
     標本情報のフィルタセット
     """
     date_identified = filters.DateTimeFromToRangeFilter()
+    kingdom = PropertyCharFilter(field_name='kingdom', lookup_expr='icontains')
+    phylum = PropertyCharFilter(field_name='phylum', lookup_expr='icontains')
+    class_name = PropertyCharFilter(field_name='class_name',
+                                    lookup_expr='icontains')
+    order = PropertyCharFilter(field_name='order', lookup_expr='icontains')
+    suborder = PropertyCharFilter(field_name='suborder',
+                                  lookup_expr='icontains')
+    family = PropertyCharFilter(field_name='family', lookup_expr='icontains')
+    subfamily = PropertyCharFilter(field_name='subfamily',
+                                   lookup_expr='icontains')
+    tribe = PropertyCharFilter(field_name='tribe', lookup_expr='icontains')
+    subtribe = PropertyCharFilter(field_name='subtribe',
+                                  lookup_expr='icontains')
+    genus = PropertyCharFilter(field_name='genus', lookup_expr='icontains')
+    subgenus = PropertyCharFilter(field_name='subgenus',
+                                  lookup_expr='icontains')
+    species = PropertyCharFilter(field_name='species', lookup_expr='icontains')
+    subspecies = PropertyCharFilter(field_name='subspecies',
+                                    lookup_expr='icontains')
+    scientific_name_author = PropertyCharFilter(field_name='scientific_name_author',
+                                                lookup_expr='icontains')
+    name_publishedin_year = PropertyRangeFilter(field_name='name_publishedin_year',
+                                                lookup_expr='range')
+    japanese_name = PropertyCharFilter(field_name='japanese_name',
+                                       lookup_expr='icontains')
 
     class Meta:
         model = Specimen
@@ -75,11 +110,15 @@ class SpecimenFilter(PropertyFilterSet):
                   'collecter', 'year', 'month', 'day', 'sex',
                   'preparation_type', 'disposition', 'sampling_protocol',
                   'sampling_effort', 'lifestage', 'establishment_means',
-                  'rights', 'note'
+                  'rights', 'note', 'kingdom', 'phylum', 'class_name',
+                  'order', 'suborder', 'family', 'subfamily', 'tribe',
+                  'subtribe', 'genus', 'subgenus', 'species', 'subspecies',
+                  'scientific_name_author', 'name_publishedin_year',
+                  'japanese_name'
                   ]
         property_fields = [
             ('collect_point_info__longitude', PropertyRangeFilter, ['range']),
-            ('collect_point_info__latitude', PropertyRangeFilter, ['range'])
+            ('collect_point_info__latitude', PropertyRangeFilter, ['range']),
         ]
         filter_overrides = {
             models.CharField: {

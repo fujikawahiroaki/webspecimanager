@@ -130,8 +130,8 @@ const CollectPointList = props => (
             <TextField source="verbatim_locality" label="採集地の説明"/>
             <TextField source="japanese_place_name" label="日本語地名(ラベル用)"/>
             <TextField source="japanese_place_name_detail" label="日本語地名(詳細)"/>
-            <NumberField source="longitude" label="経度"/>
-            <NumberField source="latitude" label="緯度"/>
+            <NumberField source="longitude" label="経度" sortable={false}/>
+            <NumberField source="latitude" label="緯度" sortable={false}/>
             <NumberField source="coordinate_precision" label="採集地の範囲"/>
             <NumberField source="minimum_elevation" label="最低標高"/>
             <NumberField source="maximum_elevation" label="最高標高"/>
