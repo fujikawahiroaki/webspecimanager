@@ -85,40 +85,23 @@ const SpecimenListActions = (props) => {
 
 const SpecimenFilter = props => (
     <Filter {...props}>
-        <TextInput source="default_taxon_info__genus" label="属(デフォルト分類情報)" alwaysOn resettable/>
-        <TextInput source="default_taxon_info__species" label="種(デフォルト分類情報)" alwaysOn resettable/>
-        <TextInput source="default_taxon_info__subspecies" label="亜種(デフォルト分類情報)" alwaysOn resettable/>
-        <TextInput source="default_taxon_info__japanese_name" label="和名(デフォルト分類情報)" alwaysOn resettable/>
-        <TextInput source="default_taxon_info__subgenus" label="亜属(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__scientific_name_author" label="記載者(デフォルト分類情報)" resettable/>
-        <NumberInput source="default_taxon_info__name_publishedin_year_min" label="記載年の範囲(入力年以降)(デフォルト分類情報)" resettable/>
-        <NumberInput source="default_taxon_info__name_publishedin_year_max" label="記載年の範囲(入力年以前)(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__kingdom" label="界(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__phylum" label="門(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__class_name" label="綱(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__order" label="目(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__suborder" label="亜目(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__family" label="科(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__subfamily" label="亜科(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__tribe" label="族(デフォルト分類情報)" resettable/>
-        <TextInput source="default_taxon_info__subtribe" label="亜族(デフォルト分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__genus" label="属(カスタム分類情報)" alwaysOn resettable/>
-        <TextInput source="custom_taxon_info__species" label="種(カスタム分類情報)" alwaysOn resettable/>
-        <TextInput source="custom_taxon_info__subspecies" label="亜種(カスタム分類情報)" alwaysOn resettable/>
-        <TextInput source="custom_taxon_info__japanese_name" label="和名(カスタム分類情報)" alwaysOn resettable/>
-        <TextInput source="custom_taxon_info__subgenus" label="亜属(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__scientific_name_author" label="記載者(カスタム分類情報)" resettable/>
-        <NumberInput source="custom_taxon_info__name_publishedin_year_min" label="記載年の範囲(入力年以降)(カスタム分類情報)" resettable/>
-        <NumberInput source="custom_taxon_info__name_publishedin_year_max" label="記載年の範囲(入力年以前)(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__kingdom" label="界(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__phylum" label="門(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__class_name" label="綱(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__order" label="目(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__suborder" label="亜目(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__family" label="科(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__subfamily" label="亜科(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__tribe" label="族(カスタム分類情報)" resettable/>
-        <TextInput source="custom_taxon_info__subtribe" label="亜族(カスタム分類情報)" resettable/>
+        <TextInput source="genus" label="属" alwaysOn resettable/>
+        <TextInput source="species" label="種" alwaysOn resettable/>
+        <TextInput source="subspecies" label="亜種" alwaysOn resettable/>
+        <TextInput source="japanese_name" label="和名" alwaysOn resettable/>
+        <TextInput source="subgenus" label="亜属" resettable/>
+        <TextInput source="scientific_name_author" label="記載者" resettable/>
+        <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable/>
+        <NumberInput source="name_publishedin_year_max" label="記載年の範囲(入力年以前)" resettable/>
+        <TextInput source="kingdom" label="界" resettable/>
+        <TextInput source="phylum" label="門" resettable/>
+        <TextInput source="class_name" label="綱" resettable/>
+        <TextInput source="order" label="目" resettable/>
+        <TextInput source="suborder" label="亜目" resettable/>
+        <TextInput source="family" label="科" resettable/>
+        <TextInput source="subfamily" label="亜科" resettable/>
+        <TextInput source="tribe" label="族" resettable/>
+        <TextInput source="subtribe" label="亜族" resettable/>
         <TextInput source="collect_point_info__country" label="国名コード(ISO 3166-1)" alwaysOn resettable/>
         <TextInput source="collect_point_info__contient" label="大陸"  resettable/>
         <TextInput source="collect_point_info__island_group" label="島群" resettable/>
@@ -169,6 +152,40 @@ const SpecimenFilter = props => (
         <TextInput source="rights" label="ライセンス" resettable/>
         <TextInput source="note" label="備考" resettable/>
         <DateInput source="date_last_modified" label="作成日" resettable/>
+        <TextInput source="default_taxon_info__genus" label="属(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__species" label="種(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__subspecies" label="亜種(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__japanese_name" label="和名(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__subgenus" label="亜属(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__scientific_name_author" label="記載者(デフォルト分類情報)" resettable/>
+        <NumberInput source="default_taxon_info__name_publishedin_year_min" label="記載年の範囲(入力年以降)(デフォルト分類情報)" resettable/>
+        <NumberInput source="default_taxon_info__name_publishedin_year_max" label="記載年の範囲(入力年以前)(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__kingdom" label="界(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__phylum" label="門(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__class_name" label="綱(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__order" label="目(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__suborder" label="亜目(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__family" label="科(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__subfamily" label="亜科(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__tribe" label="族(デフォルト分類情報)" resettable/>
+        <TextInput source="default_taxon_info__subtribe" label="亜族(デフォルト分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__genus" label="属(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__species" label="種(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__subspecies" label="亜種(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__japanese_name" label="和名(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__subgenus" label="亜属(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__scientific_name_author" label="記載者(カスタム分類情報)" resettable/>
+        <NumberInput source="custom_taxon_info__name_publishedin_year_min" label="記載年の範囲(入力年以降)(カスタム分類情報)" resettable/>
+        <NumberInput source="custom_taxon_info__name_publishedin_year_max" label="記載年の範囲(入力年以前)(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__kingdom" label="界(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__phylum" label="門(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__class_name" label="綱(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__order" label="目(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__suborder" label="亜目(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__family" label="科(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__subfamily" label="亜科(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__tribe" label="族(カスタム分類情報)" resettable/>
+        <TextInput source="custom_taxon_info__subtribe" label="亜族(カスタム分類情報)" resettable/>
     </Filter>
 );
 
@@ -176,26 +193,26 @@ const SpecimenList = props => (
     <List {...props} title="標本" actions={<SpecimenListActions/>} filters={<SpecimenFilter />} perPage={20}
         sort={{ field: 'date_last_modified', order: 'DESC' }}>
         <CustomizableDatagrid defaultColumns={['institution_code', 'collection_code',
-                                               'genus', 'species', 'year', 'month', 'day',
-                                               'state_provice', 'municipality', 'japanese_place_name']}>
+                                               'genus', 'species', 'japanese_name', 'year', 'month', 'day',
+                                               'state_provice', 'municipality', 'japanese_place_name', 'date_last_modified']}>
             <TextField source="institution_code" label="機関コード"/>
             <TextField source="collection_code" label="標本ID"/>
-            <TextField source="genus" label="属"/>
-            <TextField source="subgenus" label="亜属"/>
-            <TextField source="species" label="種"/>
-            <TextField source="subspecies" label="亜種"/>
-            <TextField source="scientific_name_author" label="記載者"/>
-            <TextField source="name_publishedin_year" label="記載年"/>
-            <TextField source="japanese_name" label="和名"/>
-            <TextField source="kingdom" label="界" />
-            <TextField source="phylum" label="門" />
-            <TextField source="class_name" label="綱" />
-            <TextField source="order" label="目" />
-            <TextField source="suborder" label="亜目" />
-            <TextField source="family" label="科" />
-            <TextField source="subfamily" label="亜科" />
-            <TextField source="tribe" label="族" />
-            <TextField source="subtribe" label="亜族" />
+            <TextField source="genus" label="属" sortable={false}/>
+            <TextField source="subgenus" label="亜属" sortable={false}/>
+            <TextField source="species" label="種" sortable={false}/>
+            <TextField source="subspecies" label="亜種" sortable={false}/>
+            <TextField source="scientific_name_author" label="記載者" sortable={false}/>
+            <TextField source="name_publishedin_year" label="記載年" sortable={false}/>
+            <TextField source="japanese_name" label="和名" sortable={false}/>
+            <TextField source="kingdom" label="界" sortable={false}/>
+            <TextField source="phylum" label="門" sortable={false}/>
+            <TextField source="class_name" label="綱" sortable={false}/>
+            <TextField source="order" label="目" sortable={false}/>
+            <TextField source="suborder" label="亜目" sortable={false}/>
+            <TextField source="family" label="科" sortable={false}/>
+            <TextField source="subfamily" label="亜科" sortable={false}/>
+            <TextField source="tribe" label="族" sortable={false}/>
+            <TextField source="subtribe" label="亜族" sortable={false}/>
             <TextField source="country" label="国名コード(ISO 3166-1)"/>
             <TextField source="contient" label="大陸"/>
             <TextField source="island_group" label="島群"/>
@@ -206,8 +223,8 @@ const SpecimenList = props => (
             <TextField source="verbatim_locality" label="採集地の説明"/>
             <TextField source="japanese_place_name" label="日本語地名(ラベル用)"/>
             <TextField source="japanese_place_name_detail" label="日本語地名(詳細)"/>
-            <NumberField source="longitude" label="経度" options={{ maximumFractionDigits: 6 }}/>
-            <NumberField source="latitude" label="緯度" options={{ maximumFractionDigits: 6 }}/>
+            <NumberField source="longitude" label="経度" options={{ maximumFractionDigits: 6 }} sortable={false}/>
+            <NumberField source="latitude" label="緯度" options={{ maximumFractionDigits: 6 }} sortable={false}/>
             <NumberField source="coordinate_precision" label="採集地の範囲"/>
             <NumberField source="minimum_elevation" label="最低標高"/>
             <NumberField source="maximum_elevation" label="最高標高"/>

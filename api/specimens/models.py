@@ -148,6 +148,15 @@ class Specimen(models.Model):
     image5 = models.ImageField(upload_to=user_portfolio_directory_path,
                                null=True, blank=True)
 
+    def make_taxon_field(self, field_name):
+        if self.custom_taxon_info is None and \
+           self.default_taxon_info is not None:
+            return getattr(self.default_taxon_info, field_name)
+        elif self.custom_taxon_info is not None:
+            return getattr(self.custom_taxon_info, field_name)
+        else:
+            return ''
+
     @property
     def name(self):
         if self.collection_settings_info is not None:
@@ -155,6 +164,70 @@ class Specimen(models.Model):
                 ' ' + str(self.collection_code).zfill(6)
         else:
             return 'Colletion: ? ' + str(self.collection_code).zfill(6)
+
+    @property
+    def kingdom(self):
+        return self.make_taxon_field('kingdom')
+
+    @property
+    def phylum(self):
+        return self.make_taxon_field('phylum')
+
+    @property
+    def class_name(self):
+        return self.make_taxon_field('class_name')
+
+    @property
+    def order(self):
+        return self.make_taxon_field('order')
+
+    @property
+    def suborder(self):
+        return self.make_taxon_field('suborder')
+
+    @property
+    def family(self):
+        return self.make_taxon_field('family')
+
+    @property
+    def subfamily(self):
+        return self.make_taxon_field('subfamily')
+
+    @property
+    def tribe(self):
+        return self.make_taxon_field('tribe')
+
+    @property
+    def subtribe(self):
+        return self.make_taxon_field('subtribe')
+
+    @property
+    def genus(self):
+        return self.make_taxon_field('genus')
+
+    @property
+    def subgenus(self):
+        return self.make_taxon_field('subgenus')
+
+    @property
+    def species(self):
+        return self.make_taxon_field('species')
+
+    @property
+    def subspecies(self):
+        return self.make_taxon_field('subspecies')
+
+    @property
+    def scientific_name_author(self):
+        return self.make_taxon_field('scientific_name_author')
+
+    @property
+    def name_publishedin_year(self):
+        return self.make_taxon_field('name_publishedin_year')
+
+    @property
+    def japanese_name(self):
+        return self.make_taxon_field('japanese_name')
 
     def __str__(self):
         if self.collection_settings_info is not None:

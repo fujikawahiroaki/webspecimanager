@@ -15,86 +15,24 @@ from tours.serializers import TourSerializer
 class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
     """標本情報モデル用シリアライザ"""
 
-    def make_taxon_field(self, instance, field_name):
-        if instance.custom_taxon_info is None and \
-           instance.default_taxon_info is not None:
-            return getattr(instance.default_taxon_info, field_name)
-        elif instance.custom_taxon_info is not None:
-            return getattr(instance.custom_taxon_info, field_name)
-        else:
-            return ''
-
-    def get_kingdom(self, instance):
-        return self.make_taxon_field(instance, "kingdom")
-
-    def get_phylum(self, instance):
-        return self.make_taxon_field(instance, "phylum")
-
-    def get_class_name(self, instance):
-        return self.make_taxon_field(instance, "class_name")
-
-    def get_order(self, instance):
-        return self.make_taxon_field(instance, "order")
-
-    def get_suborder(self, instance):
-        return self.make_taxon_field(instance, "suborder")
-
-    def get_family(self, instance):
-        return self.make_taxon_field(instance, "family")
-
-    def get_subfamily(self, instance):
-        return self.make_taxon_field(instance, "subfamily")
-
-    def get_tribe(self, instance):
-        return self.make_taxon_field(instance, "tribe")
-
-    def get_subtribe(self, instance):
-        return self.make_taxon_field(instance, "subtribe")
-
-    def get_genus(self, instance):
-        return self.make_taxon_field(instance, "genus")
-
-    def get_subgenus(self, instance):
-        return self.make_taxon_field(instance, "subgenus")
-
-    def get_species(self, instance):
-        return self.make_taxon_field(instance, "species")
-
-    def get_subspecies(self, instance):
-        return self.make_taxon_field(instance, "subspecies")
-
-    def get_scientific_name_author(self, instance):
-        return self.make_taxon_field(instance, "scientific_name_author")
-
-    def get_name_publishedin_year(self, instance):
-        return self.make_taxon_field(instance, "name_publishedin_year")
-
-    def get_japanese_name(self, instance):
-        return self.make_taxon_field(instance, "japanese_name")
-    # 外部キー`
-    # collect_point_info = CollectPointSerializer(required=False)
-    # custom_taxon_info = CustomTaxonSerializer(required=False)
-    # default_taxon_info = DefaultTaxonSerializer(required=False, read_only=True)
-    # collection_settings_info = CollectionSettingSerializer(required=False)
-    # tour = TourSerializer(required=False)
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     # 分類情報
-    kingdom = serializers.SerializerMethodField()
-    phylum = serializers.SerializerMethodField()
-    class_name = serializers.SerializerMethodField()
-    order = serializers.SerializerMethodField()
-    suborder = serializers.SerializerMethodField()
-    family = serializers.SerializerMethodField()
-    subfamily = serializers.SerializerMethodField()
-    tribe = serializers.SerializerMethodField()
-    subtribe = serializers.SerializerMethodField()
-    genus = serializers.SerializerMethodField()
-    subgenus = serializers.SerializerMethodField()
-    species = serializers.SerializerMethodField()
-    subspecies = serializers.SerializerMethodField()
-    scientific_name_author = serializers.SerializerMethodField()
-    name_publishedin_year = serializers.SerializerMethodField()
-    japanese_name = serializers.SerializerMethodField()
+    kingdom = serializers.CharField(read_only=True)
+    phylum = serializers.CharField(read_only=True)
+    class_name = serializers.CharField(read_only=True)
+    order = serializers.CharField(read_only=True)
+    suborder = serializers.CharField(read_only=True)
+    family = serializers.CharField(read_only=True)
+    subfamily = serializers.CharField(read_only=True)
+    tribe = serializers.CharField(read_only=True)
+    subtribe = serializers.CharField(read_only=True)
+    genus = serializers.CharField(read_only=True)
+    subgenus = serializers.CharField(read_only=True)
+    species = serializers.CharField(read_only=True)
+    subspecies = serializers.CharField(read_only=True)
+    scientific_name_author = serializers.CharField(read_only=True)
+    name_publishedin_year = serializers.IntegerField(read_only=True)
+    japanese_name = serializers.CharField(read_only=True)
     # コレクション設定
     collection_name = serializers.ReadOnlyField(
         source='collection_settings_info.collection_name')
