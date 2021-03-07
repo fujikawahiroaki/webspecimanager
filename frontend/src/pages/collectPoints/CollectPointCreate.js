@@ -27,7 +27,9 @@ import {
     number,
     regex,
 } from 'react-admin';
-import { GMapInput } from '@fusionworks/ra-google-maps-input';
+import Typography from '@material-ui/core/Typography';
+import { GoogleMapsInput } from '../../utils/gmapInput';
+import { LeafletCoordinateInput } from '../../utils/leafletInput';
 import { iso3166list } from './iso3166';
 
 
@@ -73,6 +75,7 @@ const CollectPointCreate = (props) => (
                 <TextInput source="japanese_place_name_detail" label="日本語地名(詳細)" parse={identity} helperText="50字以内 標本との紐付けの際の検索に利用されるので、検索しやすい内容にしてください" resettable validate={[minLength(0), maxLength(50)]}/>
             </FormTab>
             <FormTab label="緯度・経度・標高・水深">
+                <LeafletCoordinateInput />
                 <NumberInput source="location.longitude" label="経度" helperText="半角数字 小数点以下6桁まで可" resettable/>
                 <NumberInput source="location.latitude" label="緯度" helperText="半角数字 小数点以下6桁まで可" resettable/>
                 <NumberInput source="coordinate_precision" label="採集地の範囲(m)" resettable/>
