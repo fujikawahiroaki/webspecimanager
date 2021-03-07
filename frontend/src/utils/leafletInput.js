@@ -5,8 +5,8 @@ import React, { useState } from 'react'
 
 
 export function LeafletCoordinateInput() {
-    const [longitude, setLongitude] = useState(139.7744733);
-    const [latitude, setLatitude] = useState(35.7022589);
+    const [longitude, setLongitude] = useState(139.774473);
+    const [latitude, setLatitude] = useState(35.702258);
     const [elevation, setElevation] = useState(0);
 
     const GetElv = (lng, lat) => {
