@@ -27,8 +27,6 @@ import {
     number,
     regex,
 } from 'react-admin';
-import Typography from '@material-ui/core/Typography';
-import { GoogleMapsInput } from '../../utils/gmapInput';
 import { LeafletCoordinateInput } from '../../utils/leafletInput';
 import { iso3166list } from './iso3166';
 
