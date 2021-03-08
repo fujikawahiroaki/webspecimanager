@@ -59,6 +59,16 @@ function formatImage(value) {
 const CollectPointEdit = (props) => (
     <Edit actions={<CollectPointEditActions/>} {...props} title="採集地点">
         <TabbedForm>
+            <FormTab label="緯度・経度・標高・水深">
+                <LeafletCoordinateInput />
+                <NumberInput source="location.longitude" label="経度" helperText="半角数字 小数点以下6桁まで可" resettable/>
+                <NumberInput source="location.latitude" label="緯度" helperText="半角数字 小数点以下6桁まで可" resettable/>
+                <NumberInput source="coordinate_precision" label="採集地の範囲(m)" resettable/>
+                <NumberInput source="minimum_elevation" label="最低標高(m)" resettable/>
+                <NumberInput source="maximum_elevation" label="最高標高(m)" resettable/>
+                <NumberInput source="minimum_depth" label="水面からの最浅の距離(m)" resettable/>
+                <NumberInput source="maximum_depth" label="水面からの最深の距離(m)" resettable/>
+            </FormTab>
             <FormTab label="地名情報">
                 <AutocompleteInput source="country" label="国名コード(ISO 3166-1)" helperText="ISO 3166-1準拠の半角英字2字の国名コード(リストから国名を選択すると自動入力されます)" resettable
                 choices={iso3166list}/>
@@ -71,16 +81,6 @@ const CollectPointEdit = (props) => (
                 <TextInput multiple source="verbatim_locality" label="採集地の説明" helperText="200字以内 改行可" parse={identity} resettable validate={[minLength(0), maxLength(200)]}/>
                 <TextInput source="japanese_place_name" label="日本語地名(ラベル用)" helperText="14字以内" parse={identity} resettable validate={[minLength(0), maxLength(14)]}/>
                 <TextInput source="japanese_place_name_detail" label="日本語地名(詳細)" helperText="50字以内 標本との紐付けの際の検索に利用されるので、検索しやすい内容にしてください" parse={identity} resettable validate={[minLength(0), maxLength(50)]}/>
-            </FormTab>
-            <FormTab label="緯度・経度・標高・水深">
-                <LeafletCoordinateInput />
-                <NumberInput source="location.longitude" label="経度" helperText="半角数字 小数点以下6桁まで可" resettable/>
-                <NumberInput source="location.latitude" label="緯度" helperText="半角数字 小数点以下6桁まで可" resettable/>
-                <NumberInput source="coordinate_precision" label="採集地の範囲(m)" resettable/>
-                <NumberInput source="minimum_elevation" label="最低標高(m)" resettable/>
-                <NumberInput source="maximum_elevation" label="最高標高(m)" resettable/>
-                <NumberInput source="minimum_depth" label="水面からの最浅の距離(m)" resettable/>
-                <NumberInput source="maximum_depth" label="水面からの最深の距離(m)" resettable/>
             </FormTab>
             <FormTab label="採集行情報">
                 <ReferenceArrayInput

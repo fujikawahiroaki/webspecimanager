@@ -30,19 +30,20 @@ export function LeafletCoordinateInput() {
     };
 
     return (
-        <div>
+        <span>
             <Typography variant='h5'>座標入力補助マップ</Typography>
             <Typography>座標を指定したい位置をクリックしてください</Typography>
             <Typography>経度・緯度が更新されますので、下の入力欄にコピペしてください</Typography>
             <Typography>標高の取得は現時点では日本国内にのみ対応しております</Typography>
+            <Typography>　</Typography>
             <Typography>経度: {longitude} 緯度: {latitude} 標高: {elevation}</Typography>
-            <MapContainer center={[35.7022589, 139.7744733]} zoom={4} scrollWheelZoom={true}>
+            <MapContainer center={[35.7022589, 139.7744733]} zoom={4} scrollWheelZoom={true} style={{ height: "50vh" }} >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors" />
                 <GetCoodinate />
             </MapContainer>
-        </div>
+        </span>
     );
 }
 
