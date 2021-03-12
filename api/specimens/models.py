@@ -155,7 +155,10 @@ class Specimen(models.Model):
         elif self.custom_taxon_info is not None:
             return getattr(self.custom_taxon_info, field_name)
         else:
-            return ''
+            if field_name == 'name_publishedin_year':
+                return 0
+            else:
+                return ''
 
     @property
     def name(self):
