@@ -164,9 +164,18 @@ class Specimen(models.Model):
     def name(self):
         if self.collection_settings_info is not None:
             return self.collection_settings_info.institution_code + \
-                ' ' + str(self.collection_code).zfill(6)
+                ' ' + str(self.collection_code).zfill(6) + \
+                f" {self.genus} {self.species} {self.subspecies} {self.japanese_name} {self.japanese_place_name_detail}"
         else:
-            return 'Colletion: ? ' + str(self.collection_code).zfill(6)
+            return 'Colletion: ? ' + str(self.collection_code).zfill(6) + \
+                f" {self.genus} {self.species} {self.subspecies} {self.japanese_name} {self.japanese_place_name_detail}"
+
+    @property
+    def japanese_place_name_detail(self):
+        if self.collect_point_info is not None:
+            return self.collect_point_info.japanese_place_name_detail
+        else:
+            return ''
 
     @property
     def kingdom(self):

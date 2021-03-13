@@ -47,9 +47,7 @@ const LabelShow = props => (
                 <ReferenceArrayField label="所属標本" reference="specimens/own-specimens" source="label_specimens">
                     <Datagrid>
                         <DateField source="date_last_modified" label="作成日"/>
-                        <TextField source="name" label="標本ID"/>
-                        <TextField source="genus" label="属"/>
-                        <TextField source="species" label="種"/>
+                        <TextField source="name" label="標本情報"/>
                         <EditButton />
                     </Datagrid>
                 </ReferenceArrayField>
