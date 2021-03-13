@@ -71,14 +71,14 @@ export default (
       const bin = atob(data.replace(/^.*,/, ''));
       const buffer = new Uint8Array(bin.length);
       for (var i = 0; i < bin.length; i++) {
-          buffer[i] = bin.charCodeAt(i);
+        buffer[i] = bin.charCodeAt(i);
       }
       const blob = new Blob([bom, buffer.buffer], {
         type: "application/pdf",
       });
       const pdfUrl = window.URL.createObjectURL(blob)
       window.open(pdfUrl, '_blank')
-      return {data};
+      return { data };
     },
 
     getMany: (resource, params) => {
@@ -121,6 +121,46 @@ export default (
         )
       ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
 
+    specimenBulkCreate: async (resource, params) => {
+      if (params.times == null) {
+        params.times = 1;
+      };
+      if (params.times > 100) {
+        return;
+      };
+      for (let i = 1; i <= params.times; i++) {
+        if (!(params.collection_settings_info == null)) {
+          if (params.collection_code == null || params.collection_code == '') {
+            const collection_settings = await getOneJson('collection-settings/own-collection-settings', params.collection_settings_info);
+            const new_collection_code = collection_settings['latest_collection_code'] + 1
+            const { new_latest_collection_code } = await httpClient(`${apiUrl}/collection-settings/own-collection-settings/${params.collection_settings_info}/`, {
+              method: 'PATCH',
+              body: `{"latest_collection_code": ${new_collection_code}}`,
+            });
+            const { json } = await httpClient(`${apiUrl}/${resource}/`, {
+              method: 'POST',
+              body: JSON.stringify({ ...params, collection_code: new_collection_code }),
+            });
+            if (i == params.times) {
+              return {
+                data: { ...json },
+              };
+            };
+          };
+        } else {
+          const { json } = await httpClient(`${apiUrl}/${resource}/`, {
+            method: 'POST',
+            body: JSON.stringify(params),
+          });
+          if (i == params.times) {
+            return {
+              data: { ...json },
+            };
+          };
+        };
+      };
+    },
+
     create: async (resource, params) => {
       if (resource == 'taxa/shared-taxa') {
         delete params.data.is_private
@@ -134,26 +174,20 @@ export default (
       };
 
       if (resource == 'specimens/own-specimens') {
-        if (params.times == null) {
-          params.times = 1;
-        } ;
-        console.log(params.times);
-        for (let i=1; i<=params.times; i++) {
-          if (!(params.data.collection_settings_info == null)) {
-            if (params.data.collection_code == null || params.data.collection_code == '') {
-              const collection_settings = await getOneJson('collection-settings/own-collection-settings', params.data.collection_settings_info);
-              params.data.collection_code = collection_settings['latest_collection_code'] + 1
-              const { new_latest_collection_code } = await httpClient(`${apiUrl}/collection-settings/own-collection-settings/${params.data.collection_settings_info}/`, {
-                method: 'PATCH',
-                body: `{"latest_collection_code": ${params.data.collection_code}}`,
-              });
-              const { json } = await httpClient(`${apiUrl}/${resource}/`, {
-                method: 'POST',
-                body: JSON.stringify(params.data),
-              });
-              return {
-                data: { ...json },
-              };
+        if (!(params.data.collection_settings_info == null)) {
+          if (params.data.collection_code == null || params.data.collection_code == '') {
+            const collection_settings = await getOneJson('collection-settings/own-collection-settings', params.data.collection_settings_info);
+            params.data.collection_code = collection_settings['latest_collection_code'] + 1
+            const { new_latest_collection_code } = await httpClient(`${apiUrl}/collection-settings/own-collection-settings/${params.data.collection_settings_info}/`, {
+              method: 'PATCH',
+              body: `{"latest_collection_code": ${params.data.collection_code}}`,
+            });
+            const { json } = await httpClient(`${apiUrl}/${resource}/`, {
+              method: 'POST',
+              body: JSON.stringify(params.data),
+            });
+            return {
+              data: { ...json },
             };
           };
         };
@@ -180,6 +214,6 @@ export default (
             method: 'DELETE',
           })
         )
-      ).then(responses => ({ data: responses})),
+      ).then(responses => ({ data: responses })),
   };
 };

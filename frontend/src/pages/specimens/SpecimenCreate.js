@@ -4,7 +4,6 @@ import {
     FormTab,
     Create,
     Datagrid,
-    TextField,
     DateField,
     TextInput,
     ReferenceManyField,
@@ -34,10 +33,18 @@ import {
     useCreate,
     useUpdate,
     useGetOne,
-    Button
+    Button,
+    useMutation,
+    useRedirect,
+    useNotify
 } from 'react-admin';
 
-import { useFormState } from 'react-final-form';
+import { useFormState, useField } from 'react-final-form';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import SaveIcon from '@material-ui/icons/Save';
+
+
 
 const identity = value => (value)
 
@@ -67,29 +74,71 @@ function formatImage(value) {
 
 
 const SpecimenCreateToolbar = props => {
-    const times = 3;
     const BulkCreateButton = props => {
         const { values } = useFormState();
-        const [create, { loading, error }] = useCreate('specimens/own-specimens', {...values, times: times});
-        const dbg = () => {
-            console.log(values);
-            create();
-        };
-        return <Button label="同一データの標本を指定個数作成" onClick={dbg} disabled={loading} />;
+        const [mutate, { loading }] = useMutation();
+        const redirectTo = useRedirect();
+        const notify = useNotify();
+        const bulkCreate = event => {
+            mutate({
+                type: 'specimenBulkCreate',
+                resource: 'specimens/own-specimens',
+                payload: values,
+            },
+                {
+                    onSuccess: () => {
+                        notify("作成に成功しました");
+                        redirectTo('/specimens/own-specimens/');
+                    },
+                    onFailure: error => notify("エラー: 作成に失敗しました", "warning")
+                })
+        }
+        return <Button label="保存　作成数が多い場合、少し時間がかかります" onClick={bulkCreate} disabled={loading} variant="contained" color="primary" size="large" startIcon={<SaveIcon />} />;
     };
     return (
         <Toolbar {...props} >
-            <SaveButton />
             <BulkCreateButton {...props} />
         </Toolbar>
     );
 };
 
 
+const BulkTimesField = ({ name, label }) => {
+    const {
+        input: { onChange },
+        meta: { touched, error }
+    } = useField(name);
+    return (
+        <span>
+            <Typography variant='h5'>同一データ標本の作成数</Typography>
+            <TextField
+                name={name}
+                label={label}
+                type="number"
+                onChange={onChange}
+                error={!!(touched && error)}
+                variant="filled"
+                helperText="半角数字1以上100未満で入力してください"
+                defaultValue={1}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                InputProps={{
+                    inputProps: { min: 1, max: 100 },
+                }}
+            />
+            <Typography>　</Typography>
+            <Typography>　</Typography>
+        </span>
+    );
+};
+
+
 const SpecimenCreate = (props) => (
-    <Create actions={<SpecimenCreateActions />} {...props} title="標本">
+    <Create actions={<SpecimenCreateActions />} {...props} title="標本" times={{ times: props.options.times }}>
         <TabbedForm toolbar={<SpecimenCreateToolbar />}>
             <FormTab label="標本固有情報">
+                <BulkTimesField name="times" label="作成数" />
                 <ReferenceInput
                     source="collection_settings_info"
                     label="登録されたコレクション設定情報"
