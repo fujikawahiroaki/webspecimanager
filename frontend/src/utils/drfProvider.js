@@ -134,6 +134,11 @@ export default (
       };
 
       if (resource == 'specimens/own-specimens') {
+        if (params.times == null) {
+          params.times = 1;
+        } ;
+        console.log(params.times);
+        for (let i=1; i<=params.times; i++) {
           if (!(params.data.collection_settings_info == null)) {
             if (params.data.collection_code == null || params.data.collection_code == '') {
               const collection_settings = await getOneJson('collection-settings/own-collection-settings', params.data.collection_settings_info);
@@ -151,6 +156,7 @@ export default (
               };
             };
           };
+        };
       };
 
       const { json } = await httpClient(`${apiUrl}/${resource}/`, {
