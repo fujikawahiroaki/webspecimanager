@@ -63,7 +63,7 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
     latitude = serializers.ReadOnlyField(
         source='collect_point_info.latitude')
     minimum_elevation = serializers.ReadOnlyField(
-        source='collect_point_info.minimum_eleavation')
+        source='collect_point_info.minimum_elevation')
     maximum_elevation = serializers.ReadOnlyField(
         source='collect_point_info.maximum_elevation')
     minimum_depth = serializers.ReadOnlyField(
