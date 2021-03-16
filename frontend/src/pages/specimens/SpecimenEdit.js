@@ -39,10 +39,10 @@ const SpecimenEditActions = ({ basePath, data}) => (
 );
 
 
-const validateforIdentifiedBy = [regex(/^[!-~ À-ÖØ-öø-ÿ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(19)]
-const validateforCollecter = [regex(/^[!-~ À-ÖØ-öø-ÿ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(18)]
-const validateforSamplingProtocol = [regex(/^[!-~ À-ÖØ-öø-ÿ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(20)]
-const validateforSamplingEffort = [regex(/^[!-~ À-ÖØ-öø-ÿ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(100)]
+const validateforIdentifiedBy = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(19)]
+const validateforCollecter = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(18)]
+const validateforSamplingProtocol = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(20)]
+const validateforSamplingEffort = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(100)]
 const validateforLifeStage = [regex(/^[!-~ ]+$/, '半角英数記号のみにしてください'), minLength(0), maxLength(20)]
 const validateforRights = [regex(/^[!-~ ]+$/, '半角英数記号のみにしてください'), minLength(0), maxLength(10)]
 

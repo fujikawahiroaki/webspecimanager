@@ -44,23 +44,23 @@ class CollectPointSerializer(CountryFieldMixin, serializers.ModelSerializer):
                                               message='半角英数記号のみ使用可')]
             },
             'island_group': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
             'island': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
             'state_provice': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
             'county': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
             'municipality': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
         }

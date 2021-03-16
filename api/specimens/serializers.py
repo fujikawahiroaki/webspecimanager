@@ -112,11 +112,11 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
         read_only_fields = ('date_last_modified', 'id')
         extra_kwargs = {
             'identified_by': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
             'collecter': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号およびアクセント記号付き文字のみ使用可')]
             },
             'preparation_type': {
@@ -128,11 +128,11 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
                                               message='半角英数記号のみ使用可')]
             },
             'sampling_protocol': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号のみ使用可')]
             },
             'sampling_effort': {
-                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿ]+$',
+                'validators': [RegexValidator(r'^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$',
                                               message='半角英数記号のみ使用可')]
             },
             'lifestage': {
