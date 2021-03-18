@@ -56,7 +56,7 @@ const SpecimenCreateActions = ({ basePath, data }) => (
 );
 
 
-const validateforIdentifiedBy = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(19)]
+const validateforIdentifiedBy = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(18)]
 const validateforCollecter = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(18)]
 const validateforSamplingProtocol = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(20)]
 const validateforSamplingEffort = [regex(/^[!-~ À-ÖØ-öø-ÿāīūēōȳĀĪŪĒŌȲ]+$/, '半角英数記号およびアクセント記号付き文字のみにしてください'), minLength(0), maxLength(100)]
@@ -154,7 +154,8 @@ const SpecimenCreate = (props) => (
                     }
                 </FormDataConsumer>
                 <DateInput source="date_identified" label="同定日" />
-                <TextInput source="identified_by" label="同定者" helperText='半角英数記号およびアクセント記号付き文字19字以内' parse={identity} validate={validateforIdentifiedBy} />
+                <Typography variant='h6'>長音母音入力補助 コピペして使用してください: ā ī ū ē ō ȳ Ā Ī Ū Ē Ō Ȳ â î û ê ô Â Î Û Ê Ô</Typography>
+                <TextInput source="identified_by" label="同定者" helperText='半角英数記号およびアクセント記号付き文字18字以内' parse={identity} validate={validateforIdentifiedBy} />
                 <NumberInput source="year" label="採集年" helperText='半角数字4桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(9999)]} />
                 <NumberInput source="month" label="採集月" helperText='半角数字12以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(12)]} />
                 <NumberInput source="day" label="採集日" helperText='半角数字31以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(31)]} />

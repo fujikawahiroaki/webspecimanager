@@ -169,7 +169,7 @@ class LabelCanvas:
         if japanese_name.count('\n') < 1:
             japanese_name += '\n'
         # 同定者と同定年
-        det_by = label_data.identified_by + 'det., ' +\
+        det_by = label_data.identified_by + ' det., ' +\
             str(label_data.date_identified[0:4])  # 同定年月日から年だけ取り出す
         return '\n'.join([label_data.genus, label_data.species,
                           label_data.subspecies, author_and_descyear,
@@ -189,6 +189,9 @@ class LabelCanvas:
         """
         ラベルの書き込み 必要なタイプのラベルをオプションで指定
         """
+        if data is False and coll is False and det is False and note is False:
+            self.pdf_canvas.save()
+            return
         label_types = []
         if data is True:
             label_types.append("data")

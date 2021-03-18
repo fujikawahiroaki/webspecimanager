@@ -7,5 +7,6 @@ export default () => (
     <Card>
         <CardHeader title="WebSpecimanager" />
         <CardContent>ようこそ</CardContent>
+        <CardContent>必ず<a href="https://www.webspecimanager.net/manual/" target="_blank" rel="noopener">マニュアル</a>をお読みになってからご利用ください</CardContent>
     </Card>
 );

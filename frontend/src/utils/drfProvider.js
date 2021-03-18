@@ -77,7 +77,11 @@ export default (
         type: "application/pdf",
       });
       const pdfUrl = window.URL.createObjectURL(blob)
-      window.open(pdfUrl, '_blank')
+      if(window.open(pdfUrl, "_blank")){
+
+      }else{
+        window.location.href = pdfUrl;
+      }
       return { data };
     },
 

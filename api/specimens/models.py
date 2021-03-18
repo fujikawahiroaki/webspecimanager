@@ -63,7 +63,7 @@ class Specimen(models.Model):
                                           default=0)
     # 同定者
     identified_by = models.CharField(verbose_name='同定者',
-                                     max_length=19, blank=True,
+                                     max_length=18, blank=True,
                                      default='')
     # 同定年月日
     # 年月日がセットになっているDC最新版に準拠
