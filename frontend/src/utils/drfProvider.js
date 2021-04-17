@@ -77,9 +77,9 @@ export default (
         type: "application/pdf",
       });
       const pdfUrl = window.URL.createObjectURL(blob)
-      if(window.open(pdfUrl, "_blank")){
+      if (window.open(pdfUrl, "_blank")) {
 
-      }else{
+      } else {
         window.location.href = pdfUrl;
       }
       return { data };
@@ -150,17 +150,27 @@ export default (
                 data: { ...json },
               };
             };
-          };
-        } else {
-          const { json } = await httpClient(`${apiUrl}/${resource}/`, {
-            method: 'POST',
-            body: JSON.stringify(params),
-          });
-          if (i == params.times) {
-            return {
-              data: { ...json },
+          } else {
+            const { json } = await httpClient(`${apiUrl}/${resource}/`, {
+              method: 'POST',
+              body: JSON.stringify(params),
+            });
+            if (i == params.times) {
+              return {
+                data: { ...json },
+              };
             };
           };
+        } else {
+            const { json } = await httpClient(`${apiUrl}/${resource}/`, {
+            method: 'POST',
+            body: JSON.stringify(params),
+            });
+            if (i == params.times) {
+              return {
+                data: { ...json },
+              };
+            };
         };
       };
     },
