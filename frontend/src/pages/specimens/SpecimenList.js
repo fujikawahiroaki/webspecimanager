@@ -249,6 +249,7 @@ const SpecimenList = props => (
             <TextField source="note" label="備考" />
             <DateField source="date_last_modified" label="作成日"/>
             <EditButton label="編集" />
+            <CloneButton label="これをベースに作成"/>
             <ShowButton label="詳細"/>
         </CustomizableDatagrid>
     </List>
