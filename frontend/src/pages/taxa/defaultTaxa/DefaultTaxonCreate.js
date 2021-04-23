@@ -84,7 +84,7 @@ const DefaultTaxonCreate = (props) => {
                 <TextInput source="subtribe" label="亜族" helperText='先頭のみ大文字の半角英字30字以内' parse={identity} resettable validate={validateCamelCase}/>
             </FormTab>
             <FormTab label="分布・備考">
-                <TextInput multiline source="distribution" label="分布" helperText='300字以内 改行可' parse={identity} resettable validate={minLength(0), maxLength(200)}/>
+                <TextInput multiline source="distribution" label="分布" helperText='500字以内 改行可' parse={identity} resettable validate={minLength(0), maxLength(500)}/>
                 <TextInput multiline source="note" label="備考" helperText='500字以内 改行可' parse={identity} resettable validate={minLength(0), maxLength(500)}/>
             </FormTab>
             <FormTab label="画像">
