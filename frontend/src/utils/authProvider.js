@@ -37,7 +37,7 @@ export default {
     // called when the API returns an error
     checkError: ({status}) => {
         if (status === 401 || status === 403) {
-            alert("サーバーエラーが発生しました 再読込してみてください")
+            alert("ログイン情報の再送信が必要です OKボタンを押してください")
             return Promise.resolve();
         }
         return Promise.resolve();
