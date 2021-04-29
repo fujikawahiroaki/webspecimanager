@@ -37,9 +37,11 @@ import {
     NumberInput,
     DateInput,
     BooleanField,
+    downloadCSV,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
+import jsonExport from 'jsonexport/dist';
 
 
 const SpecimenListActions = (props) => {
@@ -189,9 +191,18 @@ const SpecimenFilter = props => (
     </Filter>
 );
 
+
+const exporter = specimens => {
+    jsonExport(specimens, {
+    }, (err, csv) => {
+        downloadCSV(csv, 'specimens');
+    });
+};
+
+
 const SpecimenList = props => (
     <List {...props} title="標本" actions={<SpecimenListActions/>} filters={<SpecimenFilter />} perPage={20}
-        sort={{ field: 'date_last_modified', order: 'DESC' }}>
+        sort={{ field: 'date_last_modified', order: 'DESC' }} exporter={exporter}>
         <CustomizableDatagrid defaultColumns={['institution_code', 'collection_code',
                                                'genus', 'species', 'japanese_name', 'year', 'month', 'day',
                                                'state_provice', 'municipality', 'japanese_place_name', 'date_last_modified']}>
