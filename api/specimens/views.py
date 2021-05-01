@@ -31,7 +31,8 @@ class SpecimenFilter(PropertyFilterSet):
     """
     標本情報のフィルタセット
     """
-    date_identified = filters.DateTimeFromToRangeFilter()
+    date_identified = filters.DateFromToRangeFilter()
+    date_last_modified = filters.DateFromToRangeFilter()
     kingdom = PropertyCharFilter(field_name='kingdom', lookup_expr='icontains')
     phylum = PropertyCharFilter(field_name='phylum', lookup_expr='icontains')
     class_name = PropertyCharFilter(field_name='class_name',
@@ -114,7 +115,7 @@ class SpecimenFilter(PropertyFilterSet):
                   'order', 'suborder', 'family', 'subfamily', 'tribe',
                   'subtribe', 'genus', 'subgenus', 'species', 'subspecies',
                   'scientific_name_author', 'name_publishedin_year',
-                  'japanese_name'
+                  'japanese_name', 'date_last_modified'
                   ]
         property_fields = [
             ('collect_point_info__longitude', PropertyRangeFilter, ['range']),
@@ -143,7 +144,7 @@ class SpecimenFilter(PropertyFilterSet):
                 'filter_class': filters.DateFromToRangeFilter,
             },
             models.DateTimeField: {
-                'filter_class': filters.DateTimeFromToRangeFilter,
+                'filter_class': filters.DateFromToRangeFilter,
             },
         }
 

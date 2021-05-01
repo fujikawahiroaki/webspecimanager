@@ -37,9 +37,12 @@ import {
     NumberInput,
     DateInput,
     BooleanField,
+    downloadCSV,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
+import jsonExport from 'jsonexport/dist';
+import Typography from '@material-ui/core/Typography';
 
 
 const CollectPointListActions = (props) => {
@@ -76,8 +79,13 @@ const CollectPointListActions = (props) => {
                 resource={resource}
                 sort={currentSort}
                 filterValues={filterValues}
-                maxResults={maxResults}
+                maxResults={100000}
+                label="CSVをDL"
             />
+            <Typography>　</Typography>
+            <Typography>CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索</Typography>
+            <Typography>　</Typography>
+            <Typography>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
             {/* Add your custom actions */}
         </TopToolbar>
     );
@@ -115,9 +123,22 @@ const CollectPointFilter = props => (
     </Filter>
 );
 
+
+const exporter = collect_points => {
+    const collect_pointsForExport = collect_points.map(collect_point => {
+        const {id, tour, location, image2, image3, image4, image5, ...collect_pointForExport } = collect_point; // 除外する項目
+        return collect_pointForExport;
+    });
+    jsonExport(collect_pointsForExport, {
+    }, (err, csv) => {
+        downloadCSV(csv, 'collect_points');
+    });
+};
+
+
 const CollectPointList = props => (
     <List {...props} title="採集地点" actions={<CollectPointListActions/>} filters={<CollectPointFilter />} perPage={20}
-        sort={{ field: 'created_at', order: 'DESC' }}>
+        sort={{ field: 'created_at', order: 'DESC' }} exporter={exporter}>
         <CustomizableDatagrid defaultColumns={['country', 'island', 'state_provice', 'municipality', 'japanese_place_name',
                                                'longitude', 'latitude']}>
             <TextField source="country" label="国名コード(ISO 3166-1)"/>

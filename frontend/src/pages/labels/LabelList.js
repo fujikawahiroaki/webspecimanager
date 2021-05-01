@@ -37,6 +37,7 @@ import {
     BooleanInput,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
+import Typography from '@material-ui/core/Typography';
 import {MakePDFButton} from './MakeLabelPDF';
 
 
@@ -69,13 +70,6 @@ const LabelListActions = (props) => {
                 context: 'button',
             })}
             <CreateButton basePath={basePath} />
-            <ExportButton
-                disabled={total === 0}
-                resource={resource}
-                sort={currentSort}
-                filterValues={filterValues}
-                maxResults={maxResults}
-            />
             {/* Add your custom actions */}
         </TopToolbar>
     );
@@ -91,7 +85,7 @@ const LabelFilter = props => (
 
 const LabelList = props => (
     <List {...props} title="ラベル" actions={<LabelListActions/>} filters={<LabelFilter />} perPage={20}
-        sort={{ field: 'name', order: 'DESC' }}>
+        sort={{ field: 'created_at', order: 'DESC' }}>
         <Datagrid >
             <TextField source="name" label="ラベル名"/>
             <BooleanField source="data_label_flag" label="データラベル作成の可否"/>

@@ -37,9 +37,12 @@ import {
     NumberInput,
     DateInput,
     BooleanField,
+    downloadCSV,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
+import jsonExport from 'jsonexport/dist';
+import Typography from '@material-ui/core/Typography';
 
 
 const CustomTaxonListActions = (props) => {
@@ -76,8 +79,13 @@ const CustomTaxonListActions = (props) => {
                 resource={resource}
                 sort={currentSort}
                 filterValues={filterValues}
-                maxResults={maxResults}
+                maxResults={100000}
+                label="CSVをDL"
             />
+            <Typography>　</Typography>
+            <Typography>CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索</Typography>
+            <Typography>　</Typography>
+            <Typography>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
             {/* Add your custom actions */}
         </TopToolbar>
     );
@@ -108,9 +116,21 @@ const CustomTaxonFilter = props => (
     </Filter>
 );
 
+
+const exporter = taxa => {
+    const taxaForExport = taxa.map(taxon => {
+        const {id, scientific_name, is_private, image2, image3, image4, image5, ...taxonForExport } = taxon; // 除外する項目
+        return taxonForExport;
+    });
+    jsonExport(taxaForExport, {
+    }, (err, csv) => {
+        downloadCSV(csv, 'custom_taxa');
+    });
+};
+
 const CustomTaxonList = props => (
     <List {...props} title="カスタム分類情報" actions={<CustomTaxonListActions/>} filters={<CustomTaxonFilter />} perPage={20}
-        sort={{ field: 'family', order: 'DESC' }}>
+        sort={{ field: 'family', order: 'DESC' }} exporter={exporter}>
         <CustomizableDatagrid defaultColumns={['family', 'genus', 'species', 'subspecies', 'scientific_name_author',
                                                'name_publishedin_year', 'japanese_name']}>
             <TextField source="family" label="科" />

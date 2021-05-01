@@ -20,7 +20,7 @@ class TourFilter(filters.FilterSet):
 
     class Meta:
         model = Tour
-        fields = ['title', 'start_date', 'end_date', 'note']
+        fields = ['title', 'start_date', 'end_date', 'note', 'created_at']
         filter_overrides = {
             models.CharField: {
                 'filter_class': filters.CharFilter,
@@ -34,8 +34,8 @@ class TourFilter(filters.FilterSet):
                     'lookup_expr': 'icontains',
                 },
             },
-            models.DateField: {
-                'filter_class': filters.DateFromToRangeFilter,
+            models.DateTimeField: {
+                'filter_class': filters.DateTimeFilter,
                 'extra': lambda f: {
                     'lookup_expr': 'date',
                 }

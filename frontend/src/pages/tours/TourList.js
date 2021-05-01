@@ -35,6 +35,7 @@ import {
     DateInput,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
+import Typography from '@material-ui/core/Typography';
 
 
 const TourListActions = (props) => {
@@ -66,13 +67,6 @@ const TourListActions = (props) => {
                 context: 'button',
             })}
             <CreateButton basePath={basePath} />
-            <ExportButton
-                disabled={total === 0}
-                resource={resource}
-                sort={currentSort}
-                filterValues={filterValues}
-                maxResults={maxResults}
-            />
             {/* Add your custom actions */}
         </TopToolbar>
     );
@@ -80,25 +74,25 @@ const TourListActions = (props) => {
 
 const TourFilter = props => (
     <Filter {...props}>
-        <TextInput label="タイトル" source="title" alwaysOn resettable/>
-        <DateInput label="開始日の範囲(入力年以降)" source="start_date_after" alwaysOn resettable/>
-        <DateInput label="開始日の範囲(入力年以前)" source="start_date_before" alwaysOn resettable/>
-        <DateInput label="終了日の範囲(入力年以降)" source="end_date_after" alwaysOn resettable/>
-        <DateInput label="終了日の範囲(入力年以前)" source="end_date_before" alwaysOn resettable/>
-        <DateInput label="作成日" source="created_at" alwaysOn resettable/> 
+        <TextInput label="タイトル" source="title" alwaysOn resettable />
+        <DateInput label="開始日の範囲(入力年以降)" source="start_date_after" alwaysOn resettable />
+        <DateInput label="開始日の範囲(入力年以前)" source="start_date_before" alwaysOn resettable />
+        <DateInput label="終了日の範囲(入力年以降)" source="end_date_after" alwaysOn resettable />
+        <DateInput label="終了日の範囲(入力年以前)" source="end_date_before" alwaysOn resettable />
+        <DateInput label="作成日" source="created_at" alwaysOn resettable />
     </Filter>
 );
 
 const TourList = props => (
-    <List {...props} title="採集行" actions={<TourListActions/>} filters={<TourFilter />} perPage={20}
+    <List {...props} title="採集行" actions={<TourListActions />} filters={<TourFilter />} perPage={20}
         sort={{ field: 'start_date', order: 'DESC' }}>
         <Datagrid >
-            <TextField source="title" label="タイトル"/>
-            <DateField source="start_date" label="開始日"/>
-            <DateField source="end_date" label="終了日"/>
-            <DateField source="created_at" label="作成日"/>
-            <EditButton label="編集"/>
-            <ShowButton label="詳細"/>
+            <TextField source="title" label="タイトル" />
+            <DateField source="start_date" label="開始日" />
+            <DateField source="end_date" label="終了日" />
+            <DateField source="created_at" label="作成日" />
+            <EditButton label="編集" />
+            <ShowButton label="詳細" />
         </Datagrid>
     </List>
 );

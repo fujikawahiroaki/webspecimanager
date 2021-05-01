@@ -42,6 +42,7 @@ import {
 import IconEvent from '@material-ui/icons/Event';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
 import jsonExport from 'jsonexport/dist';
+import Typography from '@material-ui/core/Typography';
 
 
 const SpecimenListActions = (props) => {
@@ -78,8 +79,13 @@ const SpecimenListActions = (props) => {
                 resource={resource}
                 sort={currentSort}
                 filterValues={filterValues}
-                maxResults={maxResults}
+                maxResults={100000}
+                label="CSVをDL"
             />
+            <Typography>　</Typography>
+            <Typography>CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索</Typography>
+            <Typography>　</Typography>
+            <Typography>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
             {/* Add your custom actions */}
         </TopToolbar>
     );
@@ -136,7 +142,8 @@ const SpecimenFilter = props => (
         <TextInput label="機関コード" source="collection_settings_info__institution_code" resettable/>
         <TextInput source="collection_code" label="標本ID" resettable/>
         <TextInput source="identified_by" label="同定者" resettable/>
-        <DateInput source="date_identified" label="同定年月日" resettable/>
+        <DateInput source="date_identified_after" label="同定年月日の範囲(入力日以降)" resettable/>
+        <DateInput source="date_identified_before" label="同定年月日の範囲(入力日以前)" resettable/>
         <TextInput source="collecter" label="採集者" resettable/>
         <TextInput source="year_min" label="採集年の範囲(入力年以降)" resettable/>
         <TextInput source="year_max" label="採集年の範囲(入力年以前)" resettable/>
@@ -153,7 +160,8 @@ const SpecimenFilter = props => (
         <TextInput source="establishment_means" label="生成プロセス" resettable/>
         <TextInput source="rights" label="ライセンス" resettable/>
         <TextInput source="note" label="備考" resettable/>
-        <DateInput source="date_last_modified" label="作成日" resettable/>
+        <DateInput source="date_last_modified_after" label="作成日の範囲(入力日以降)" resettable/>
+        <DateInput source="date_last_modified_before" label="作成日の範囲(入力日以前)" resettable/>
         <TextInput source="default_taxon_info__genus" label="属(デフォルト分類情報)" resettable/>
         <TextInput source="default_taxon_info__species" label="種(デフォルト分類情報)" resettable/>
         <TextInput source="default_taxon_info__subspecies" label="亜種(デフォルト分類情報)" resettable/>
@@ -193,7 +201,11 @@ const SpecimenFilter = props => (
 
 
 const exporter = specimens => {
-    jsonExport(specimens, {
+    const specimensForExport = specimens.map(specimen => {
+        const {id, latest_collection_code, name, default_taxon_info, custom_taxon_info, collect_point_info, tour, collection_settings_info, location, image2, image3, image4, image5, ...specimenForExport } = specimen; // 除外する項目
+        return specimenForExport;
+    });
+    jsonExport(specimensForExport, {
     }, (err, csv) => {
         downloadCSV(csv, 'specimens');
     });

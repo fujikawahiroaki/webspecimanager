@@ -21,7 +21,7 @@ class CollectionSettingFilter(filters.FilterSet):
     class Meta:
         model = CollectionSetting
         fields = ['collection_name', 'institution_code',
-                  'latest_collection_code', 'note']
+                  'latest_collection_code', 'note', 'created_at']
         filter_overrides = {
             models.CharField: {
                 'filter_class': filters.CharFilter,
@@ -37,6 +37,12 @@ class CollectionSettingFilter(filters.FilterSet):
             },
             models.IntegerField: {
                 'filter_class': filters.RangeFilter,
+            },
+            models.DateTimeField: {
+                'filter_class': filters.DateTimeFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'date',
+                }
             },
         }
 

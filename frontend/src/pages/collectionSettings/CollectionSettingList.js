@@ -36,6 +36,7 @@ import {
     NumberInput,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
+import Typography from '@material-ui/core/Typography';
 
 
 const CollectionSettingListActions = (props) => {
@@ -67,13 +68,6 @@ const CollectionSettingListActions = (props) => {
                 context: 'button',
             })}
             <CreateButton basePath={basePath} />
-            <ExportButton
-                disabled={total === 0}
-                resource={resource}
-                sort={currentSort}
-                filterValues={filterValues}
-                maxResults={maxResults}
-            />
             {/* Add your custom actions */}
         </TopToolbar>
     );
