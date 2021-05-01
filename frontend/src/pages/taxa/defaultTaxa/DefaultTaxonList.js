@@ -74,7 +74,7 @@ const DefaultTaxonListActions = (props) => {
                 resource={resource}
                 sort={currentSort}
                 filterValues={filterValues}
-                maxResults={maxResults}
+                maxResults={20000}
             />
             {/* Add your Default actions */}
         </TopToolbar>
