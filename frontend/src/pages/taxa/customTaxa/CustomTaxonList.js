@@ -119,7 +119,28 @@ const CustomTaxonFilter = props => (
 
 const exporter = taxa => {
     const taxaForExport = taxa.map(taxon => {
-        const {id, scientific_name, is_private, image2, image3, image4, image5, ...taxonForExport } = taxon; // 除外する項目
+        const taxonForExport = {
+            kingdom: taxon.kingdom,
+            phylum: taxon.phylum,
+            class: taxon.class_name,
+            order: taxon.order,
+            suborder: taxon.suborder,
+            family: taxon.family,
+            subfamily: taxon.subfamily,
+            tribe: taxon.tribe,
+            subtribe: taxon.subtribe,
+            genus: taxon.genus,
+            subgenus: taxon.subgenus,
+            species: taxon.species,
+            subspecies: taxon.subspecies,
+            scientific_name_author: taxon.scientific_name_author,
+            name_publishedin_year: taxon.name_publishedin_year,
+            japanese_name: taxon.japanese_name,
+            distribution: taxon.distribution,
+            created_at: taxon.created_at,
+            note: taxon.note,
+            image1: taxon.image1
+        }
         return taxonForExport;
     });
     jsonExport(taxaForExport, {

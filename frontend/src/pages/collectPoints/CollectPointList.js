@@ -124,12 +124,32 @@ const CollectPointFilter = props => (
 );
 
 
-const exporter = collect_points => {
-    const collect_pointsForExport = collect_points.map(collect_point => {
-        const {id, tour, location, image2, image3, image4, image5, ...collect_pointForExport } = collect_point; // 除外する項目
-        return collect_pointForExport;
+const exporter = collectPoints => {
+    const collectPointsForExport = collectPoints.map(collectPoint => {
+        const collectPointForExport = {
+            contient: collectPoint.contient,
+            island_group: collectPoint.island_group,
+            country: collectPoint.country,
+            island: collectPoint.island,
+            state_provice: collectPoint.state_provice,
+            county: collectPoint.county,
+            municipality: collectPoint.municipality,
+            japanese_place_name: collectPoint.japanese_place_name,
+            japanese_place_name_detail: collectPoint.japanese_place_name_detail,
+            longitude: collectPoint.longitude,
+            latitude: collectPoint.latitude,
+            coordinate_precision: collectPoint.coordinate_precision,
+            minimum_elevation: collectPoint.minimum_elevation,
+            maximum_elevation: collectPoint.maximum_elevation,
+            minimum_depth: collectPoint.minimum_depth,
+            maximum_depth: collectPoint.maximum_depth,
+            note: collectPoint.note,
+            created_at: collectPoint.created_at,
+            image1: collectPoint.image1
+        };
+        return collectPointForExport;
     });
-    jsonExport(collect_pointsForExport, {
+    jsonExport(collectPointsForExport, {
     }, (err, csv) => {
         downloadCSV(csv, 'collect_points');
     });
