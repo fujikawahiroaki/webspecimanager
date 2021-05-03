@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     TopToolbar,
     ListButton,
+    ShowButton,
     Tab,
     Show,
     SimpleShowLayout,
@@ -10,11 +11,13 @@ import {
     DateField,
     Datagrid,
     ReferenceField,
+    ReferenceArrayField,
     TextField,
     NumberField,
     EditButton,
     ImageField,
 } from 'react-admin';
+import { LeafletCoordinateField } from '../../utils/leafletField';
 
 
 const CollectPointShowActions = ({ basePath, data}) => (
@@ -25,7 +28,7 @@ const CollectPointShowActions = ({ basePath, data}) => (
 );
 
 const CollectPointShow = props => (
-    <Show actions={<CollectPointShowActions/>} {...props} title="カスタム分類情報">
+    <Show actions={<CollectPointShowActions/>} {...props} title="採集地点">
         <TabbedShowLayout>
             <Tab label='地名情報'>
                 <TextField source="country" label="国名コード(ISO 3166-1)"/>
@@ -49,9 +52,15 @@ const CollectPointShow = props => (
                 <NumberField source="maximum_depth" label="水面からの最深の距離"/>
             </Tab>
             <Tab label='採集行'>
-                <ReferenceField label="登録された採集行" source="tour" reference="tours/own-tours" link="show"  sort={{ field: 'created_at', order: 'DESC' }} perPage={100}>
-                    <TextField source="title"/>
-                </ReferenceField>
+                <ReferenceArrayField label="登録された採集行" source="tour" reference="tours/own-tours">
+                    <Datagrid>
+                        <TextField source="title" label="採集行のタイトル"/>
+                        <ShowButton />
+                    </Datagrid>
+                </ReferenceArrayField>
+            </Tab>
+            <Tab label='マップ'>
+                <LeafletCoordinateField label="マップ" source="location"/>
             </Tab>
             <Tab label="管理情報">
                 <DateField source="created_at" label="作成日"/>

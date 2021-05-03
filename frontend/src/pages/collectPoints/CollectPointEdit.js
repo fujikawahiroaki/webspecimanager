@@ -72,7 +72,7 @@ const CollectPointEdit = (props) => (
             </FormTab>
             <FormTab label="地名情報">
                 <AutocompleteInput source="country" label="国名コード(ISO 3166-1)" helperText="ISO 3166-1準拠の半角英字2字の国名コード(リストから国名を選択すると自動入力されます)" resettable
-                choices={iso3166list}/>
+                choices={iso3166list} validate={required("この項目は空にできません")} />
                 <Typography variant='h6'>長音母音入力補助 コピペして使用してください: ā ī ū ē ō ȳ Ā Ī Ū Ē Ō Ȳ â î û ê ô Â Î Û Ê Ô</Typography>
                 <TextInput source="contient" label="大陸" helperText="半角英数記号20字以内" parse={identity} resettable validate={validateASCIIforContient}/>
                 <TextInput source="island_group" label="島群" helperText="半角英数記号およびアクセント記号付き文字30字以内" parse={identity} resettable validate={validateASCII}/>

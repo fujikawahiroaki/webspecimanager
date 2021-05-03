@@ -15,6 +15,7 @@ import {
     NumberField,
     EditButton,
 } from 'react-admin';
+import { LeafletCoordinateField } from '../../utils/leafletField';
 
 
 const SpecimenShowActions = ({ basePath, data}) => (
@@ -77,8 +78,9 @@ const SpecimenShow = props => (
             </Tab>
             <Tab label='採集地点'>
                 <ReferenceField label="登録された採集地点" source="collect_point_info" reference="collect-points/own-collect-points" link="show">
-                    <TextField source="japanese_place_name"/>
+                    <TextField source="japanese_place_name_detail"/>
                 </ReferenceField>
+                <LeafletCoordinateField source="location" label="マップ"/>
                 <TextField source="country" label="国名コード(ISO 3166-1)"/>
                 <TextField source="contient" label="大陸"/>
                 <TextField source="island_group" label="島群"/>
