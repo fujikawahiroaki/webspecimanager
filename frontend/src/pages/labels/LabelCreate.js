@@ -48,7 +48,7 @@ const LabelCreate = (props) => (
                 <BooleanInput source="note_label_flag" label="備考ラベル作成の可否" initialValue={false}/>
             </FormTab>
             <FormTab label="所属標本">
-                <ReferenceArrayInput source="label_specimens" label="所属標本 直近に登録した標本500件のリストから選択" reference="specimens/own-specimens" sort={{ field: 'date_last_modified', order: 'DESC' }} perPage={500}>
+                <ReferenceArrayInput source="label_specimens" label="所属標本 直近に登録した標本10万件のリストから選択" reference="specimens/own-specimens" sort={{ field: 'date_last_modified', order: 'DESC' }} perPage={100000}>
                     <SelectArrayInput optionText="name" />
                 </ReferenceArrayInput>
             </FormTab>
