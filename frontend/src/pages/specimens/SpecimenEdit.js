@@ -60,7 +60,7 @@ function formatImage(value) {
 
 const SpecimenEdit = (props) => (
     <Edit actions={<SpecimenEditActions/>} {...props} title="標本">
-        <TabbedForm>
+        <TabbedForm warnWhenUnsavedChanges>
             <FormTab label="標本固有情報">
                 <ReferenceInput
                     source="collection_settings_info"

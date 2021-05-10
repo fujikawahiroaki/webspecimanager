@@ -43,7 +43,7 @@ const LabelEditActions = ({ basePath, data}) => (
 
 const LabelEdit = (props) => (
     <Edit actions={<LabelEditActions/>} {...props} title="ラベル">
-        <TabbedForm>
+        <TabbedForm warnWhenUnsavedChanges>
             <FormTab label="基本情報">
                 <TextInput source="name" label="ラベル名" parse={identity}/>
                 <BooleanInput source="data_label_flag" label="データラベル作成の可否"/>

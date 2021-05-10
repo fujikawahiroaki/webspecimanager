@@ -46,7 +46,7 @@ function formatImage(value) {
 
 const TourCreate = (props) => (
     <Create actions={<TourCreateActions/>} {...props} title="採集行">
-        <TabbedForm>
+        <TabbedForm warnWhenUnsavedChanges>
             <FormTab label="基本情報">
                 <TextInput source="title" label="タイトル" parse={identity}/>
                 <DateInput source="start_date" label="開始日"/>

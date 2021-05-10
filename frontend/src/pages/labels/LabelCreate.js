@@ -39,7 +39,7 @@ const LabelCreateActions = ({ basePath, data}) => (
 
 const LabelCreate = (props) => (
     <Create actions={<LabelCreateActions/>} {...props} title="ラベル">
-        <TabbedForm>
+        <TabbedForm warnWhenUnsavedChanges>
             <FormTab label="基本情報">
                 <TextInput source="name" label="ラベル名" parse={identity}/>
                 <BooleanInput source="data_label_flag" label="データラベル作成の可否" initialValue={false}/>

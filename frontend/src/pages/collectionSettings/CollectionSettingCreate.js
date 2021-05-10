@@ -39,7 +39,7 @@ const validateInstitutionCode = [regex(/^[!-~ ]+$/, '半角英数記号のみに
 
 const CollectionSettingCreate = (props) => (
     <Create actions={<CollectionSettingCreateActions/>} {...props} title="コレクション設定">
-        <TabbedForm>
+        <TabbedForm warnWhenUnsavedChanges>
             <FormTab label="設定">
                 <TextInput source="collection_name" label="コレクション名のフルネーム" helperText='半角英数記号174字以内' parse={identity} resettable validate={validateCollectionName}/>
                 <TextInput source="institution_code" label="機関コード(コレクション名の略号)" helperText='半角英数記号10字以内' parse={identity} resettable validate={validateInstitutionCode}/>

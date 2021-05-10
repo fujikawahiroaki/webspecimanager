@@ -50,7 +50,7 @@ function formatImage(value) {
 
 const CustomTaxonCreate = (props) => (
     <Create actions={<CustomTaxonCreateActions/>} {...props} title="カスタム分類情報">
-        <TabbedForm>
+        <TabbedForm warnWhenUnsavedChanges>
             <FormTab label="下位分類・記載者(年)・和名">
                 <Typography variant='h6'>長音母音入力補助 コピペして使用してください: ā ī ū ē ō ȳ Ā Ī Ū Ē Ō Ȳ â î û ê ô Â Î Û Ê Ô</Typography>
                 <TextInput source="genus" label="属" helperText='先頭のみ大文字の半角英字30字以内' resettable parse={identity} validate={validateCamelCase}/>

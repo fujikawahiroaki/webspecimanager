@@ -47,8 +47,8 @@ const validateInstitutionCode = [regex(/^[!-~ ]+$/, '半角英数記号のみに
 
 const CollectionSettingEdit = (props) => (
     <Edit actions={<CollectionSettingEditActions/>} {...props} title="コレクション設定">
-        <TabbedForm>
-        <FormTab label="設定">
+        <TabbedForm warnWhenUnsavedChanges>
+            <FormTab label="設定">
                 <TextInput source="collection_name" label="コレクション名のフルネーム" helperText='半角英数記号174字以内' parse={identity} resettable validate={validateCollectionName}/>
                 <TextInput source="institution_code" label="機関コード(コレクション名の略号)" helperText='半角英数記号10字以内' parse={identity} resettable validate={validateInstitutionCode}/>
                 <NumberInput source="latest_collection_code" label="標本IDの最新番号(標本登録時はこの値の+1が標本IDとなります)" helperText='半角数字18桁以内(新規にコレクションを作成する場合は0を入力してください)' validate={[minValue(0), maxValue(999999999999999999)]}/>
