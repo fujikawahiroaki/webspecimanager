@@ -136,7 +136,7 @@ const BulkTimesField = ({ name, label }) => {
 
 const SpecimenCreate = (props) => (
     <Create actions={<SpecimenCreateActions />} {...props} title="標本" times={{ times: props.options.times }}>
-        <TabbedForm warnWhenUnsavedChanges toolbar={<SpecimenCreateToolbar />}>
+        <TabbedForm toolbar={<SpecimenCreateToolbar />}>
             <FormTab label="標本固有情報">
                 <BulkTimesField name="times" label="作成数" />
                 <ReferenceInput

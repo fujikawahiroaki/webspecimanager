@@ -58,7 +58,7 @@ function formatImage(value) {
 
 const CollectPointCreate = (props) => (
     <Create actions={<CollectPointCreateActions/>} {...props} title="採集地点">
-        <TabbedForm warnWhenUnsavedChanges>
+        <TabbedForm redirect='list'>
             <FormTab label="緯度・経度・標高・水深">
                 <LeafletCoordinateInput source="location"/>
                 <NumberInput source="location.longitude" label="経度" helperText="半角数字 小数点以下6桁まで可" resettable/>
