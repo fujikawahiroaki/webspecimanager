@@ -302,7 +302,7 @@ const Counter = () => {
     }, [filterValues, selectTaxon])
     const handleChange = (event) => {
         setSelectTaxon(event.target.value);
-      };
+    };
     return (
         <div style={{ width: 300, margin: '1em' }}>
             <Typography variant="h6">所持タクソンカウンター</Typography>
