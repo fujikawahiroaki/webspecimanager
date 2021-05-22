@@ -85,6 +85,13 @@ export default (
       return { data };
     },
 
+    getSpecimenCounter: async (resource, params) => {
+      const data = await httpClient(`${apiUrl}/specimens/own-specimens/counter/?target_taxon=${params.target_taxon}`).then(
+        (response) => response.json
+      );
+      return { data };
+    },
+
     getMany: (resource, params) => {
       return Promise.all(
         params.ids.map(id => getOneJson(resource, id))

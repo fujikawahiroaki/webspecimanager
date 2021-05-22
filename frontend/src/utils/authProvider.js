@@ -1,5 +1,5 @@
 import authConfig from "./authConfig";
-import {Auth0Client} from '@auth0/auth0-spa-js';
+import { Auth0Client } from '@auth0/auth0-spa-js';
 
 const auth0 = new Auth0Client({
     domain: authConfig.domain,
@@ -7,7 +7,8 @@ const auth0 = new Auth0Client({
     redirect_uri: authConfig.redirectURI,
     audience: authConfig.audience,
     cacheLocation: "localstorage",
-    scope: "openid profile read:specimens create:specimens delete:specimens" 
+    scope: "openid profile read:specimens create:specimens delete:specimens",
+    useRefreshTokens: true
 });
 
 
@@ -23,11 +24,11 @@ export default {
     logout: () => {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
             if (isAuthenticated) { // need to check for this as react-admin calls logout in case checkAuth failed
-                if(localStorage.hasOwnProperty('wsat')) {
+                if (localStorage.hasOwnProperty('wsat')) {
                     localStorage.removeItem('wsat');
                 };
                 return auth0.logout({
-                    redirect_uri: window.location.origin,
+                    redirect_uri: authConfig.redirectURI,
                     federated: true // have to be enabled to invalidate refresh token
                 });
             }
@@ -35,10 +36,10 @@ export default {
         })
     },
     // called when the API returns an error
-    checkError: ({status}) => {
+    checkError: ({ status }) => {
         if (status === 401 || status === 403) {
             alert("ログイン情報の再送信が必要です OKボタンを押してください")
-            return Promise.resolve();
+            return Promise.reject();
         }
         return Promise.resolve();
     },
@@ -46,14 +47,24 @@ export default {
     checkAuth: () => {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
             if (isAuthenticated) {
-                auth0.getTokenSilently().then(access_token => localStorage.setItem('wsat', access_token));
-                return Promise.resolve();
-            }
-            return auth0.getTokenSilently()
+                auth0.getTokenSilently().then(access_token => {
+                    localStorage.setItem('wsat', access_token);
+                    return Promise.resolve();
+                }).catch(e => {
+                    if (e.error === 'login_required') {
+                        auth0.loginWithRedirect();
+                    }
+                    if (e.error === 'consent_required') {
+                        auth0.loginWithRedirect();
+                    }
+                    throw e;
+                })
+            };
+            return auth0.getTokenSilently();
         })
     },
     // called when the user navigates to a new location, to check for permissions / roles
     getPermissions: () => {
-        return Promise.resolve()
+        return Promise.resolve();
     },
 };
