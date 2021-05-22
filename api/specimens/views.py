@@ -3,6 +3,8 @@ from django_property_filter import (PropertyFilterSet,
                                     PropertyRangeFilter,
                                     PropertyCharFilter)
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from django.contrib.gis.db import models
 from django.contrib.gis.measure import Distance
 from django.contrib.gis.geos import Point
@@ -181,6 +183,27 @@ class SpecimenViewSet(viewsets.ModelViewSet):
             return specimen_within_radius.filter(user=user)
         return Specimen.objects.filter(user=user)
 
+    @action(methods=['get'], detail=False)
+    def counter(self, request):
+        target_taxon = self.request.query_params.get('target_taxon')
+        specimen_list = []
+        for i in self.get_queryset():
+            specimen_list.append(self.get_serializer(i).instance)
+        if target_taxon == 'species':
+            sp_queryset = self.get_queryset().order_by('default_taxon_info').distinct(
+            ).values_list('default_taxon_info', 'custom_taxon_info')
+            num_sp = len(self.get_queryset().order_by('default_taxon_info__species').distinct(
+            ).values_list('default_taxon_info__species', 'custom_taxon_info__species'))
+            print("亜種なし")
+            print(num_sp)
+            return Response({'data': num_sp})
+        elif target_taxon == 'subspecies':
+            num_ssp = len(self.get_queryset().order_by('default_taxon_info__species').distinct().values_list(
+                'default_taxon_info__species', 'custom_taxon_info__species', 'default_taxon_info__subspecies', 'custom_taxon_info__subspecies'))
+            print("亜種あり")
+            print(num_ssp)
+            return Response({'data': num_ssp})
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -191,6 +214,7 @@ class SpecimenWithGeoInfoViewSet(SpecimenViewSet):
     クエリ文字列で緯度・経度・半径を指定し、その緯度・経度から
     半径内にある位置情報を所持する標本情報を返す
     """
+
     def get_queryset(self):
         user = self.request.user
         lon = self.request.query_params.get('longitude')

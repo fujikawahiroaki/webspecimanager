@@ -1,17 +1,62 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import Grid from '@material-ui/core/Grid';
+import { useDataProvider, useQuery, Loading, Error, useAuthState } from 'react-admin';
 
-export default () => (
-    <Card>
-        <CardHeader title="WebSpecimanager" />
-        <CardContent>ようこそ</CardContent>
-        <CardContent>必ず<a href="https://www.webspecimanager.net/manual/" target="_blank" rel="noopener">マニュアル</a>をお読みになってからご利用ください</CardContent>
-        <CardContent>標本データに対する「これをベースに作成」ボタンが正常に機能しないバグを修正しました。なお、異なる標本に同じ画像を使用することはトラブルの元になるので、画像だけは複製されません。</CardContent>
-        <CardContent>標本データ画像を投稿できないバグを修正しました。</CardContent>
-        <CardContent>標本IDを直接入力できないバグを修正しました。</CardContent>
-        <CardContent>現時点ではSafariブラウザではラベルPDF生成機能がご利用頂けません。またInternet Explorerおよび旧型Edgeはサポートしておりません。Google Chrome、FireFox、Edge(新型)のいずれかからご利用ください。</CardContent>
-        <CardContent>現時点ではモバイル版では表示が崩れます。お手数ですが、当面はスマホからのご利用の際もPC版で表示するようお願いいたします。</CardContent>
-    </Card>
-);
+
+const theme = {
+    spacing: 8,
+}
+
+
+export default () => {
+    const dataProvider = useDataProvider();
+    const [allSpCount, setAllSpCount] = useState("?");
+    const [allSspCount, setAllSspCount] = useState("?");
+    const { loading, authenticated } = useAuthState();
+    if (loading) {
+        return (
+            <div>ログイン情報を読み込み中です.........</div>
+        )
+    }
+    if (authenticated) {
+        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: 'species' })
+        .then(({ data }) => {
+            setAllSpCount(data.data);
+        })
+        .catch(error => {
+            setAllSpCount("?");
+        })
+        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: 'subspecies' })
+        .then(({ data }) => {
+            setAllSspCount(data.data);
+        })
+        .catch(error => {
+            setAllSspCount("?");
+        })
+        return (
+            <Grid container spacing={3}>
+                <Grid item xs>
+                    <Card>
+                        <CardHeader title="WebSpecimanager" />
+                        <CardContent>ようこそ</CardContent>
+                        <CardContent>必ず<a href="https://www.webspecimanager.net/manual/" target="_blank" rel="noopener">マニュアル</a>をお読みになってからご利用ください</CardContent>
+                        <CardContent>現時点ではSafariブラウザではラベルPDF生成機能がご利用頂けません。またInternet Explorerおよび旧型Edgeはサポートしておりません。Google Chrome、FireFox、Edge(新型)のいずれかからご利用ください。</CardContent>
+                        <CardContent>現時点ではモバイル版では表示が崩れます。お手数ですが、当面はスマホからのご利用の際もPC版で表示するようお願いいたします。</CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs>
+                    <Card>
+                        <CardHeader title="カウンター" />
+                        <CardContent>総所持種数(亜種含まない): {allSpCount}</CardContent>
+                        <CardContent>総所持種数(亜種含む): {allSspCount}</CardContent>
+    
+                    </Card>
+                </Grid>
+            </Grid>
+        );
+    } 
+};
