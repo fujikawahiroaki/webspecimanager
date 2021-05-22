@@ -44,7 +44,7 @@ export default {
         return Promise.resolve();
     },
     // called when the user navigates to a new location, to check for authentication
-    checkAuth: () => {
+    checkAuth: async () => {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
             if (isAuthenticated) {
                 auth0.getTokenSilently().then(access_token => {

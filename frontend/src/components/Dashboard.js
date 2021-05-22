@@ -13,9 +13,6 @@ const theme = {
 
 
 export default () => {
-    const dataProvider = useDataProvider();
-    const [allSpCount, setAllSpCount] = useState("?");
-    const [allSspCount, setAllSspCount] = useState("?");
     const { loading, authenticated } = useAuthState();
     if (loading) {
         return (
@@ -23,22 +20,8 @@ export default () => {
         )
     }
     if (authenticated) {
-        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: 'species' })
-        .then(({ data }) => {
-            setAllSpCount(data.data);
-        })
-        .catch(error => {
-            setAllSpCount("?");
-        })
-        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: 'subspecies' })
-        .then(({ data }) => {
-            setAllSspCount(data.data);
-        })
-        .catch(error => {
-            setAllSspCount("?");
-        })
         return (
-            <Grid container spacing={3}>
+            <Grid container spacing={1}>
                 <Grid item xs>
                     <Card>
                         <CardHeader title="WebSpecimanager" />
@@ -48,15 +31,7 @@ export default () => {
                         <CardContent>現時点ではモバイル版では表示が崩れます。お手数ですが、当面はスマホからのご利用の際もPC版で表示するようお願いいたします。</CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs>
-                    <Card>
-                        <CardHeader title="カウンター" />
-                        <CardContent>総所持種数(亜種含まない): {allSpCount}</CardContent>
-                        <CardContent>総所持種数(亜種含む): {allSspCount}</CardContent>
-    
-                    </Card>
-                </Grid>
             </Grid>
         );
-    } 
+    }
 };

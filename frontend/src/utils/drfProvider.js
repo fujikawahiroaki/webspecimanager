@@ -86,7 +86,10 @@ export default (
     },
 
     getSpecimenCounter: async (resource, params) => {
-      const data = await httpClient(`${apiUrl}/specimens/own-specimens/counter/?target_taxon=${params.target_taxon}`).then(
+      const query = {
+        ...getFilterQuery(params.filter),
+      };
+      const data = await httpClient(`${apiUrl}/specimens/own-specimens/counter/?target_taxon=${params.target_taxon}&${stringify(query)}`).then(
         (response) => response.json
       );
       return { data };

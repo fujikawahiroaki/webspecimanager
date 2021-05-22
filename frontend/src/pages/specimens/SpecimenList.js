@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { cloneElement, useMemo } from 'react';
+import { cloneElement, useMemo, useState, useEffect } from 'react';
 import {
     useListContext,
+    useDataProvider,
     TopToolbar,
     CreateButton,
     ExportButton,
@@ -43,6 +44,9 @@ import IconEvent from '@material-ui/icons/Event';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
 import jsonExport from 'jsonexport/dist';
 import Typography from '@material-ui/core/Typography';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import NativeSelect from '@material-ui/core/NativeSelect';
 
 
 const SpecimenListActions = (props) => {
@@ -118,8 +122,8 @@ const SpecimenFilter = props => (
         <TextInput source="collect_point_info__county" label="海外における群・区" resettable />
         <TextInput source="collect_point_info__municipality" label="市名以下の詳細地名" alwaysOn resettable />
         <TextInput source="collect_point_info__verbatim_locality" label="採集地の説明" resettable />
-        <TextInput source="collect_point_info__japanese_place_name" label="日本語地名(ラベル用)" alwaysOn resettable />
-        <TextInput source="collect_point_info__japanese_place_name_detail" label="日本語地名(詳細)" resettable />
+        <TextInput source="collect_point_info__japanese_place_name" label="日本語地名(ラベル用)" resettable />
+        <TextInput source="collect_point_info__japanese_place_name_detail" label="日本語地名(詳細)" alwaysOn resettable />
         <NumberInput source="longitude" label="経度(指定座標から指定半径m内にある地点を探すセット検索1/3)" alwaysOn resettable />
         <NumberInput source="latitude" label="緯度(指定座標から指定半径m内にある地点を探すセット検索2/3)" alwaysOn resettable />
         <NumberInput source="radius" label="半径(指定座標から指定半径m内にある地点を探すセット検索3/3)" alwaysOn resettable />
@@ -266,70 +270,166 @@ const exporter = specimens => {
 };
 
 
-const SpecimenList = props => (
-    <List {...props} title="標本" actions={<SpecimenListActions />} filters={<SpecimenFilter />} perPage={20}
-        sort={{ field: 'date_last_modified', order: 'DESC' }} exporter={exporter}>
-        <CustomizableDatagrid defaultColumns={['institution_code', 'collection_code',
-            'genus', 'species', 'japanese_name', 'year', 'month', 'day',
-            'state_provice', 'municipality', 'japanese_place_name', 'date_last_modified']}>
-            <TextField source="institution_code" label="機関コード" />
-            <TextField source="collection_code" label="標本ID" />
-            <TextField source="genus" label="属" sortable={false} />
-            <TextField source="subgenus" label="亜属" sortable={false} />
-            <TextField source="species" label="種" sortable={false} />
-            <TextField source="subspecies" label="亜種" sortable={false} />
-            <TextField source="scientific_name_author" label="記載者" sortable={false} />
-            <TextField source="name_publishedin_year" label="記載年" sortable={false} />
-            <TextField source="japanese_name" label="和名" sortable={false} />
-            <TextField source="kingdom" label="界" sortable={false} />
-            <TextField source="phylum" label="門" sortable={false} />
-            <TextField source="class_name" label="綱" sortable={false} />
-            <TextField source="order" label="目" sortable={false} />
-            <TextField source="suborder" label="亜目" sortable={false} />
-            <TextField source="family" label="科" sortable={false} />
-            <TextField source="subfamily" label="亜科" sortable={false} />
-            <TextField source="tribe" label="族" sortable={false} />
-            <TextField source="subtribe" label="亜族" sortable={false} />
-            <TextField source="country" label="国名コード(ISO 3166-1)" />
-            <TextField source="contient" label="大陸" />
-            <TextField source="island_group" label="島群" />
-            <TextField source="island" label="島" />
-            <TextField source="state_provice" label="県(州)" />
-            <TextField source="county" label="海外における群・区" />
-            <TextField source="municipality" label="市名以下の詳細地名" />
-            <TextField source="verbatim_locality" label="採集地の説明" />
-            <TextField source="japanese_place_name" label="日本語地名(ラベル用)" />
-            <TextField source="japanese_place_name_detail" label="日本語地名(詳細)" />
-            <NumberField source="longitude" label="経度" options={{ maximumFractionDigits: 6 }} sortable={false} />
-            <NumberField source="latitude" label="緯度" options={{ maximumFractionDigits: 6 }} sortable={false} />
-            <NumberField source="coordinate_precision" label="採集地の範囲" />
-            <NumberField source="minimum_elevation" label="最低標高" />
-            <NumberField source="maximum_elevation" label="最高標高" />
-            <NumberField source="minimum_depth" label="水面からの最浅の距離" />
-            <NumberField source="maximum_depth" label="水面からの最深の距離" />
-            <TextField source="title" label="採集行のタイトル" />
-            <TextField source="collection_name" label="コレクション名" />
-            <TextField source="identified_by" label="同定者" />
-            <DateField source="date_identified" label="同定年月日" />
-            <TextField source="collecter" label="採集者" />
-            <TextField source="year" label="採集年" />
-            <TextField source="month" label="採集月" />
-            <TextField source="day" label="採集日" />
-            <TextField source="sex" label="性別" />
-            <TextField source="preparation_type" label="標本の種類" />
-            <TextField source="disposition" label="現在の標本の状況" />
-            <TextField source="sampling_protocol" label="採集方法" />
-            <TextField source="sampling_effort" label="採集中の作業メモ" />
-            <TextField source="lifestage" label="ライフステージ" />
-            <TextField source="establishment_means" label="生成プロセス" />
-            <TextField source="rights" label="ライセンス" />
-            <TextField source="note" label="備考" />
-            <DateField source="date_last_modified" label="作成日" />
-            <EditButton label="編集" />
-            <CloneButton label="これをベースに作成" />
-            <ShowButton label="詳細" />
-        </CustomizableDatagrid>
-    </List>
-);
+const Counter = () => {
+    const { filterValues } = useListContext();
+    const dataProvider = useDataProvider();
+    const [allSpCount, setAllSpCount] = useState("?");
+    const [allSspCount, setAllSspCount] = useState("?");
+    const [selectCount, setSelectCount] = useState("?");
+    const [selectTaxon, setSelectTaxon] = useState("subspecies")
+    useEffect(() => {
+        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: 'species', filter: {} })
+            .then(({ data }) => {
+                setAllSpCount(data.data);
+            })
+            .catch(error => {
+                setAllSpCount("?");
+            })
+        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: 'subspecies', filter: {}})
+            .then(({ data }) => {
+                setAllSspCount(data.data);
+            })
+            .catch(error => {
+                setAllSspCount("?");
+            })
+        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: selectTaxon, filter: filterValues})
+            .then(({ data }) => {
+                setSelectCount(data.data);
+            })
+            .catch(error => {
+                setSelectCount("?");
+            })
+    }, [filterValues, selectTaxon])
+    const handleChange = (event) => {
+        setSelectTaxon(event.target.value);
+      };
+    return (
+        <div style={{ width: 300, margin: '1em' }}>
+            <Typography variant="h6">所持タクソンカウンター</Typography>
+            <Typography>　</Typography>
+            <Typography variant="body1">
+                種数、科数など指定した分類階級をいくつ所持しているか計算します
+            </Typography>
+            <Typography variant="body1">
+                リスト検索バーによる絞り込みはここでも有効ですので、指定条件内での種数カウントなどにご活用ください
+            </Typography>
+            <Typography>　</Typography>
+            <Typography variant="body2">
+                例: 機関コードで検索をかけて、特定のコレクション内の種数のみをカウントする
+            </Typography>
+            <Typography variant="body2">
+                例: 県名で検索をかけて、特定の県内の科数のみをカウントする
+            </Typography>
+            <Typography>　</Typography>
+            <FormControl fullWidth>
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                    分類階級の指定
+                </InputLabel>
+                <NativeSelect
+                    defaultValue={"subspecies"}
+                    inputProps={{
+                        name: 'taxon',
+                        id: 'uncontrolled-native',
+                    }}
+                    onChange={handleChange}
+                >
+                    <option value={"kingdom"}>界</option>
+                    <option value={"phylum"}>門</option>
+                    <option value={"class_name"}>綱</option>
+                    <option value={"order"}>目</option>
+                    <option value={"suborder"}>亜目</option>
+                    <option value={"family"}>科</option>
+                    <option value={"subfamily"}>亜科</option>
+                    <option value={"tribe"}>族</option>
+                    <option value={"subtribe"}>亜族</option>
+                    <option value={"genus"}>属</option>
+                    <option value={"subgenus"}>亜属</option>
+                    <option value={"species"}>種</option>
+                    <option value={"subspecies"}>亜種</option>
+                </NativeSelect>
+            </FormControl>
+            <Typography variant="h6">
+                検索条件に合致した所持タクソン数: {selectCount}
+            </Typography>
+            <Typography>　</Typography>
+            <Typography variant="h6">
+                総所持種数(亜種含まない): {allSpCount}
+            </Typography>
+            <Typography>　</Typography>
+            <Typography variant="h6">
+                総所持種数(亜種含む): {allSspCount}
+            </Typography>
+        </div>
+    )
+}
+
+
+const SpecimenList = props => {
+    return (
+        <List {...props} title="標本" actions={<SpecimenListActions />} filters={<SpecimenFilter />} perPage={20}
+            sort={{ field: 'date_last_modified', order: 'DESC' }} exporter={exporter} aside={<Counter />}>
+            <CustomizableDatagrid defaultColumns={['institution_code', 'collection_code',
+                'genus', 'species', 'japanese_name', 'year', 'month', 'day',
+                'state_provice', 'municipality', 'japanese_place_name_detail', 'date_last_modified']}>
+                <TextField source="institution_code" label="機関コード" />
+                <TextField source="collection_code" label="標本ID" />
+                <TextField source="genus" label="属" sortable={false} />
+                <TextField source="subgenus" label="亜属" sortable={false} />
+                <TextField source="species" label="種" sortable={false} />
+                <TextField source="subspecies" label="亜種" sortable={false} />
+                <TextField source="scientific_name_author" label="記載者" sortable={false} />
+                <TextField source="name_publishedin_year" label="記載年" sortable={false} />
+                <TextField source="japanese_name" label="和名" sortable={false} />
+                <TextField source="kingdom" label="界" sortable={false} />
+                <TextField source="phylum" label="門" sortable={false} />
+                <TextField source="class_name" label="綱" sortable={false} />
+                <TextField source="order" label="目" sortable={false} />
+                <TextField source="suborder" label="亜目" sortable={false} />
+                <TextField source="family" label="科" sortable={false} />
+                <TextField source="subfamily" label="亜科" sortable={false} />
+                <TextField source="tribe" label="族" sortable={false} />
+                <TextField source="subtribe" label="亜族" sortable={false} />
+                <TextField source="country" label="国名" />
+                <TextField source="contient" label="大陸" />
+                <TextField source="island_group" label="島群" />
+                <TextField source="island" label="島" />
+                <TextField source="state_provice" label="県(州)" />
+                <TextField source="county" label="海外における群・区" />
+                <TextField source="municipality" label="市名以下の詳細地名" />
+                <TextField source="verbatim_locality" label="採集地の説明" />
+                <TextField source="japanese_place_name" label="日本語地名(ラベル用)" />
+                <TextField source="japanese_place_name_detail" label="日本語地名(詳細)" />
+                <NumberField source="longitude" label="経度" options={{ maximumFractionDigits: 6 }} sortable={false} />
+                <NumberField source="latitude" label="緯度" options={{ maximumFractionDigits: 6 }} sortable={false} />
+                <NumberField source="coordinate_precision" label="採集地の範囲" />
+                <NumberField source="minimum_elevation" label="最低標高" />
+                <NumberField source="maximum_elevation" label="最高標高" />
+                <NumberField source="minimum_depth" label="水面からの最浅の距離" />
+                <NumberField source="maximum_depth" label="水面からの最深の距離" />
+                <TextField source="title" label="採集行のタイトル" />
+                <TextField source="collection_name" label="コレクション名" />
+                <TextField source="identified_by" label="同定者" />
+                <DateField source="date_identified" label="同定年月日" />
+                <TextField source="collecter" label="採集者" />
+                <TextField source="year" label="採集年" />
+                <TextField source="month" label="採集月" />
+                <TextField source="day" label="採集日" />
+                <TextField source="sex" label="性別" />
+                <TextField source="preparation_type" label="標本の種類" />
+                <TextField source="disposition" label="現在の標本の状況" />
+                <TextField source="sampling_protocol" label="採集方法" />
+                <TextField source="sampling_effort" label="採集中の作業メモ" />
+                <TextField source="lifestage" label="ライフステージ" />
+                <TextField source="establishment_means" label="生成プロセス" />
+                <TextField source="rights" label="ライセンス" />
+                <TextField source="note" label="備考" />
+                <DateField source="date_last_modified" label="作成日" />
+                <EditButton label="編集" />
+                <CloneButton label="これをベースに作成" />
+                <ShowButton label="詳細" />
+            </CustomizableDatagrid>
+        </List>
+    )
+};
 
 export default SpecimenList;

@@ -101,8 +101,8 @@ const CollectPointFilter = props => (
         <TextInput source="county" label="海外における群・区" resettable/>
         <TextInput source="municipality" label="市名以下の詳細地名" alwaysOn resettable/>
         <TextInput source="verbatim_locality" label="採集地の説明" resettable/>
-        <TextInput source="japanese_place_name" label="日本語地名(ラベル用)" alwaysOn resettable/>
-        <TextInput source="japanese_place_name_detail" label="日本語地名(詳細)" resettable/>
+        <TextInput source="japanese_place_name" label="日本語地名(ラベル用)" resettable/>
+        <TextInput source="japanese_place_name_detail" label="日本語地名(詳細)" alwaysOn resettable/>
         <NumberInput source="longitude" label="経度(指定座標から指定半径m内にある地点を探すセット検索1/3)" alwaysOn resettable/>
         <NumberInput source="latitude" label="緯度(指定座標から指定半径m内にある地点を探すセット検索2/3)" alwaysOn resettable/>
         <NumberInput source="radius" label="半径(指定座標から指定半径m内にある地点を探すセット検索3/3)" alwaysOn resettable/>
@@ -159,7 +159,7 @@ const exporter = collectPoints => {
 const CollectPointList = props => (
     <List {...props} title="採集地点" actions={<CollectPointListActions/>} filters={<CollectPointFilter />} perPage={20}
         sort={{ field: 'created_at', order: 'DESC' }} exporter={exporter}>
-        <CustomizableDatagrid defaultColumns={['country', 'island', 'state_provice', 'municipality', 'japanese_place_name',
+        <CustomizableDatagrid defaultColumns={['country', 'island', 'state_provice', 'municipality', 'japanese_place_name_detail',
                                                'longitude', 'latitude']}>
             <TextField source="country" label="国名コード(ISO 3166-1)"/>
             <TextField source="contient" label="大陸"/>

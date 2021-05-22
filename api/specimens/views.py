@@ -1,3 +1,4 @@
+import json
 from django_filters import rest_framework as filters
 from django_property_filter import (PropertyFilterSet,
                                     PropertyRangeFilter,
@@ -186,23 +187,23 @@ class SpecimenViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=False)
     def counter(self, request):
         target_taxon = self.request.query_params.get('target_taxon')
-        specimen_list = []
-        for i in self.get_queryset():
-            specimen_list.append(self.get_serializer(i).instance)
-        if target_taxon == 'species':
-            sp_queryset = self.get_queryset().order_by('default_taxon_info').distinct(
-            ).values_list('default_taxon_info', 'custom_taxon_info')
-            num_sp = len(self.get_queryset().order_by('default_taxon_info__species').distinct(
-            ).values_list('default_taxon_info__species', 'custom_taxon_info__species'))
-            print("亜種なし")
-            print(num_sp)
-            return Response({'data': num_sp})
-        elif target_taxon == 'subspecies':
-            num_ssp = len(self.get_queryset().order_by('default_taxon_info__species').distinct().values_list(
-                'default_taxon_info__species', 'custom_taxon_info__species', 'default_taxon_info__subspecies', 'custom_taxon_info__subspecies'))
-            print("亜種あり")
-            print(num_ssp)
-            return Response({'data': num_ssp})
+        taxon_list = ['kingdom', 'phylum', 'class_name', 'order',
+                      'suborder', 'family', 'subfamily', 'tribe',
+                      'subtribe', 'genus', 'subgenus', 'species',
+                      'subspecies']
+        specimen_dict_list = []
+        for i in self.filter_queryset(self.get_queryset()):
+            current_specimen = self.get_serializer(i).instance
+            specimen_dict = {}
+            for current_taxon in taxon_list:
+                specimen_dict[current_taxon] = getattr(
+                    current_specimen, current_taxon)
+                if current_taxon == target_taxon:
+                    break
+            specimen_dict_list.append(specimen_dict)
+        unique_list = list(
+            map(json.loads, set(map(json.dumps, specimen_dict_list))))
+        return Response({'data': len(unique_list)})
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
