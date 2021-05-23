@@ -271,7 +271,7 @@ const exporter = specimens => {
 
 
 const Counter = () => {
-    const { filterValues } = useListContext();
+    const { filterValues, ids } = useListContext();
     const dataProvider = useDataProvider();
     const [allSpCount, setAllSpCount] = useState("?");
     const [allSspCount, setAllSspCount] = useState("?");
@@ -299,7 +299,7 @@ const Counter = () => {
             .catch(error => {
                 setSelectCount("?");
             })
-    }, [filterValues, selectTaxon])
+    }, [filterValues, ids, selectTaxon])
     const handleChange = (event) => {
         setSelectTaxon(event.target.value);
     };
