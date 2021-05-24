@@ -150,7 +150,11 @@ const SpecimenCreate = (props) => (
                 </ReferenceInput>
                 <FormDataConsumer>
                     {({ formData, ...rest }) => formData.collection_settings_info &&
-                        <NumberInput source="collection_code" {...rest} label="標本ID 自動連番にする場合は入力しないでください" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} allowEmpty={true} validate={[minValue(0), maxValue(999999999999999999)]} />
+                        <div>
+                            <Typography variant='h6'>標本IDを自動連番にする場合は標本ID欄に入力しないでください</Typography>
+                            <Typography variant='h6'>「これをベースに作成」で自動連番にしたい場合、標本ID欄を空にしてください</Typography>
+                            <NumberInput source="collection_code" {...rest} label="標本ID 自動連番にする場合は入力しないでください" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} allowEmpty={true} validate={[minValue(0), maxValue(999999999999999999)]} />
+                        </div>
                     }
                 </FormDataConsumer>
                 <DateInput source="date_identified" label="同定日" />
