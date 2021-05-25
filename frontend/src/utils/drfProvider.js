@@ -95,6 +95,13 @@ export default (
       return { data };
     },
 
+    getSpecimenPercentage: async (resource, params) => {
+      const data = await httpClient(`${apiUrl}/specimens/own-specimens/percentage_taxon/?target_taxon=${params.target_taxon}&target_collection=${params.target_collection}&is_all=${params.is_all}`).then(
+        (response) => response.json
+      );
+      return {data};
+    },
+
     getMany: (resource, params) => {
       return Promise.all(
         params.ids.map(id => getOneJson(resource, id))

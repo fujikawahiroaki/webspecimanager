@@ -1,4 +1,6 @@
 import json
+import collections
+from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_EVEN
 from django_filters import rest_framework as filters
 from django_property_filter import (PropertyFilterSet,
                                     PropertyRangeFilter,
@@ -204,6 +206,44 @@ class SpecimenViewSet(viewsets.ModelViewSet):
         unique_list = list(
             map(json.loads, set(map(json.dumps, specimen_dict_list))))
         return Response({'data': len(unique_list)})
+
+    @action(methods=['get'], detail=False)
+    def percentage_taxon(self, request):
+        result = []
+        taxon_list = []
+        target_taxon = self.request.query_params.get('target_taxon')
+        target_collection = self.request.query_params.get('target_collection')
+        is_all = self.request.query_params.get('is_all')
+        target_queryset = self.get_queryset()
+        if is_all == 'false':
+            target_queryset = target_queryset.filter(
+                collection_settings_info__institution_code=target_collection)
+        for i in target_queryset:
+            taxon_list.append(
+                getattr(self.get_serializer(i).instance, target_taxon))
+        counted_dict = collections.Counter(taxon_list)
+        for k in counted_dict:
+            if k == '':
+                result.append({"taxon": 'Unknown', "percentage": float(Decimal(str(
+                    counted_dict[k] / target_queryset.count() * 100)).quantize(Decimal('0.1'), rounding=ROUND_HALF_EVEN)),
+                    "count": counted_dict[k]})
+                continue
+            result.append({"taxon": k, "percentage": float(Decimal(str(
+                counted_dict[k] / target_queryset.count() * 100)).quantize(Decimal('0.1'), rounding=ROUND_HALF_EVEN)),
+                "count": counted_dict[k]})
+        result.sort(key=lambda x: x['percentage'], reverse=True)
+        new_result = []
+        for i, v in enumerate(result):
+            if i >= 10:
+                rest_sum = float(Decimal(str(
+                    100 - float(Decimal(str(sum([taxon["percentage"] for taxon in new_result]))).quantize(Decimal('0.1'))))).quantize(Decimal('0.1')))
+                rest_count = sum([taxon["count"] for taxon in result])
+                new_result.append(
+                    {"taxon": "Other", "percentage": rest_sum, "count": rest_count})
+                break
+            new_result.append(v)
+        print(new_result)
+        return Response({'data': json.loads(json.dumps(new_result))})
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
