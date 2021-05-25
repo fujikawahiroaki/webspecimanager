@@ -233,16 +233,17 @@ class SpecimenViewSet(viewsets.ModelViewSet):
                 "count": counted_dict[k]})
         result.sort(key=lambda x: x['percentage'], reverse=True)
         new_result = []
+        topten_count = 0
         for i, v in enumerate(result):
             if i >= 10:
                 rest_sum = float(Decimal(str(
                     100 - float(Decimal(str(sum([taxon["percentage"] for taxon in new_result]))).quantize(Decimal('0.1'))))).quantize(Decimal('0.1')))
-                rest_count = sum([taxon["count"] for taxon in result])
+                rest_count = sum([taxon["count"] for taxon in result]) - topten_count
                 new_result.append(
                     {"taxon": "Other", "percentage": rest_sum, "count": rest_count})
                 break
+            topten_count += v["count"]
             new_result.append(v)
-        print(new_result)
         return Response({'data': json.loads(json.dumps(new_result))})
 
     def perform_create(self, serializer):
