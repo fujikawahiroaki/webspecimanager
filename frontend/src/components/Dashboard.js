@@ -146,7 +146,7 @@ const TaxonGraph = () => {
                             }
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
-                        <Legend content={renderLegend} />
+                        <Legend content={renderLegend} layout="vertical" verticalAlign="middle" align="left"/>
                     </PieChart>
                 </ResponsiveContainer>
             </div>
