@@ -62,6 +62,21 @@ const TaxonGraph = () => {
         }
         return null;
     };
+    const renderLegend = (props) => {
+        const { payload } = props;
+        console.log(payload)
+        return (
+            <ul>
+                {
+                    payload.map((entry, index) => (
+                        <font color={entry.color}>
+                            <li key={`item-${index}`}>{index + 1}: {entry.value} {entry.payload.percentage}％ 標本数{entry.payload.count}</li>
+                        </font>
+                    ))
+                }
+            </ul>
+        );
+    }
     return (
         <div>
             <Typography variant='h5'>所持タクソン割合グラフ</Typography>
@@ -125,14 +140,13 @@ const TaxonGraph = () => {
                             cy="50%"
                             outerRadius={150}
                             fill="#8884d8"
-                            label
                         >
                             {
                                 specimenPercentage.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
                             }
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
-                        <Legend />
+                        <Legend content={renderLegend} />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
