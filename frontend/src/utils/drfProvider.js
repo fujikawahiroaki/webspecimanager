@@ -102,6 +102,13 @@ export default (
       return {data};
     },
 
+    getInstitutionCodes: async (resource, params) => {
+      const data = await httpClient(`${apiUrl}/collection-settings/own-collection-settings/get_institution_code_list`).then(
+        (response) => response.json
+      );
+      return {data};
+    },
+
     getMany: (resource, params) => {
       return Promise.all(
         params.ids.map(id => getOneJson(resource, id))
