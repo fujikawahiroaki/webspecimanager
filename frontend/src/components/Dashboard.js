@@ -136,7 +136,7 @@ const TaxonGraph = () => {
                             nameKey="taxon"
                             isAnimationActive={false}
                             data={specimenPercentage}
-                            cx="50%"
+                            cx="70%"
                             cy="50%"
                             outerRadius={150}
                             fill="#8884d8"
