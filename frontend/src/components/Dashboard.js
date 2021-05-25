@@ -128,7 +128,7 @@ const TaxonGraph = () => {
                     }
                 </NativeSelect>
             </FormControl>
-            <div style={{ width: '100%', height: 500 }}>
+            <div style={{ width: '100%', height: 600 }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart width={600} height={600}>
                         <Pie
@@ -136,7 +136,7 @@ const TaxonGraph = () => {
                             nameKey="taxon"
                             isAnimationActive={false}
                             data={specimenPercentage}
-                            cx="70%"
+                            cx="50%"
                             cy="50%"
                             outerRadius={150}
                             fill="#8884d8"
@@ -184,14 +184,14 @@ export default () => {
                         <CardContent>現時点ではモバイル版では表示が崩れます。お手数ですが、当面はスマホからのご利用の際もPC版で表示するようお願いいたします。</CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <Card>
                         <CardContent>
                             <TaxonGraph />
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <Card>
                         <CardContent>
                             <CollectPointGraph />
