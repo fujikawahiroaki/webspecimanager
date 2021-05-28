@@ -246,6 +246,41 @@ class SpecimenViewSet(viewsets.ModelViewSet):
             new_result.append(v)
         return Response({'data': json.loads(json.dumps(new_result))})
 
+    @action(methods=['get'], detail=False)
+    def percentage_collect_point(self, request):
+        result = []
+        target_place = self.request.query_params.get('target_place')
+        target_collection = self.request.query_params.get('target_collection')
+        is_all = self.request.query_params.get('is_all')
+        target_queryset = self.get_queryset()
+        if is_all == 'false':
+            target_queryset = target_queryset.filter(
+                collection_settings_info__institution_code=target_collection)
+        counted_dict = collections.Counter(target_queryset.values_list(target_place, flat=True))
+        for k in counted_dict:
+            if k == '':
+                result.append({"place": 'Unknown', "percentage": float(Decimal(str(
+                    counted_dict[k] / target_queryset.count() * 100)).quantize(Decimal('0.1'), rounding=ROUND_HALF_EVEN)),
+                    "count": counted_dict[k]})
+                continue
+            result.append({"place": k, "percentage": float(Decimal(str(
+                counted_dict[k] / target_queryset.count() * 100)).quantize(Decimal('0.1'), rounding=ROUND_HALF_EVEN)),
+                "count": counted_dict[k]})
+        result.sort(key=lambda x: x['percentage'], reverse=True)
+        new_result = []
+        topten_count = 0
+        for i, v in enumerate(result):
+            if i >= 10:
+                rest_sum = float(Decimal(str(
+                    100 - float(Decimal(str(sum([collect_point["percentage"] for collect_point in new_result]))).quantize(Decimal('0.1'))))).quantize(Decimal('0.1')))
+                rest_count = sum([collect_point["count"] for collect_point in result]) - topten_count
+                new_result.append(
+                    {"place": "Other", "percentage": rest_sum, "count": rest_count})
+                break
+            topten_count += v["count"]
+            new_result.append(v)
+        return Response({'data': json.loads(json.dumps(new_result))})
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 

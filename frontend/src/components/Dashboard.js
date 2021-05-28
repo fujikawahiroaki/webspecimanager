@@ -64,7 +64,6 @@ const TaxonGraph = () => {
     };
     const renderLegend = (props) => {
         const { payload } = props;
-        console.log(payload)
         return (
             <ul>
                 {
@@ -114,9 +113,9 @@ const TaxonGraph = () => {
                     コレクションの指定
                 </InputLabel>
                 <NativeSelect
-                    defaultValue={"family"}
+                    defaultValue={''}
                     inputProps={{
-                        name: 'taxon',
+                        name: 'collection',
                         id: 'uncontrolled-native',
                     }}
                     onChange={collectionHandleChange}
@@ -156,10 +155,138 @@ const TaxonGraph = () => {
 
 
 const CollectPointGraph = () => {
+    const dataProvider = useDataProvider();
+    const [collectPointPercentage, setCollectPointPercentage] = useState([{ place: "?", percentage: 100, count: 0}]);
+    const [selectPlace, setSelectPlace] = useState("collect_point_info__state_provice");
+    const [collections, setCollections] = useState([]);
+    const [targetCollection, setTargetCollection] = useState('')
+    const [isAll, setIsAll] = useState(true);
+    const COLORS = ['#800080', '#008b8b', '#6b8e23', '#ff7f50', '#778899', '#006400', '#ff8c00', '#lightpink', '#191970', '#f08080', '#8b4513'];
+    useEffect(() => {
+        dataProvider.getCollectPointPercentage('specimen/own-specimens', {target_place: selectPlace, target_collection: targetCollection, is_all: isAll})
+        .then(({ data }) => {
+            setCollectPointPercentage(data.data);
+        }).catch(error => {
+            setCollectPointPercentage([{ place: "?", percentage: 100, count: 0}])
+        })
+        dataProvider.getInstitutionCodes('collection-settings/own-collection-settings')
+            .then(({ data }) => {
+                setCollections(data.data)
+            })
+            .catch(error => {
+                setCollections([])
+            })
+    }, [selectPlace, isAll, targetCollection])
+    const placeHandleChange = (event) => {
+        setSelectPlace(event.target.value);
+    };
+    const collectionHandleChange = (event) => {
+        if (event.target.value == "all") {
+            setTargetCollection('');
+            setIsAll(true);
+        } else {
+            setTargetCollection(event.target.value);
+            setIsAll(false);
+        };
+    };
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active) {
+            return (
+                <div className="custom-tooltip" style={{ backgroundColor: '#ffff', padding: '5px', border: '1px solid #cccc' }}>
+                    <label>{`${payload[0].name} : ${payload[0].value}%  標本数${payload[0].payload.payload.count}`}</label>
+                </div>
+            );
+        }
+        return null;
+    };
+    const renderLegend = (props) => {
+        const { payload } = props;
+        return (
+            <ul>
+                {
+                    payload.map((entry, index) => (
+                        <font color={entry.color}>
+                            <li key={`item-${index}`}>{index + 1}: {entry.value} {entry.payload.percentage}％ 標本数{entry.payload.count}</li>
+                        </font>
+                    ))
+                }
+            </ul>
+        );
+    }
     return (
         <div>
-            <Typography variant='h5'>採集地点割合グラフ</Typography>
-            <Typography>まだ完成しておりません。近日登場予定！</Typography>
+            <Typography variant='h5'>採集地割合グラフ</Typography>
+            <Typography>指定コレクション内の標本数における採集地の割合(％)を可視化します</Typography>
+            <Typography>上位10採集地のみが表示され、11位以降はOtherにまとめられます</Typography>
+            <Typography>グラフ上の各項目にマウスポインタをあてると、採集地名と割合と標本数が表示されます</Typography>
+            <Typography>現時点では市名以下の詳細地名の分解に対応しておらず、市町村単位での割合表示ができません</Typography>
+            <Typography>今後改善予定ですので、ご迷惑おかけしますがもうしばらくお待ちください</Typography>
+            <Typography>　</Typography>
+            <FormControl fullWidth>
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                    地名階級の指定
+                </InputLabel>
+                <NativeSelect
+                    defaultValue={"collect_point_info__state_provice"}
+                    inputProps={{
+                        name: 'place',
+                        id: 'uncontrolled-native',
+                    }}
+                    onChange={placeHandleChange}
+                >
+                    <option value={"collect_point_info__country"}>国</option>
+                    <option value={"collect_point_info__contient"}>大陸</option>
+                    <option value={"collect_point_info__island_group"}>島群</option>
+                    <option value={"collect_point_info__island"}>島</option>
+                    <option value={"collect_point_info__state_provice"}>県(州)</option>
+                    <option value={"collect_point_info__county"}>海外における群・区</option>
+                    <option value={"collect_point_info__municipality"}>市名以下の詳細地名</option>
+                    <option value={"collect_point_info__japanese_place_name"}>日本語地名(ラベル用)</option>
+                    <option value={"collect_point_info__japanese_place_name_detail"}>日本語地名(詳細)</option>
+                </NativeSelect>
+            </FormControl>
+            <Typography>　</Typography>
+            <FormControl fullWidth>
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                    コレクションの指定
+                </InputLabel>
+                <NativeSelect
+                    defaultValue={''}
+                    inputProps={{
+                        name: 'collection',
+                        id: 'uncontrolled-native',
+                    }}
+                    onChange={collectionHandleChange}
+                >
+                    <option value={"all"}>すべて</option>
+                    {
+                        collections.map(institution_code =>
+                            <option value={institution_code}>{institution_code}</option>)
+                    }
+                </NativeSelect>
+            </FormControl>
+            <div style={{ width: '100%', height: 600 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <PieChart width={600} height={600}>
+                        <Pie
+                            dataKey="percentage"
+                            nameKey="place"
+                            isAnimationActive={false}
+                            data={collectPointPercentage}
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={150}
+                            fill="#8884d8"
+                        >
+                            {
+                                collectPointPercentage.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                            }
+                        </Pie>
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend content={renderLegend} layout="vertical" verticalAlign="middle" align="left"/>
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     )
 };

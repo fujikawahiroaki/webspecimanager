@@ -102,6 +102,13 @@ export default (
       return {data};
     },
 
+    getCollectPointPercentage: async (resource, params) => {
+      const data = await httpClient(`${apiUrl}/specimens/own-specimens/percentage_collect_point/?target_place=${params.target_place}&target_collection=${params.target_collection}&is_all=${params.is_all}`).then(
+        (response) => response.json
+      );
+      return {data};
+    },
+
     getInstitutionCodes: async (resource, params) => {
       const data = await httpClient(`${apiUrl}/collection-settings/own-collection-settings/get_institution_code_list`).then(
         (response) => response.json
