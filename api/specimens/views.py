@@ -223,7 +223,7 @@ class SpecimenViewSet(viewsets.ModelViewSet):
                 getattr(self.get_serializer(i).instance, target_taxon))
         counted_dict = collections.Counter(taxon_list)
         for k in counted_dict:
-            if k == '':
+            if k == '' or k == None:
                 result.append({"taxon": 'Unknown', "percentage": float(Decimal(str(
                     counted_dict[k] / target_queryset.count() * 100)).quantize(Decimal('0.1'), rounding=ROUND_HALF_EVEN)),
                     "count": counted_dict[k]})
@@ -258,7 +258,7 @@ class SpecimenViewSet(viewsets.ModelViewSet):
                 collection_settings_info__institution_code=target_collection)
         counted_dict = collections.Counter(target_queryset.values_list(target_place, flat=True))
         for k in counted_dict:
-            if k == '':
+            if k == '' or k == None:
                 result.append({"place": 'Unknown', "percentage": float(Decimal(str(
                     counted_dict[k] / target_queryset.count() * 100)).quantize(Decimal('0.1'), rounding=ROUND_HALF_EVEN)),
                     "count": counted_dict[k]})
