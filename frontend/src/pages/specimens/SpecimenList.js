@@ -3,7 +3,12 @@ import { cloneElement, useMemo, useState, useEffect } from 'react';
 import {
     useListContext,
     useDataProvider,
+    Title,
     TopToolbar,
+    Pagination,
+    ListBase,
+    ListToolbar,
+    BulkActionsToolbar,
     CreateButton,
     ExportButton,
     Button,
@@ -47,6 +52,8 @@ import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 
 const SpecimenListActions = (props) => {
@@ -90,7 +97,6 @@ const SpecimenListActions = (props) => {
             <Typography>CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索</Typography>
             <Typography>　</Typography>
             <Typography>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
-            {/* Add your custom actions */}
         </TopToolbar>
     );
 };
@@ -114,13 +120,13 @@ const SpecimenFilter = props => (
         <TextInput source="subfamily" label="亜科" resettable />
         <TextInput source="tribe" label="族" resettable />
         <TextInput source="subtribe" label="亜族" resettable />
-        <TextInput source="collect_point_info__country" label="国名コード(ISO 3166-1)" alwaysOn resettable />
+        <TextInput source="collect_point_info__country" label="国名コード(ISO 3166-1)" resettable />
         <TextInput source="collect_point_info__contient" label="大陸" resettable />
         <TextInput source="collect_point_info__island_group" label="島群" resettable />
         <TextInput source="collect_point_info__island" label="島" alwaysOn resettable />
         <TextInput source="collect_point_info__state_provice" label="県(州)" alwaysOn resettable />
         <TextInput source="collect_point_info__county" label="海外における群・区" resettable />
-        <TextInput source="collect_point_info__municipality" label="市名以下の詳細地名" alwaysOn resettable />
+        <TextInput source="collect_point_info__municipality" label="市名以下の詳細地名" resettable />
         <TextInput source="collect_point_info__verbatim_locality" label="採集地の説明" resettable />
         <TextInput source="collect_point_info__japanese_place_name" label="日本語地名(ラベル用)" resettable />
         <TextInput source="collect_point_info__japanese_place_name_detail" label="日本語地名(詳細)" alwaysOn resettable />
@@ -285,14 +291,14 @@ const Counter = () => {
             .catch(error => {
                 setAllSpCount("?");
             })
-        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: 'subspecies', filter: {}})
+        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: 'subspecies', filter: {} })
             .then(({ data }) => {
                 setAllSspCount(data.data);
             })
             .catch(error => {
                 setAllSspCount("?");
             })
-        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: selectTaxon, filter: filterValues})
+        dataProvider.getSpecimenCounter('specimens/own-specimens', { target_taxon: selectTaxon, filter: filterValues })
             .then(({ data }) => {
                 setSelectCount(data.data);
             })
@@ -304,73 +310,91 @@ const Counter = () => {
         setSelectTaxon(event.target.value);
     };
     return (
-        <div style={{ width: 300, margin: '1em' }}>
-            <Typography variant="h6">所持タクソンカウンター</Typography>
-            <Typography>　</Typography>
-            <Typography variant="body1">
-                種数、科数など指定した分類階級をいくつ所持しているか計算します
-            </Typography>
-            <Typography variant="body1">
-                リスト検索バーによる絞り込みはここでも有効ですので、指定条件内での種数カウントなどにご活用ください
-            </Typography>
-            <Typography>　</Typography>
-            <Typography variant="body2">
-                例: 機関コードで検索をかけて、特定のコレクション内の種数のみをカウントする
-            </Typography>
-            <Typography variant="body2">
-                例: 県名で検索をかけて、特定の県内の科数のみをカウントする
-            </Typography>
-            <Typography>　</Typography>
-            <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                    分類階級の指定
-                </InputLabel>
-                <NativeSelect
-                    defaultValue={"subspecies"}
-                    inputProps={{
-                        name: 'taxon',
-                        id: 'uncontrolled-native',
-                    }}
-                    onChange={handleChange}
-                >
-                    <option value={"kingdom"}>界</option>
-                    <option value={"phylum"}>門</option>
-                    <option value={"class_name"}>綱</option>
-                    <option value={"order"}>目</option>
-                    <option value={"suborder"}>亜目</option>
-                    <option value={"family"}>科</option>
-                    <option value={"subfamily"}>亜科</option>
-                    <option value={"tribe"}>族</option>
-                    <option value={"subtribe"}>亜族</option>
-                    <option value={"genus"}>属</option>
-                    <option value={"subgenus"}>亜属</option>
-                    <option value={"species"}>種</option>
-                    <option value={"subspecies"}>亜種</option>
-                </NativeSelect>
-            </FormControl>
-            <Typography variant="h6">
-                検索条件に合致した所持タクソン数: {selectCount}
-            </Typography>
-            <Typography>　</Typography>
-            <Typography variant="h6">
-                総所持種数(亜種含まない): {allSpCount}
-            </Typography>
-            <Typography>　</Typography>
-            <Typography variant="h6">
-                総所持種数(亜種含む): {allSspCount}
-            </Typography>
+        <div style={{ width: "98%", margin: '1em' }}>
+            <Card>
+                <CardContent>
+                    <Typography variant="h6">所持タクソンカウンター</Typography>
+                    <Typography variant="body2">
+                        種数、科数など指定した分類階級をいくつ所持しているか計算します。
+                        リスト検索バーによる絞り込みはここでも有効ですので、指定条件内での種数カウントなどにご活用ください。
+                    </Typography>
+                    <Typography variant="body2">
+                        例: 機関コードで検索をかけて、特定のコレクション内の種数のみをカウントする
+                    </Typography>
+                    <Typography variant="body2">
+                        例: 県名で検索をかけて、特定の県内の科数のみをカウントする
+                    </Typography>
+                    <FormControl fullWidth>
+                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                            分類階級の指定
+                        </InputLabel>
+                        <NativeSelect
+                            defaultValue={"subspecies"}
+                            inputProps={{
+                                name: 'taxon',
+                                id: 'uncontrolled-native',
+                            }}
+                            onChange={handleChange}
+                            style={{ width: "10%"}}
+                        >
+                            <option value={"kingdom"}>界</option>
+                            <option value={"phylum"}>門</option>
+                            <option value={"class_name"}>綱</option>
+                            <option value={"order"}>目</option>
+                            <option value={"suborder"}>亜目</option>
+                            <option value={"family"}>科</option>
+                            <option value={"subfamily"}>亜科</option>
+                            <option value={"tribe"}>族</option>
+                            <option value={"subtribe"}>亜族</option>
+                            <option value={"genus"}>属</option>
+                            <option value={"subgenus"}>亜属</option>
+                            <option value={"species"}>種</option>
+                            <option value={"subspecies"}>亜種</option>
+                        </NativeSelect>
+                    </FormControl>
+                    <Typography variant='body1'>
+                        検索条件に合致した所持タクソン数: {selectCount} &emsp; 総所持種数(亜種含まない): {allSpCount} &emsp; 総所持種数(亜種含む): {allSspCount}
+                    </Typography>
+                </CardContent>
+            </Card>
         </div>
     )
 }
 
 
+const MyList = ({ children, ...props }) => (
+    <ListBase {...props}>
+        <Title title={props.title} />
+        <ListToolbar
+            filters={props.filters}
+            actions={props.actions}
+        />
+        <Counter />
+        <Card>
+            <CardContent>
+                <div style={{ justifyContent: 'space-between' ,display: "flex" }}>
+                    <Typography noWrap>↓一括選択は項目名左端のチェックボックスからできます</Typography>
+                    <Typography noWrap>表示項目の変更は下の黒いボタンからできます↓</Typography>
+                </div>
+            </CardContent>
+            <BulkActionsToolbar>
+                {props.bulkActionButtons}
+            </BulkActionsToolbar>
+            {cloneElement(children, {
+                hasBulkActions: props.bulkActionButtons !== false,
+            })}
+            <Pagination />
+        </Card>
+    </ListBase>
+);
+
 const SpecimenList = props => {
     return (
-        <List {...props} title="標本" actions={<SpecimenListActions />} filters={<SpecimenFilter />} perPage={20}
-            sort={{ field: 'date_last_modified', order: 'DESC' }} exporter={exporter} aside={<Counter />}>
+        <MyList {...props} title="標本" actions={<SpecimenListActions />} filters={<SpecimenFilter />} perPage={20}
+            sort={{ field: 'date_last_modified', order: 'DESC' }} exporter={exporter}>
             <CustomizableDatagrid defaultColumns={['institution_code', 'collection_code',
                 'genus', 'species', 'japanese_name', 'year', 'month', 'day',
-                'state_provice', 'municipality', 'japanese_place_name_detail', 'date_last_modified']}>
+                'japanese_place_name_detail', 'date_last_modified']}>
                 <TextField source="institution_code" label="機関コード" />
                 <TextField source="collection_code" label="標本ID" />
                 <TextField source="genus" label="属" sortable={false} />
@@ -428,7 +452,7 @@ const SpecimenList = props => {
                 <CloneButton label="これをベースに作成" />
                 <ShowButton label="詳細" />
             </CustomizableDatagrid>
-        </List>
+        </MyList>
     )
 };
 
