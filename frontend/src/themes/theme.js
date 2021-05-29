@@ -20,7 +20,7 @@ const coloerTheme = {
 
 const sideBar = {
   sidebar: {
-    width: 200, // The default value is 240
+    width: 220, // The default value is 240
     closedWidth: 55, // The default value is 55
   }
 }

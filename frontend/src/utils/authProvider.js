@@ -51,7 +51,7 @@ export default {
                 }
                 throw e;
             })
-            return Promise.reject();
+            return Promise.resolve();
         }
         return Promise.resolve();
     },
@@ -61,6 +61,7 @@ export default {
             if (isAuthenticated) {
                 auth0.getTokenSilently().then(access_token => {
                     localStorage.setItem('wsat', access_token);
+                    console.log(access_token)
                     return Promise.resolve();
                 }).catch(e => {
                     if (e.error === 'login_required') {
@@ -72,6 +73,7 @@ export default {
                     throw e;
                 })
             };
+            console.log(localStorage.getItem('wsat'))
             return auth0.getTokenSilently();
         })
     },
