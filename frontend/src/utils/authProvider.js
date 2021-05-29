@@ -7,7 +7,7 @@ const auth0 = new Auth0Client({
     redirect_uri: authConfig.redirectURI,
     audience: authConfig.audience,
     cacheLocation: "localstorage",
-    scope: "openid profile read:specimens create:specimens delete:specimens",
+    scope: "openid profile offline_access read:specimens create:specimens delete:specimens",
     useRefreshTokens: true
 });
 
@@ -39,6 +39,18 @@ export default {
     checkError: ({ status }) => {
         if (status === 401 || status === 403) {
             alert("ログイン情報の再送信が必要です OKボタンを押してください")
+            auth0.getTokenSilently().then(access_token => {
+                localStorage.setItem('wsat', access_token);
+                return Promise.resolve();
+            }).catch(e => {
+                if (e.error === 'login_required') {
+                    auth0.loginWithRedirect();
+                }
+                if (e.error === 'consent_required') {
+                    auth0.loginWithRedirect();
+                }
+                throw e;
+            })
             return Promise.reject();
         }
         return Promise.resolve();
