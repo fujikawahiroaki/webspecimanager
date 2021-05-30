@@ -36,7 +36,18 @@ import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
 
-const i18nProvider = polyglotI18nProvider(() => japaneseMessages, 'ja');
+const japaneseDomainMessages = {
+    authlimit: {
+        timeout: "認証期限が切れました 再ログインしてください"
+    }
+}
+const messages = {
+    ja: {
+        ...japaneseMessages,
+        ...japaneseDomainMessages
+    }
+};
+const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'ja');
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {

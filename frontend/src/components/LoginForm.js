@@ -5,6 +5,8 @@ import { userLogin as userLoginAction } from 'react-admin';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
 
 const styles = ({ spacing }) =>
     createStyles({
@@ -27,7 +29,6 @@ const LoginForm = ({ classes, userLogin }) => {
 
         // If code is present, we came back from the provider
         if (code && state) {
-            console.log("oauth callback received")
             userLogin({ location });
         }
     }, [userLogin]);
@@ -39,13 +40,14 @@ const LoginForm = ({ classes, userLogin }) => {
     return (
         <div>
             <CardActions>
+                <Typography>安全のため、10時間に1回自動ログアウトされます</Typography>
                 <Button
                     variant="contained"
                     type="submit"
                     color="primary"
                     onClick={handleLogin}
                 >
-                    Login
+                    ログイン
                 </Button>
             </CardActions>
         </div>

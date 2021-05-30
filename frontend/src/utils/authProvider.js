@@ -21,7 +21,7 @@ export default {
         return auth0.handleRedirectCallback(url.location);
     },
     // called when the user clicks on the logout button
-    logout: () => {
+    logout: async () => {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
             if (isAuthenticated) { // need to check for this as react-admin calls logout in case checkAuth failed
                 if (localStorage.hasOwnProperty('wsat')) {
@@ -38,20 +38,7 @@ export default {
     // called when the API returns an error
     checkError: ({ status }) => {
         if (status === 401 || status === 403) {
-            alert("ログイン情報の再送信が必要です OKボタンを押してください")
-            auth0.getTokenSilently().then(access_token => {
-                localStorage.setItem('wsat', access_token);
-                return Promise.resolve();
-            }).catch(e => {
-                if (e.error === 'login_required') {
-                    auth0.loginWithRedirect();
-                }
-                if (e.error === 'consent_required') {
-                    auth0.loginWithRedirect();
-                }
-                throw e;
-            })
-            return Promise.resolve();
+            return Promise.reject();
         }
         return Promise.resolve();
     },
@@ -61,7 +48,6 @@ export default {
             if (isAuthenticated) {
                 auth0.getTokenSilently().then(access_token => {
                     localStorage.setItem('wsat', access_token);
-                    console.log(access_token)
                     return Promise.resolve();
                 }).catch(e => {
                     if (e.error === 'login_required') {
@@ -72,9 +58,9 @@ export default {
                     }
                     throw e;
                 })
+            } else {
+                return Promise.reject({ message: 'authlimit.timeout' });
             };
-            console.log(localStorage.getItem('wsat'))
-            return auth0.getTokenSilently();
         })
     },
     // called when the user navigates to a new location, to check for permissions / roles
