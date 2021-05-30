@@ -23,9 +23,7 @@ export default {
     logout: async () => {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
             if (isAuthenticated) { // need to check for this as react-admin calls logout in case checkAuth failed
-                if (localStorage.hasOwnProperty('wsat')) {
-                    localStorage.removeItem('wsat');
-                };
+                localStorage.clear();
                 return auth0.logout({
                     redirect_uri: authConfig.redirectURI,
                     federated: true // have to be enabled to invalidate refresh token
@@ -58,9 +56,7 @@ export default {
                     throw e;
                 })
             } else {
-                if (localStorage.hasOwnProperty('wsat')) {
-                    localStorage.removeItem('wsat');
-                };
+                localStorage.clear();
                 return Promise.reject({ message: 'authlimit.timeout' });
             };
         })
