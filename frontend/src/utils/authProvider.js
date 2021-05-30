@@ -6,7 +6,6 @@ const auth0 = new Auth0Client({
     client_id: authConfig.clientID,
     redirect_uri: authConfig.redirectURI,
     audience: authConfig.audience,
-    cacheLocation: "localstorage",
     scope: "openid profile offline_access read:specimens create:specimens delete:specimens",
     useRefreshTokens: true
 });
@@ -59,6 +58,9 @@ export default {
                     throw e;
                 })
             } else {
+                if (localStorage.hasOwnProperty('wsat')) {
+                    localStorage.removeItem('wsat');
+                };
                 return Promise.reject({ message: 'authlimit.timeout' });
             };
         })
