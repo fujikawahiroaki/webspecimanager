@@ -36,7 +36,7 @@ import {
     Button,
     useMutation,
     useRedirect,
-    useNotify
+    useNotify,
 } from 'react-admin';
 
 import { useFormState, useField } from 'react-final-form';
@@ -200,17 +200,7 @@ const SpecimenCreate = (props) => (
                     filterToQuery={searchText => ({ q: searchText })}>
                     <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true} />
                 </ReferenceInput>
-                <ReferenceInput
-                    source="default_taxon_info"
-                    label="登録されたデフォルト分類情報"
-                    reference="taxa/shared-taxa"
-                    perPage={15000}
-                    suggestionLimit={100}
-                    shouldRenderSuggestions={(val) => { return val.trim().length >= 5 }}
-                    filterToQuery={searchText => ({ q: searchText })}>
-                    <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索    5文字以上入力してから検索が開始されます  データ量が非常に多いため表示や検索に時間がかかります  画面右上の読み込みアイコンが回転を停止するまでしばらくお待ちください  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true} />
-                </ReferenceInput>
-                <SearchListInput />
+                <SearchListInput source="default_taxon_info" label="登録されたデフォルト分類情報"/>
             </FormTab>
             <FormTab label="採集地点">
                 <ReferenceInput

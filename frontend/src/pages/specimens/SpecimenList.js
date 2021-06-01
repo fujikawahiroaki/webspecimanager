@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, useMemo, useState, useEffect } from 'react';
+import { cloneElement, useMemo, useState, useEffect, Fragment } from 'react';
 import {
     useListContext,
     useDataProvider,
@@ -378,7 +378,7 @@ const MyList = ({ children, ...props }) => (
                 </div>
             </CardContent>
             <BulkActionsToolbar>
-                {props.bulkActionButtons}
+                <BulkDeleteButton {...props}/>
             </BulkActionsToolbar>
             {cloneElement(children, {
                 hasBulkActions: props.bulkActionButtons !== false,
