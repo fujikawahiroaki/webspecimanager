@@ -43,6 +43,7 @@ import { useFormState, useField } from 'react-final-form';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import SaveIcon from '@material-ui/icons/Save';
+import SearchListInput from './SearchListInput';
 
 
 
@@ -209,6 +210,7 @@ const SpecimenCreate = (props) => (
                     filterToQuery={searchText => ({ q: searchText })}>
                     <AutocompleteInput optionText="scientific_name" helperText="属 種 亜種 和名 から検索    5文字以上入力してから検索が開始されます  データ量が非常に多いため表示や検索に時間がかかります  画面右上の読み込みアイコンが回転を停止するまでしばらくお待ちください  候補リストが最大100件まで表示されます" resettable={true} allowEmpty={true} />
                 </ReferenceInput>
+                <SearchListInput />
             </FormTab>
             <FormTab label="採集地点">
                 <ReferenceInput

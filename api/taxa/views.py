@@ -5,6 +5,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
+from django_property_filter import (PropertyFilterSet,
+                                    PropertyRangeFilter,
+                                    PropertyCharFilter)
 from .models import CustomTaxon, DefaultTaxon
 from .serializers import CustomTaxonSerializer, DefaultTaxonSerializer
 
@@ -13,10 +16,12 @@ class CustomPageNumberPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
 
 
-class DefaultTaxonFilter(filters.FilterSet):
+class DefaultTaxonFilter(PropertyFilterSet):
     """
     デフォルト分類情報のフィルタセット
     """
+    scientific_name = PropertyCharFilter(field_name='scientific_name',
+                                         lookup_expr='icontains')
 
     class Meta:
         model = DefaultTaxon
@@ -25,7 +30,7 @@ class DefaultTaxonFilter(filters.FilterSet):
             'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
             'species', 'subspecies', 'scientific_name_author',
             'name_publishedin_year', 'japanese_name', 'distribution', 'note',
-            'created_at',
+            'created_at', 'scientific_name',
         ]
         filter_overrides = {
             models.CharField: {
@@ -122,12 +127,12 @@ class ReadOnlyDefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
     filterset_class = DefaultTaxonFilter
     pagination_class = CustomPageNumberPagination
     ordering_fields = [
-            'kingdom', 'phylum', 'class_name', 'order', 'suborder',
-            'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
-            'species', 'subspecies', 'scientific_name_author',
-            'name_publishedin_year', 'japanese_name', 'distribution', 'note',
-            'created_at'
-        ]
+        'kingdom', 'phylum', 'class_name', 'order', 'suborder',
+        'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
+        'species', 'subspecies', 'scientific_name_author',
+        'name_publishedin_year', 'japanese_name', 'distribution', 'note',
+        'created_at'
+    ]
 
     def get_queryset(self):
         return DefaultTaxon.objects.all()
@@ -144,12 +149,12 @@ class CustomTaxonViewSet(viewsets.ModelViewSet):
     filterset_class = CustomTaxonFilter
     pagination_class = CustomPageNumberPagination
     ordering_fields = [
-            'kingdom', 'phylum', 'class_name', 'order', 'suborder',
-            'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
-            'species', 'subspecies', 'scientific_name_author',
-            'name_publishedin_year', 'japanese_name', 'distribution', 'note',
-            'created_at'
-        ]
+        'kingdom', 'phylum', 'class_name', 'order', 'suborder',
+        'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
+        'species', 'subspecies', 'scientific_name_author',
+        'name_publishedin_year', 'japanese_name', 'distribution', 'note',
+        'created_at'
+    ]
 
     def get_queryset(self):
         user = self.request.user
