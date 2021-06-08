@@ -30,7 +30,8 @@ class DefaultTaxonFilter(PropertyFilterSet):
             'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
             'species', 'subspecies', 'scientific_name_author',
             'name_publishedin_year', 'japanese_name', 'distribution', 'note',
-            'created_at', 'scientific_name',
+            'created_at', 'scientific_name', 'change_genus_brackets', 'unknown_author_brackets',
+            'unknown_name_publishedin_year_brackets'
         ]
         filter_overrides = {
             models.CharField: {
@@ -53,6 +54,9 @@ class DefaultTaxonFilter(PropertyFilterSet):
                 'extra': lambda f: {
                     'lookup_expr': 'date',
                 }
+            },
+            models.BooleanField: {
+                'filter_class': filters.BooleanFilter,
             }
         }
 
@@ -69,7 +73,8 @@ class CustomTaxonFilter(filters.FilterSet):
             'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
             'species', 'subspecies', 'scientific_name_author',
             'name_publishedin_year', 'japanese_name', 'distribution', 'note',
-            'created_at',
+            'created_at', 'change_genus_brackets', 'unknown_author_brackets',
+            'unknown_name_publishedin_year_brackets'
         ]
         filter_overrides = {
             models.CharField: {
@@ -92,6 +97,9 @@ class CustomTaxonFilter(filters.FilterSet):
                 'extra': lambda f: {
                     'lookup_expr': 'date',
                 }
+            },
+            models.BooleanField: {
+                'filter_class': filters.BooleanFilter,
             }
         }
 
@@ -131,7 +139,8 @@ class ReadOnlyDefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
         'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
         'species', 'subspecies', 'scientific_name_author',
         'name_publishedin_year', 'japanese_name', 'distribution', 'note',
-        'created_at'
+        'created_at', 'change_genus_brackets', 'unknown_author_brackets',
+        'unknown_name_publishedin_year_brackets'
     ]
 
     def get_queryset(self):
@@ -153,7 +162,8 @@ class CustomTaxonViewSet(viewsets.ModelViewSet):
         'family', 'subfamily', 'tribe', 'subtribe', 'genus', 'subgenus',
         'species', 'subspecies', 'scientific_name_author',
         'name_publishedin_year', 'japanese_name', 'distribution', 'note',
-        'created_at'
+        'created_at', 'change_genus_brackets', 'unknown_author_brackets',
+        'unknown_name_publishedin_year_brackets'
     ]
 
     def get_queryset(self):

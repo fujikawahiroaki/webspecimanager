@@ -84,6 +84,16 @@ class Taxon(models.Model):
                                                 blank=True)
     # 以上、GBIFベースでのカラム定義終了
     # 以下はオリジナルのカラム
+    # 属移動カッコの有無
+    change_genus_brackets = models.BooleanField(verbose_name='属移動カッコの有無',
+                                                default=False,
+                                                blank=True)
+    unknown_author_brackets = models.BooleanField(verbose_name='記載者不明角カッコの有無',
+                                                  default=False,
+                                                  blank=True)
+    unknown_name_publishedin_year_brackets = models.BooleanField(verbose_name='記載年不明角カッコの有無',
+                                                                 default=False,
+                                                                 blank=True)
     # 和名
     japanese_name = models.CharField(verbose_name='和名',
                                      default='',

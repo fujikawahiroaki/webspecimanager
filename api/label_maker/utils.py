@@ -162,6 +162,9 @@ class LabelCanvas:
         # 記載者と記載年
         author_and_descyear = label_data.scientific_name_author +\
             ', ' + str(label_data.name_publishedin_year)
+        # 属移動カッコがあれば記載者と記載年をカッコで囲む
+        if label_data.change_genus_brackets is True:
+            author_and_descyear = f"({author_and_descyear})"
         if label_data.scientific_name_author == '':
             author_and_descyear = ''
         # 和名は長い場合2行にまたがれるようにする

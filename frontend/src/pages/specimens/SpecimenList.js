@@ -25,6 +25,7 @@ import {
     TabbedShowLayout,
     RichTextField,
     DateField,
+    BooleanField,
     List,
     Edit,
     Create,
@@ -39,10 +40,10 @@ import {
     SimpleForm,
     TextInput,
     SearchInput,
+    BooleanInput,
     Filter,
     NumberInput,
     DateInput,
-    BooleanField,
     downloadCSV,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
@@ -111,6 +112,9 @@ const SpecimenFilter = props => (
         <TextInput source="scientific_name_author" label="記載者" resettable />
         <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable />
         <NumberInput source="name_publishedin_year_max" label="記載年の範囲(入力年以前)" resettable />
+        <BooleanInput source="change_genus_brackets" label="属移動カッコの有無" resettable />
+        <BooleanInput source="unknown_author_brackets" label="記載者不明角カッコの有無" resettable />
+        <BooleanInput source="unknown_name_publishedin_year_brackets" label="記載年不明角カッコの有無" resettable />
         <TextInput source="kingdom" label="界" resettable />
         <TextInput source="phylum" label="門" resettable />
         <TextInput source="class_name" label="綱" resettable />
@@ -180,6 +184,9 @@ const SpecimenFilter = props => (
         <TextInput source="default_taxon_info__scientific_name_author" label="記載者(デフォルト分類情報)" resettable />
         <NumberInput source="default_taxon_info__name_publishedin_year_min" label="記載年の範囲(入力年以降)(デフォルト分類情報)" resettable />
         <NumberInput source="default_taxon_info__name_publishedin_year_max" label="記載年の範囲(入力年以前)(デフォルト分類情報)" resettable />
+        <BooleanInput source="default_taxon_info__change_genus_brackets" label="属移動カッコの有無(デフォルト分類情報)" resettable />
+        <BooleanInput source="default_taxon_info__unknown_author_brackets" label="記載者不明角カッコの有無(デフォルト分類情報)" resettable />
+        <BooleanInput source="default_taxon_info__unknown_name_publishedin_year_brackets" label="記載年不明角カッコの有無(デフォルト分類情報)" resettable />
         <TextInput source="default_taxon_info__kingdom" label="界(デフォルト分類情報)" resettable />
         <TextInput source="default_taxon_info__phylum" label="門(デフォルト分類情報)" resettable />
         <TextInput source="default_taxon_info__class_name" label="綱(デフォルト分類情報)" resettable />
@@ -197,6 +204,9 @@ const SpecimenFilter = props => (
         <TextInput source="custom_taxon_info__scientific_name_author" label="記載者(カスタム分類情報)" resettable />
         <NumberInput source="custom_taxon_info__name_publishedin_year_min" label="記載年の範囲(入力年以降)(カスタム分類情報)" resettable />
         <NumberInput source="custom_taxon_info__name_publishedin_year_max" label="記載年の範囲(入力年以前)(カスタム分類情報)" resettable />
+        <BooleanInput source="custom_taxon_info__change_genus_brackets" label="属移動カッコの有無(カスタム分類情報)" resettable />
+        <BooleanInput source="custom_taxon_info__unknown_author_brackets" label="記載者不明角カッコの有無(カスタム分類情報)" resettable />
+        <BooleanInput source="custom_taxon_info__unknown_name_publishedin_year_brackets" label="記載年不明角カッコの有無(カスタム分類情報)" resettable />
         <TextInput source="custom_taxon_info__kingdom" label="界(カスタム分類情報)" resettable />
         <TextInput source="custom_taxon_info__phylum" label="門(カスタム分類情報)" resettable />
         <TextInput source="custom_taxon_info__class_name" label="綱(カスタム分類情報)" resettable />
@@ -246,6 +256,9 @@ const exporter = specimens => {
             subspecies: specimen.subspecies,
             scientific_name_author: specimen.scientific_name_author,
             name_publishedin_year: specimen.name_publishedin_year,
+            change_genus_brackets: specimen.change_genus_brackets,
+            unknown_author_brackets: specimen.unknown_author_brackets,
+            unknown_name_publishedin_year_brackets: specimen.unknown_name_publishedin_year_brackets,
             sex: specimen.sex,
             japanese_name: specimen.japanese_name,
             contient: specimen.contient,
@@ -403,6 +416,9 @@ const SpecimenList = props => {
                 <TextField source="subspecies" label="亜種" sortable={false} />
                 <TextField source="scientific_name_author" label="記載者" sortable={false} />
                 <TextField source="name_publishedin_year" label="記載年" sortable={false} />
+                <BooleanField source="change_genus_brackets" label="属移動カッコの有無" sortable={false} />
+                <BooleanField source="unknown_author_brackets" label="記載者不明角カッコの有無" sortable={false} />
+                <BooleanField source="unknown_name_publishedin_year_brackets" label="記載年不明角カッコの有無" sortable={false} />
                 <TextField source="japanese_name" label="和名" sortable={false} />
                 <TextField source="kingdom" label="界" sortable={false} />
                 <TextField source="phylum" label="門" sortable={false} />

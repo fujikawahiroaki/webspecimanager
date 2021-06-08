@@ -13,6 +13,7 @@ import {
     TextField,
     ImageField,
     NumberField,
+    BooleanField,
     EditButton,
 } from 'react-admin';
 import { LeafletCoordinateField } from '../../utils/leafletField';
@@ -74,6 +75,9 @@ const SpecimenShow = props => (
                 <TextField source="subspecies" label="亜種"/>
                 <TextField source="scientific_name_author" label="記載者"/>
                 <TextField source="name_publishedin_year" label="記載年"/>
+                <BooleanField source="change_genus_brackets" label="属移動カッコの有無" sortable={false} />
+                <BooleanField source="unknown_author_brackets" label="記載者不明角カッコの有無" sortable={false} />
+                <BooleanField source="unknown_name_publishedin_year_brackets" label="記載年不明角カッコの有無" sortable={false} />
                 <TextField source="japanese_name" label="和名"/>
             </Tab>
             <Tab label='採集地点'>

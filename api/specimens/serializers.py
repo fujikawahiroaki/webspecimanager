@@ -33,6 +33,9 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
     scientific_name_author = serializers.CharField(read_only=True)
     name_publishedin_year = serializers.IntegerField(read_only=True)
     japanese_name = serializers.CharField(read_only=True)
+    change_genus_brackets = serializers.BooleanField(read_only=True)
+    unknown_author_brackets = serializers.BooleanField(read_only=True)
+    unknown_name_publishedin_year_brackets = serializers.BooleanField(read_only=True)
     # コレクション設定
     collection_name = serializers.ReadOnlyField(
         source='collection_settings_info.collection_name')
@@ -94,7 +97,8 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
                   'subfamily', 'tribe', 'subtribe',
                   'genus', 'subgenus', 'species', 'subspecies',
                   'scientific_name_author', 'name_publishedin_year',
-                  'japanese_name', 'contient', 'island_group',
+                  'japanese_name', 'change_genus_brackets', 'unknown_author_brackets',
+                  'unknown_name_publishedin_year_brackets', 'contient', 'island_group',
                   'country', 'island', 'state_provice',
                   'county', 'municipality',
                   'japanese_place_name', 'japanese_place_name_detail',
@@ -188,6 +192,15 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
     def get_japanese_name(self, instance):
         return self.make_taxon_field(instance, "japanese_name")
 
+    def get_change_genus_brackets(self, instance):
+        return self.make_taxon_field(instance, "change_genus_brackets")
+
+    def get_unknown_author_brackets(self, instance):
+        return self.make_taxon_field(instance, "unknown_author_brackets")
+
+    def get_unknown_name_publishedin_year_brackets(self, instance):
+        return self.make_taxon_field(instance, "unknown_name_publishedin_year_brackets")
+
     def get_collection_name(self, instance):
         if instance.collection_settings_info is not None:
             return instance.collection_settings_info.collection_name
@@ -233,6 +246,9 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
     scientific_name_author = serializers.SerializerMethodField()
     name_publishedin_year = serializers.SerializerMethodField()
     japanese_name = serializers.SerializerMethodField()
+    change_genus_brackets = serializers.SerializerMethodField()
+    unknown_author_brackets = serializers.SerializerMethodField()
+    unknown_name_publishedin_year_brackets = serializers.SerializerMethodField()
     collection_name = serializers.SerializerMethodField()
     institution_code = serializers.SerializerMethodField()
     country = serializers.SerializerMethodField()
@@ -250,7 +266,8 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
         fields = ['id', 'date_last_modified', 'user',
                   'genus', 'species', 'subspecies',
                   'scientific_name_author', 'name_publishedin_year',
-                  'japanese_name', 'country', 'island', 'state_provice',
+                  'japanese_name', 'change_genus_brackets', 'unknown_author_brackets',
+                  'unknown_name_publishedin_year_brackets', 'country', 'island', 'state_provice',
                   'county', 'municipality', 'japanese_place_name',
                   'longitude', 'latitude', 'maximum_elevation',
                   'collection_name', 'institution_code', 'collection_code',

@@ -33,6 +33,7 @@ import {
     SimpleForm,
     TextInput,
     SearchInput,
+    BooleanInput,
     Filter,
     NumberInput,
     DateInput,
@@ -101,6 +102,9 @@ const CustomTaxonFilter = props => (
         <TextInput source="scientific_name_author" label="記載者" resettable/>
         <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable/>
         <NumberInput source="name_publishedin_year_max" label="記載年の範囲(入力年以前)" resettable/>
+        <BooleanInput source="change_genus_brackets" label="属移動カッコの有無" resettable />
+        <BooleanInput source="unknown_author_brackets" label="記載者不明角カッコの有無" resettable />
+        <BooleanInput source="unknown_name_publishedin_year_brackets" label="記載年不明角カッコの有無" resettable />
         <TextInput source="kingdom" label="界" resettable/>
         <TextInput source="phylum" label="門" resettable/>
         <TextInput source="class_name" label="綱" resettable/>
@@ -135,6 +139,9 @@ const exporter = taxa => {
             subspecies: taxon.subspecies,
             scientific_name_author: taxon.scientific_name_author,
             name_publishedin_year: taxon.name_publishedin_year,
+            change_genus_brackets: taxon.change_genus_brackets,
+            unknown_author_brackets: taxon.unknown_author_brackets,
+            unknown_name_publishedin_year_brackets: taxon.unknown_name_publishedin_year_brackets,
             japanese_name: taxon.japanese_name,
             distribution: taxon.distribution,
             created_at: taxon.created_at,
@@ -153,7 +160,7 @@ const CustomTaxonList = props => (
     <List {...props} title="カスタム分類情報" actions={<CustomTaxonListActions/>} filters={<CustomTaxonFilter />} perPage={20}
         sort={{ field: 'family', order: 'DESC' }} exporter={exporter}>
         <CustomizableDatagrid defaultColumns={['family', 'genus', 'species', 'subspecies', 'scientific_name_author',
-                                               'name_publishedin_year', 'japanese_name']}>
+                                               'name_publishedin_year', 'change_genus_brackets', 'japanese_name']}>
             <TextField source="family" label="科" />
             <TextField source="genus" label="属"/>
             <TextField source="subgenus" label="亜属"/>
@@ -161,6 +168,9 @@ const CustomTaxonList = props => (
             <TextField source="subspecies" label="亜種"/>
             <TextField source="scientific_name_author" label="記載者"/>
             <TextField source="name_publishedin_year" label="記載年"/>
+            <BooleanField source='change_genus_brackets' label='属移動カッコの有無' />
+            <BooleanField source='unknown_author_brackets' label='記載者不明角カッコの有無' />
+            <BooleanField source='unknown_name_publishedin_year_brackets' label='記載年不明角カッコの有無' />
             <TextField source="japanese_name" label="和名"/>
             <TextField source="kingdom" label="界" />
             <TextField source="phylum" label="門" />

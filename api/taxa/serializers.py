@@ -1,3 +1,4 @@
+from django.db.models.expressions import F
 from rest_framework import serializers
 from django.core.validators import RegexValidator
 from drf_extra_fields.fields import Base64ImageField
@@ -8,6 +9,9 @@ class DefaultTaxonSerializer(serializers.ModelSerializer):
     """デフォルト分類モデル用シリアライザ"""
     name_publishedin_year = serializers.IntegerField(required=False)
     scientific_name = serializers.CharField(read_only=True)
+    change_genus_brackets = serializers.BooleanField(required=False, default=False)
+    unknown_author_brackets = serializers.BooleanField(required=False, default=False)
+    unknown_name_publishedin_year_brackets = serializers.BooleanField(required=False, default=False)
     image1 = Base64ImageField(required=False)
     image2 = Base64ImageField(required=False)
     image3 = Base64ImageField(required=False)
@@ -79,6 +83,9 @@ class CustomTaxonSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     name_publishedin_year = serializers.IntegerField(required=False)
     scientific_name = serializers.CharField(read_only=True)
+    change_genus_brackets = serializers.BooleanField(required=False, default=False)
+    unknown_author_brackets = serializers.BooleanField(required=False, default=False)
+    unknown_name_publishedin_year_brackets = serializers.BooleanField(required=False, default=False)
     image1 = Base64ImageField(required=False)
     image2 = Base64ImageField(required=False)
     image3 = Base64ImageField(required=False)

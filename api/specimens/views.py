@@ -2,9 +2,11 @@ import json
 import collections
 from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_EVEN
 from django_filters import rest_framework as filters
+from django_filters.filters import BooleanFilter
 from django_property_filter import (PropertyFilterSet,
                                     PropertyRangeFilter,
-                                    PropertyCharFilter)
+                                    PropertyCharFilter,
+                                    PropertyBooleanFilter)
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -63,6 +65,9 @@ class SpecimenFilter(PropertyFilterSet):
                                                 lookup_expr='range')
     japanese_name = PropertyCharFilter(field_name='japanese_name',
                                        lookup_expr='icontains')
+    change_genus_brackets = PropertyBooleanFilter(field_name='change_genus_brackets')
+    unknown_author_brackets = PropertyBooleanFilter(field_name='unknown_author_brackets')
+    unknown_name_publishedin_year_brackets = PropertyBooleanFilter(field_name='unknown_name_publishedin_year_brackets')
 
     class Meta:
         model = Specimen
@@ -77,6 +82,9 @@ class SpecimenFilter(PropertyFilterSet):
                   'default_taxon_info__subspecies',
                   'default_taxon_info__scientific_name_author',
                   'default_taxon_info__name_publishedin_year',
+                  'default_taxon_info__change_genus_brackets',
+                  'default_taxon_info__unknown_author_brackets',
+                  'default_taxon_info__unknown_name_publishedin_year_brackets',
                   'default_taxon_info__japanese_name',
                   'default_taxon_info__distribution',
                   'default_taxon_info__note',
@@ -90,6 +98,9 @@ class SpecimenFilter(PropertyFilterSet):
                   'custom_taxon_info__subspecies',
                   'custom_taxon_info__scientific_name_author',
                   'custom_taxon_info__name_publishedin_year',
+                  'custom_taxon_info__change_genus_brackets',
+                  'custom_taxon_info__unknown_author_brackets',
+                  'custom_taxon_info__unknown_name_publishedin_year_brackets',
                   'custom_taxon_info__japanese_name',
                   'custom_taxon_info__distribution',
                   'custom_taxon_info__note',
@@ -120,7 +131,8 @@ class SpecimenFilter(PropertyFilterSet):
                   'order', 'suborder', 'family', 'subfamily', 'tribe',
                   'subtribe', 'genus', 'subgenus', 'species', 'subspecies',
                   'scientific_name_author', 'name_publishedin_year',
-                  'japanese_name', 'date_last_modified'
+                  'japanese_name', 'change_genus_brackets',
+                  'unknown_author_brackets', 'unknown_name_publishedin_year_brackets', 'date_last_modified'
                   ]
         property_fields = [
             ('collect_point_info__longitude', PropertyRangeFilter, ['range']),
@@ -151,6 +163,9 @@ class SpecimenFilter(PropertyFilterSet):
             models.DateTimeField: {
                 'filter_class': filters.DateFromToRangeFilter,
             },
+            models.BooleanField: {
+                'filter_class': filters.BooleanFilter,
+            }
         }
 
 

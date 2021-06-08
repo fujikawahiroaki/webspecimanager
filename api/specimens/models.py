@@ -241,6 +241,18 @@ class Specimen(models.Model):
     def japanese_name(self):
         return self.make_taxon_field('japanese_name')
 
+    @property
+    def change_genus_brackets(self):
+        return self.make_taxon_field('change_genus_brackets')
+
+    @property
+    def unknown_author_brackets(self):
+        return self.make_taxon_field('unknown_author_brackets')
+
+    @property
+    def unknown_name_publishedin_year_brackets(self):
+        return self.make_taxon_field('unknown_name_publishedin_year_brackets')
+
     def __str__(self):
         if self.collection_settings_info is not None:
             return self.collection_settings_info.institution_code + \
