@@ -99,7 +99,7 @@ class LabelCanvas:
             mini_elv = '?'
         else:
             mini_elv = str(math.floor(float(label_data.minimum_elevation)))
-        elv = f"{mini_elv}–{max_elv}m"
+        elv = f"alt.{mini_elv}–{max_elv}m"
         # 地名
         place_name_list = [label_data.state_provice, label_data.county,
                            label_data.municipality, elv, coordinate]
