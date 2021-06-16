@@ -63,6 +63,8 @@ class SpecimenFilter(PropertyFilterSet):
                                                 lookup_expr='icontains')
     name_publishedin_year = PropertyRangeFilter(field_name='name_publishedin_year',
                                                 lookup_expr='range')
+    actual_dist_year = PropertyRangeFilter(field_name='actual_dist_year',
+                                                lookup_expr='range')
     japanese_name = PropertyCharFilter(field_name='japanese_name',
                                        lookup_expr='icontains')
     change_genus_brackets = PropertyBooleanFilter(field_name='change_genus_brackets')
@@ -82,6 +84,7 @@ class SpecimenFilter(PropertyFilterSet):
                   'default_taxon_info__subspecies',
                   'default_taxon_info__scientific_name_author',
                   'default_taxon_info__name_publishedin_year',
+                  'default_taxon_info__actual_dist_year',
                   'default_taxon_info__change_genus_brackets',
                   'default_taxon_info__unknown_author_brackets',
                   'default_taxon_info__unknown_name_publishedin_year_brackets',
@@ -98,6 +101,7 @@ class SpecimenFilter(PropertyFilterSet):
                   'custom_taxon_info__subspecies',
                   'custom_taxon_info__scientific_name_author',
                   'custom_taxon_info__name_publishedin_year',
+                  'custom_taxon_info__actual_dist_year',
                   'custom_taxon_info__change_genus_brackets',
                   'custom_taxon_info__unknown_author_brackets',
                   'custom_taxon_info__unknown_name_publishedin_year_brackets',
@@ -131,6 +135,7 @@ class SpecimenFilter(PropertyFilterSet):
                   'order', 'suborder', 'family', 'subfamily', 'tribe',
                   'subtribe', 'genus', 'subgenus', 'species', 'subspecies',
                   'scientific_name_author', 'name_publishedin_year',
+                  'actual_dist_year',
                   'japanese_name', 'change_genus_brackets',
                   'unknown_author_brackets', 'unknown_name_publishedin_year_brackets', 'date_last_modified'
                   ]

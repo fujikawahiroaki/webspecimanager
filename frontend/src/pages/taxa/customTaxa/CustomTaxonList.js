@@ -102,6 +102,8 @@ const CustomTaxonFilter = props => (
         <TextInput source="scientific_name_author" label="記載者" resettable/>
         <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable/>
         <NumberInput source="name_publishedin_year_max" label="記載年の範囲(入力年以前)" resettable/>
+        <NumberInput source="actual_dist_year_min" label="記載実流通年の範囲(入力年以降)" resettable/>
+        <NumberInput source="actual_dist_year_max" label="記載実流通年の範囲(入力年以前)" resettable/>
         <BooleanInput source="change_genus_brackets" label="属移動カッコの有無" resettable />
         <BooleanInput source="unknown_author_brackets" label="記載者不明角カッコの有無" resettable />
         <BooleanInput source="unknown_name_publishedin_year_brackets" label="記載年不明角カッコの有無" resettable />
@@ -139,6 +141,7 @@ const exporter = taxa => {
             subspecies: taxon.subspecies,
             scientific_name_author: taxon.scientific_name_author,
             name_publishedin_year: taxon.name_publishedin_year,
+            actual_dist_year: taxon.actual_dist_year,
             change_genus_brackets: taxon.change_genus_brackets,
             unknown_author_brackets: taxon.unknown_author_brackets,
             unknown_name_publishedin_year_brackets: taxon.unknown_name_publishedin_year_brackets,
@@ -168,6 +171,7 @@ const CustomTaxonList = props => (
             <TextField source="subspecies" label="亜種"/>
             <TextField source="scientific_name_author" label="記載者"/>
             <TextField source="name_publishedin_year" label="記載年"/>
+            <TextField source="actual_dist_year" label="記載実流通年"/>
             <BooleanField source='change_genus_brackets' label='属移動カッコの有無' />
             <BooleanField source='unknown_author_brackets' label='記載者不明角カッコの有無' />
             <BooleanField source='unknown_name_publishedin_year_brackets' label='記載年不明角カッコの有無' />

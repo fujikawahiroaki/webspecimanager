@@ -76,30 +76,40 @@ class LabelCanvas:
         label_data = Box(label_dict)
         # 国号+島名
         country_and_island = label_data.country + ': ' + label_data.island
+        # GPS座標 dddd形式
+        latitude = str(label_data.latitude) + '°N'  # 緯度
+        if not label_data.latitude =='' or not label_data.longitude == '':
+            if float(label_data.latitude) < 0:
+                latitude = str(-float(label_data.latitude)) + '°S'
+            longitude = str(label_data.longitude) + '°E'  # 経度
+            if float(label_data.longitude) < 0:
+                longitude = str(-float(label_data.longitude)) + '°W'
+        elif label_data.latitude == '0.0' and label_data.longitude == '0.0' or label_data.latitude == '' or label_data.longitude == '':
+            latitude = 'N:? '
+            longitude = 'E:? '
+        coordinate = latitude + ' ' + longitude
+        # 標高
+        max_elv = ''
+        mini_elv = ''
+        if label_data.maximum_elevation == '':
+            max_elv = '?'
+        else:
+            max_elv = str(math.floor(float(label_data.maximum_elevation)))            
+        if label_data.minimum_elevation == '':
+            mini_elv = '?'
+        else:
+            mini_elv = str(math.floor(float(label_data.minimum_elevation)))
+        elv = f"{mini_elv}–{max_elv}m"
         # 地名
         place_name_list = [label_data.state_provice, label_data.county,
-                           label_data.municipality]
+                           label_data.municipality, elv, coordinate]
         # null要素を排除
         place_name_list = [s for s in place_name_list if s != '']
         place_name = textwrap.fill(', '.join(place_name_list),
                                    self.one_line_limit)
         # 地名スペース行分使い切るまで改行
-        while place_name.count('\n') < 3:
+        while place_name.count('\n') < 4:
             place_name += '\n'
-        # GPS座標 dddd形式
-        latitude = str(label_data.latitude) + 'N '  # 緯度
-        if label_data.latitude == '0.0':
-            latitude = 'N:? '
-        longitude = str(label_data.longitude) + 'E '  # 経度
-        if label_data.longitude == '0.0':
-            longitude = 'E:? '
-        coordinate = latitude + ' ' + longitude
-        # 標高
-        if label_data.maximum_elevation == '':
-            elv = '?'
-        else:
-            elv = str(math.floor(float(label_data.maximum_elevation))) + 'm'
-        coordinate_and_elv = coordinate + elv
         # 日付と採集者
         year = str(label_data.year)
         month = str(label_data.month)
@@ -125,7 +135,7 @@ class LabelCanvas:
         japanese_place_name = label_data.japanese_place_name
         # 各項目を連結
         return '\n'.join([country_and_island, place_name,
-                          coordinate_and_elv, date_and_collecter,
+                          date_and_collecter,
                           japanese_place_name])
 
     def _gen_coll_label(self, label_dict):
@@ -160,7 +170,29 @@ class LabelCanvas:
         elif label_data.sex == 'I':
             sex = 'Indeterminate'
         # 記載者と記載年
-        author_and_descyear = label_data.scientific_name_author +\
+        def authors_split(authors):
+            if not authors:
+                return ''
+            author_list = [author.strip() for author in authors.replace('. ', '.').replace('&', ' ').replace(', ', ' ').split()]
+            if not author_list:
+                return ''
+            first_author = author_list[0]
+            second_author = ''
+            rest_author = ''
+            if len(author_list) >= 2:
+                second_author = author_list[1]
+                if len(author_list) >= 3:
+                    rest_author = author_list[2]
+            if second_author == '':
+                return first_author
+            elif not second_author == '' and rest_author == '':
+                if  len(f"{first_author} & {second_author}") <= self.one_line_limit - 8:
+                    return f"{first_author} & {second_author}"
+                else:
+                    return f"{first_author} &al."
+            else:
+                return f"{first_author} &al."
+        author_and_descyear = authors_split(label_data.scientific_name_author) +\
             ', ' + str(label_data.name_publishedin_year)
         # 属移動カッコがあれば記載者と記載年をカッコで囲む
         if label_data.change_genus_brackets is True:

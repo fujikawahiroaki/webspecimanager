@@ -88,12 +88,18 @@ class Taxon(models.Model):
     change_genus_brackets = models.BooleanField(verbose_name='属移動カッコの有無',
                                                 default=False,
                                                 blank=True)
+    # 記載者不明角カッコの有無
     unknown_author_brackets = models.BooleanField(verbose_name='記載者不明角カッコの有無',
                                                   default=False,
                                                   blank=True)
+    # 記載年不明角カッコの有無
     unknown_name_publishedin_year_brackets = models.BooleanField(verbose_name='記載年不明角カッコの有無',
                                                                  default=False,
                                                                  blank=True)
+    # 記載実流通年
+    actual_dist_year = models.IntegerField(verbose_name='記載実流通年',
+                                           default=0,
+                                           blank=True)
     # 和名
     japanese_name = models.CharField(verbose_name='和名',
                                      default='',

@@ -37,7 +37,11 @@ export function LeafletCoordinateInput({ record={}, source}) {
         fetch(`https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon=${lng}&lat=${lat}&outtype=JSON`)
             .then(response => {
                 return response.json().then(elv => {
-                    setElevation(elv.elevation);
+                    if (elv.elevation === '-----') {
+                        setElevation(elv.elevation);
+                    } else {
+                        setElevation(elv.elevation.toFixed(0));
+                    };
                 });
             });
     }
@@ -69,8 +73,8 @@ export function LeafletCoordinateInput({ record={}, source}) {
         const map = useMap();
         map.on('geosearch/showlocation',
             function (e) {
-                setLongitude(e.location.x);
-                setLatitude(e.location.y);
+                setLongitude(e.location.x.toFixed(6));
+                setLatitude(e.location.y.toFixed(6));
                 GetElv(e.location.x, e.location.y)
                 map.setView({ lat: e.location.y, lon: e.location.x }, 15)
             });

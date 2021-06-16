@@ -253,6 +253,10 @@ class Specimen(models.Model):
     def unknown_name_publishedin_year_brackets(self):
         return self.make_taxon_field('unknown_name_publishedin_year_brackets')
 
+    @property
+    def actual_dist_year(self):
+        return self.make_taxon_field('actual_dist_year')
+
     def __str__(self):
         if self.collection_settings_info is not None:
             return self.collection_settings_info.institution_code + \

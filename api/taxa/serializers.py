@@ -8,6 +8,7 @@ from .models import CustomTaxon, DefaultTaxon, Taxon
 class DefaultTaxonSerializer(serializers.ModelSerializer):
     """デフォルト分類モデル用シリアライザ"""
     name_publishedin_year = serializers.IntegerField(required=False)
+    actual_dist_year = serializers.IntegerField(required=False)
     scientific_name = serializers.CharField(read_only=True)
     change_genus_brackets = serializers.BooleanField(required=False, default=False)
     unknown_author_brackets = serializers.BooleanField(required=False, default=False)
@@ -82,6 +83,7 @@ class CustomTaxonSerializer(serializers.ModelSerializer):
     """カスタム分類モデル用シリアライザ"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     name_publishedin_year = serializers.IntegerField(required=False)
+    actual_dist_year = serializers.IntegerField(required=False)
     scientific_name = serializers.CharField(read_only=True)
     change_genus_brackets = serializers.BooleanField(required=False, default=False)
     unknown_author_brackets = serializers.BooleanField(required=False, default=False)

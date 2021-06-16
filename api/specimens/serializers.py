@@ -32,6 +32,7 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
     subspecies = serializers.CharField(read_only=True)
     scientific_name_author = serializers.CharField(read_only=True)
     name_publishedin_year = serializers.IntegerField(read_only=True)
+    actual_dist_year = serializers.IntegerField(read_only=True)
     japanese_name = serializers.CharField(read_only=True)
     change_genus_brackets = serializers.BooleanField(read_only=True)
     unknown_author_brackets = serializers.BooleanField(read_only=True)
@@ -96,7 +97,7 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
                   'class_name', 'order', 'suborder', 'family',
                   'subfamily', 'tribe', 'subtribe',
                   'genus', 'subgenus', 'species', 'subspecies',
-                  'scientific_name_author', 'name_publishedin_year',
+                  'scientific_name_author', 'name_publishedin_year', 'actual_dist_year',
                   'japanese_name', 'change_genus_brackets', 'unknown_author_brackets',
                   'unknown_name_publishedin_year_brackets', 'contient', 'island_group',
                   'country', 'island', 'state_provice',
@@ -189,6 +190,9 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
     def get_name_publishedin_year(self, instance):
         return self.make_taxon_field(instance, "name_publishedin_year")
 
+    def get_actual_dist_year(self, instance):
+        return self.make_taxon_field(instance, "actual_dist_year")
+
     def get_japanese_name(self, instance):
         return self.make_taxon_field(instance, "japanese_name")
 
@@ -237,6 +241,9 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
     def get_latitude(self, instance):
         return self.make_collect_point_field(instance, 'latitude')
 
+    def get_minimum_elevation(self, instance):
+        return self.make_collect_point_field(instance, 'minimum_elevation')
+
     def get_maximum_elevation(self, instance):
         return self.make_collect_point_field(instance, 'maximum_elevation')
 
@@ -245,6 +252,7 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
     subspecies = serializers.SerializerMethodField()
     scientific_name_author = serializers.SerializerMethodField()
     name_publishedin_year = serializers.SerializerMethodField()
+    actual_dist_year = serializers.SerializerMethodField()
     japanese_name = serializers.SerializerMethodField()
     change_genus_brackets = serializers.SerializerMethodField()
     unknown_author_brackets = serializers.SerializerMethodField()
@@ -260,16 +268,17 @@ class SpecimenForLabelSerializer(CountryFieldMixin,
     longitude = serializers.SerializerMethodField()
     latitude = serializers.SerializerMethodField()
     maximum_elevation = serializers.SerializerMethodField()
+    minimum_elevation = serializers.SerializerMethodField()
 
     class Meta:
         model = Specimen
         fields = ['id', 'date_last_modified', 'user',
                   'genus', 'species', 'subspecies',
-                  'scientific_name_author', 'name_publishedin_year',
+                  'scientific_name_author', 'name_publishedin_year', 'actual_dist_year',
                   'japanese_name', 'change_genus_brackets', 'unknown_author_brackets',
                   'unknown_name_publishedin_year_brackets', 'country', 'island', 'state_provice',
                   'county', 'municipality', 'japanese_place_name',
-                  'longitude', 'latitude', 'maximum_elevation',
+                  'longitude', 'latitude', 'maximum_elevation', 'minimum_elevation',
                   'collection_name', 'institution_code', 'collection_code',
                   'identified_by', 'date_identified', 'collecter',
                   'year', 'month', 'day', 'sex', 'sampling_protocol']

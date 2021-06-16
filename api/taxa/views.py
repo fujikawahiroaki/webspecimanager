@@ -31,7 +31,7 @@ class DefaultTaxonFilter(PropertyFilterSet):
             'species', 'subspecies', 'scientific_name_author',
             'name_publishedin_year', 'japanese_name', 'distribution', 'note',
             'created_at', 'scientific_name', 'change_genus_brackets', 'unknown_author_brackets',
-            'unknown_name_publishedin_year_brackets'
+            'unknown_name_publishedin_year_brackets', 'actual_dist_year'
         ]
         filter_overrides = {
             models.CharField: {
@@ -74,7 +74,7 @@ class CustomTaxonFilter(filters.FilterSet):
             'species', 'subspecies', 'scientific_name_author',
             'name_publishedin_year', 'japanese_name', 'distribution', 'note',
             'created_at', 'change_genus_brackets', 'unknown_author_brackets',
-            'unknown_name_publishedin_year_brackets'
+            'unknown_name_publishedin_year_brackets', 'actual_dist_year'
         ]
         filter_overrides = {
             models.CharField: {
@@ -140,7 +140,7 @@ class ReadOnlyDefaultTaxonViewset(viewsets.ReadOnlyModelViewSet):
         'species', 'subspecies', 'scientific_name_author',
         'name_publishedin_year', 'japanese_name', 'distribution', 'note',
         'created_at', 'change_genus_brackets', 'unknown_author_brackets',
-        'unknown_name_publishedin_year_brackets'
+        'unknown_name_publishedin_year_brackets', 'actual_dist_year'
     ]
 
     def get_queryset(self):
@@ -163,7 +163,7 @@ class CustomTaxonViewSet(viewsets.ModelViewSet):
         'species', 'subspecies', 'scientific_name_author',
         'name_publishedin_year', 'japanese_name', 'distribution', 'note',
         'created_at', 'change_genus_brackets', 'unknown_author_brackets',
-        'unknown_name_publishedin_year_brackets'
+        'unknown_name_publishedin_year_brackets', 'actual_dist_year'
     ]
 
     def get_queryset(self):
