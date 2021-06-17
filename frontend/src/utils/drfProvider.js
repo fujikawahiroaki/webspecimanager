@@ -116,6 +116,13 @@ export default (
       return {data};
     },
 
+    getReverceZipCode: async (resource, params) => {
+      const data = await httpClient(`${apiUrl}/collect-points/own-collect-points/reverce_zipcode/?for_reverce_zipcode=${params.for_reverce_zipcode}`).then(
+        (response) => response.json
+      );
+      return {data};
+    },
+
     getMany: (resource, params) => {
       return Promise.all(
         params.ids.map(id => getOneJson(resource, id))

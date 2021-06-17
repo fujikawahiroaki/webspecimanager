@@ -30,6 +30,8 @@ env.read_env(os.path.join(BASE_DIR, ('.env')))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
+ZIPCODE_REVERCE_API_KEY = env('ZIPCODE_REVERCE_API_KEY')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG')
 
@@ -162,6 +164,7 @@ else:
     MEDIA_ROOT = '/var/www/{}/media'.format(PROJECT_NAME)
 
 SITE_ID = 1
+
 
 # CORS
 CORS_ORIGIN_WHITELIST = env.get_value('CORS_ORIGIN_WHITELIST', tuple)

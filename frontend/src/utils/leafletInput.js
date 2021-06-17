@@ -4,11 +4,13 @@ import { MapContainer, Marker, Popup, TileLayer, useMapEvents, useMap } from 're
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, getFormInitialValues } from 'react-admin';
+import { Button, getFormInitialValues, useDataProvider } from 'react-admin';
 import React, { useState, useEffect } from 'react'
+import {toHebon, toZenKana, toHiragana} from 'jaconv'
 import get from 'lodash/get'
 import L from 'leaflet';
-
+import { MUNI_ARRAY } from './muni';
+import { result } from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
     margin: {
@@ -32,7 +34,8 @@ function copyToClipboard(text) {
 }
 
 
-export function LeafletCoordinateInput({ record={}, source}) {
+export function LeafletCoordinateInput({ record = {}, source }) {
+    const dataProvider = useDataProvider();
     const GetElv = (lng, lat) => {
         fetch(`https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon=${lng}&lat=${lat}&outtype=JSON`)
             .then(response => {
@@ -45,20 +48,81 @@ export function LeafletCoordinateInput({ record={}, source}) {
                 });
             });
     }
+    const deleteAza = (name) => {
+        if (name[0] === "字") {
+            return name.slice(1);
+        } else if (name.slice(0, 1) === "大字") {
+            return name.slice(2);
+        } else {
+            return name;
+        };
+    };
+    const GetPlaceName = (lng, lat) => {
+        fetch(`https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat=${lat}&lon=${lng}`)
+            .then(response => {
+                return response.json().then(results => {
+                    if (results.hasOwnProperty('results')) {
+                        var muniCd = results.results.muniCd;
+                        if (muniCd[0] === "0") {
+                            muniCd = muniCd.slice(1);
+                        };
+                        const names = {
+                            "pref": MUNI_ARRAY[muniCd].split(',')[1],
+                            "city": MUNI_ARRAY[muniCd].split(',')[3],
+                            "munic": deleteAza(results.results.lv01Nm)
+                        }
+                        setPlaceName(`${names["pref"]} ${names["city"]} ${names["munic"]}`)
+                        dataProvider.getReverceZipCode('collect-points/own-collect-points', { for_reverce_zipcode: `${names["city"]}${names["munic"]}`, filter: {} })
+                            .then(({ data }) => {
+                                const checkName = (components) => {
+                                    if (components[1].includes(names["city"]) && names["munic"].includes(components[2])) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    };
+                                };
+                                const searchResult = data.data.items.find(item => checkName(item.components));
+                                setPlaceName(`${names["pref"]} ${names["city"]} ${names["munic"]}`)
+                                setCityKana(toHiragana(toZenKana(searchResult.componentskana[1])));
+                                setMunicKana(toHiragana(toZenKana(searchResult.componentskana[2])));
+                                console.log(searchResult);
+                            })
+                            .catch(error => {
+                                setCityKana("市町村名の読みがなが取得できませんでした")
+                                setMunicKana("詳細地名の読みがなが取得できませんでした")
+                            })
+                    } else {
+                        setPlaceName("地名を取得できませんでした")
+                        setCityKana("市町村名の読みがなが取得できませんでした")
+                        setMunicKana("詳細地名の読みがなが取得できませんでした")
+                    };
+                });
+            });
+    }
     var initialLongitude = 139.774473;
     var initialLatitude = 35.702258;
     var initialElevation = 2.8;
-    var initialZoom = 4
+    var initialPlaceName = "東京都大東区秋葉原";
+    var initialCityKana = "ﾀｲﾄｳｸ";
+    var initialMunicKana = "ｱｷﾊﾊﾞﾗ"
+    var initialZoom = 4;
     if (get(record, source)) {
         initialLongitude = get(record, source)["longitude"];
         initialLatitude = get(record, source)["latitude"];
+        initialPlaceName = get(record, source)["state_provice"] + get(record, source)["municipality"];
         initialElevation = '地図をクリックすると取得できます'
         initialZoom = 15;
     };
     const [longitude, setLongitude] = useState(initialLongitude);
     const [latitude, setLatitude] = useState(initialLatitude);
     const [elevation, setElevation] = useState(initialElevation);
+    const [placeName, setPlaceName] = useState(initialPlaceName);
+    const [cityKana, setCityKana] = useState(initialCityKana);
+    const [municKana, setMunicKana] = useState(initialMunicKana);
     const classes = useStyles();
+    useEffect(() => {
+        GetPlaceName(longitude, latitude);
+    }, [longitude, latitude]);
     const GetCoodinate = () => {
         const map = useMapEvents({
             click: (e) => {
@@ -75,7 +139,7 @@ export function LeafletCoordinateInput({ record={}, source}) {
             function (e) {
                 setLongitude(e.location.x.toFixed(6));
                 setLatitude(e.location.y.toFixed(6));
-                GetElv(e.location.x, e.location.y)
+                GetElv(e.location.x, e.location.y);
                 map.setView({ lat: e.location.y, lon: e.location.x }, 15)
             });
         const provider = new OpenStreetMapProvider();
@@ -96,9 +160,17 @@ export function LeafletCoordinateInput({ record={}, source}) {
         iconAnchor: [12, 41],
         shadowUrl: defaultMarkerShadow,
     });
+    const ConvertHebon = (name) => {
+        if (name === "市町村名の読みがなが取得できませんでした" || name === "詳細地名の読みがなが取得できませんでした") {
+            return "ローマ字化できませんでした"
+        } else {
+            return toHebon(name).charAt(0) + toHebon(name).slice(1).toLowerCase();
+        };
+    };
     const copyLongitude = () => { copyToClipboard(longitude) };
     const copyLatitude = () => { copyToClipboard(latitude) };
     const copyElevation = () => { copyToClipboard(elevation) };
+    const copyPlaceName = () => { copyToClipboard(placeName) };
     return (
         <span>
             <Typography variant='h5'>座標入力補助マップ</Typography>
@@ -107,9 +179,16 @@ export function LeafletCoordinateInput({ record={}, source}) {
             <Typography>標高の取得は現時点では日本国内にのみ対応しております</Typography>
             <Typography>　</Typography>
             <Typography>経度: {longitude} 緯度: {latitude} 標高: {elevation}</Typography>
+            <Typography>地名: {placeName}</Typography>
+            <Typography>市町村名の読みがな: {cityKana}</Typography>
+            <Typography>詳細地名の読みがな: {municKana}</Typography>
+            <Typography>市町村名のヘボン式ローマ字: {ConvertHebon(cityKana)}</Typography>
+            <Typography>詳細地名のヘボン式ローマ字: {ConvertHebon(municKana)}</Typography>
+            <Typography>地名のヘボン式ローマ字(カンマ区切り連結): {ConvertHebon(cityKana)}, {ConvertHebon(municKana)}</Typography>
             <Button label="経度をクリップボードにコピー" onClick={copyLongitude} variant="contained" color="primary" size="small" className={classes.margin} />
             <Button label="緯度をクリップボードにコピー" onClick={copyLatitude} variant="contained" color="primary" size="small" className={classes.margin} />
             <Button label="標高をクリップボードにコピー" onClick={copyElevation} variant="contained" color="primary" size="small" className={classes.margin} />
+            <Button label="地名をクリップボードにコピー" onClick={copyPlaceName} variant="contained" color="primary" size="small" className={classes.margin} />
             <MapContainer center={[initialLatitude, initialLongitude]} zoom={initialZoom} scrollWheelZoom={true} style={{ height: "50vh" }} >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

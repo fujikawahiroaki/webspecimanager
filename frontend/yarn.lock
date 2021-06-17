@@ -6997,6 +6997,11 @@ istanbul-reports@^3.0.2:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
+jaconv@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/jaconv/-/jaconv-1.0.4.tgz#0cffeeea50c14651b66eb6cfe38705b0cbb2c1df"
+  integrity sha512-7cB2JN+sMAf5zpdeclDh1Rzqi5E/9fX348GsRg83HrusRvBFDqsRKH+czME55glrW3nBcBYrOzl9OCp7r39psg==
+
 jest-changed-files@^26.6.2:
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-26.6.2.tgz#f6198479e1cc66f22f9ae1e22acaa0b429c042d0"

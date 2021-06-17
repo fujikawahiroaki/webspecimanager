@@ -1,3 +1,5 @@
+import requests
+import json
 from django_filters import rest_framework as filters
 from django_property_filter import PropertyFilterSet, PropertyRangeFilter
 from rest_framework import viewsets
@@ -5,12 +7,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from django.contrib.gis.db import models
 from django.contrib.gis.measure import Distance
 from django.contrib.gis.geos import Point
+from django.conf import settings
 from .models import CollectPoint
 from .serializers import CollectPointSerializer
-
 
 class CustomPageNumberPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
@@ -98,6 +102,17 @@ class CollectPointViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @action(methods=['get'], detail=False)
+    def reverce_zipcode(self, request):
+        search_place = self.request.query_params.get('for_reverce_zipcode')
+        zip_request = requests.get(f"https://zipcode.milkyfieldcompany.com/api/v1/findzipcode?apikey={settings.ZIPCODE_REVERCE_API_KEY}&address={search_place}")
+        try:
+            response = zip_request.json()
+            return Response({'data': response})
+        except:
+            print(zip_request)
+            return Response({'data': "エラー"})
+    
 
 class CollectPointWithGeoInfoViewSet(CollectPointViewSet):
     """
