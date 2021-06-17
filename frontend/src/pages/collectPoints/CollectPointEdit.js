@@ -31,6 +31,7 @@ import {
 import { LeafletCoordinateInput} from '../../utils/leafletInput';
 import { iso3166list } from './iso3166';
 import Typography from '@material-ui/core/Typography';
+import { SideMap } from './SideMap';
 
 
 const identity = value => (value)
@@ -58,10 +59,9 @@ function formatImage(value) {
 
 
 const CollectPointEdit = (props) => (
-    <Edit actions={<CollectPointEditActions/>} {...props} title="採集地点">
+    <Edit aside={<SideMap />} actions={<CollectPointEditActions/>} {...props} title="採集地点">
         <TabbedForm warnWhenUnsavedChanges>
             <FormTab label="緯度・経度・標高・水深">
-                <LeafletCoordinateInput source="location"/>
                 <NumberInput source="location.longitude" label="経度" helperText="半角数字 小数点以下6桁まで可" resettable/>
                 <NumberInput source="location.latitude" label="緯度" helperText="半角数字 小数点以下6桁まで可" resettable/>
                 <NumberInput source="coordinate_precision" label="採集地の範囲(m)" resettable/>

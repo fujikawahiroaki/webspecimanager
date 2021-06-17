@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, getFormInitialValues, useDataProvider } from 'react-admin';
 import React, { useState, useEffect } from 'react'
-import {toHebon, toZenKana, toHiragana} from 'jaconv'
+import { toHebon, toZenKana, toHiragana } from 'jaconv'
 import get from 'lodash/get'
 import L from 'leaflet';
 import { MUNI_ARRAY } from './muni';
@@ -51,10 +51,8 @@ export function LeafletCoordinateInput({ record = {}, source }) {
     const deleteAza = (name) => {
         if (name[0] === "字") {
             return name.slice(1);
-        } else if (name.slice(0, 1) === "大字") {
-            return name.slice(2);
         } else {
-            return name;
+            return name.replace("大字", "");
         };
     };
     const GetPlaceName = (lng, lat) => {
@@ -74,18 +72,31 @@ export function LeafletCoordinateInput({ record = {}, source }) {
                         setPlaceName(`${names["pref"]} ${names["city"]} ${names["munic"]}`)
                         dataProvider.getReverceZipCode('collect-points/own-collect-points', { for_reverce_zipcode: `${names["city"]}${names["munic"]}`, filter: {} })
                             .then(({ data }) => {
-                                const checkName = (components) => {
-                                    if (components[1].includes(names["city"]) && names["munic"].includes(components[2])) {
-                                        return true;
-                                    } else {
-                                        return false;
+                                try {
+                                    const checkName = (components) => {
+                                        if (components[1].includes(names["city"]) && names["munic"].includes(components[2])) {
+                                            return true;
+                                        } else {
+                                            return false;
+                                        };
                                     };
+                                    const searchResult = data.data.items.find(item => checkName(item.components));
+                                    setPlaceName(`${names["pref"]} ${names["city"]} ${names["munic"]}`)
+                                    setCityKana(toHiragana(toZenKana(searchResult.componentskana[1])));
+                                    setMunicKana(toHiragana(toZenKana(searchResult.componentskana[2])));
+                                } catch (e) {
+                                    const checkName = (components) => {
+                                        if (components[1].includes(names["city"])) {
+                                            return true;
+                                        } else {
+                                            return false;
+                                        };
+                                    };
+                                    const searchResult = data.data.items.find(item => checkName(item.components));
+                                    setPlaceName(`${names["pref"]} ${names["city"]} ${names["munic"]}`)
+                                    setCityKana(toHiragana(toZenKana(searchResult.componentskana[1])));
+                                    setMunicKana("詳細地名の読みがなが取得できませんでした");
                                 };
-                                const searchResult = data.data.items.find(item => checkName(item.components));
-                                setPlaceName(`${names["pref"]} ${names["city"]} ${names["munic"]}`)
-                                setCityKana(toHiragana(toZenKana(searchResult.componentskana[1])));
-                                setMunicKana(toHiragana(toZenKana(searchResult.componentskana[2])));
-                                console.log(searchResult);
                             })
                             .catch(error => {
                                 setCityKana("市町村名の読みがなが取得できませんでした")
@@ -160,8 +171,29 @@ export function LeafletCoordinateInput({ record = {}, source }) {
         iconAnchor: [12, 41],
         shadowUrl: defaultMarkerShadow,
     });
-    const ConvertHebon = (name) => {
-        if (name === "市町村名の読みがなが取得できませんでした" || name === "詳細地名の読みがなが取得できませんでした") {
+    const CityToHebon = (name) => {
+        if (name === "市町村名の読みがなが取得できませんでした") {
+            return "ローマ字化できませんでした"
+        } else {
+            var cityName = toHebon(name);
+            if (cityName.slice(-3) === 'SHI') {
+                cityName = cityName.slice(0, -3) + '-SHI';
+            } else if (cityName.slice(-3) === 'CHO') {
+                cityName = cityName.slice(0, -3) + '-CHŌ';
+            } else if (cityName.slice(-5) === 'MACHI') {
+                cityName = cityName.slice(0, -5) + '-MACHI';
+            } else if (cityName.slice(-4) === 'MURA') {
+                cityName = cityName.slice(0, -4) + '-MURA';
+            } else if (cityName.slice(-3) === 'SON') {
+                cityName = cityName.slice(0, -3) + '-SON';
+            } else if (cityName.slice(-2) === 'KU') {
+                cityName = cityName.slice(0 ,-2) + '-KU';
+            };
+            return cityName.charAt(0) + cityName.slice(1).toLowerCase();
+        };
+    };
+    const MunicToHebon = (name) => {
+        if (name === "詳細地名の読みがなが取得できませんでした") {
             return "ローマ字化できませんでした"
         } else {
             return toHebon(name).charAt(0) + toHebon(name).slice(1).toLowerCase();
@@ -171,24 +203,31 @@ export function LeafletCoordinateInput({ record = {}, source }) {
     const copyLatitude = () => { copyToClipboard(latitude) };
     const copyElevation = () => { copyToClipboard(elevation) };
     const copyPlaceName = () => { copyToClipboard(placeName) };
+    const copyCity = () => {copyToClipboard(CityToHebon(cityKana))};
+    const copyMunic = () => {copyToClipboard(MunicToHebon(municKana))};
+    const copyCityMunic = () => {copyToClipboard(`${CityToHebon(cityKana)}, ${MunicToHebon(municKana)}`)}
     return (
         <span>
-            <Typography variant='h5'>座標入力補助マップ</Typography>
-            <Typography>座標を指定したい位置をクリックしてください</Typography>
-            <Typography>経度・緯度が更新されますので、下の入力欄にコピペしてください</Typography>
-            <Typography>標高の取得は現時点では日本国内にのみ対応しております</Typography>
+            <Typography variant='h5'>地点情報入力補助マップ</Typography>
+            <Typography>情報を取得したい地点をクリックしてください</Typography>
+            <Typography>標高および地名の取得は現時点では日本国内にのみ対応しております</Typography>
+            <Typography>読みがなおよびローマ字の取得はエラーが起きやすいです</Typography>
+            <Typography>詳細地名の読みがなおよびローマ字には「群」「町」などが含まれますが、その切り出し・分割が現時点ではできておりませんので、お手数おかけしますがコピペ後に調整お願いいたします</Typography>
             <Typography>　</Typography>
             <Typography>経度: {longitude} 緯度: {latitude} 標高: {elevation}</Typography>
             <Typography>地名: {placeName}</Typography>
             <Typography>市町村名の読みがな: {cityKana}</Typography>
             <Typography>詳細地名の読みがな: {municKana}</Typography>
-            <Typography>市町村名のヘボン式ローマ字: {ConvertHebon(cityKana)}</Typography>
-            <Typography>詳細地名のヘボン式ローマ字: {ConvertHebon(municKana)}</Typography>
-            <Typography>地名のヘボン式ローマ字(カンマ区切り連結): {ConvertHebon(cityKana)}, {ConvertHebon(municKana)}</Typography>
-            <Button label="経度をクリップボードにコピー" onClick={copyLongitude} variant="contained" color="primary" size="small" className={classes.margin} />
-            <Button label="緯度をクリップボードにコピー" onClick={copyLatitude} variant="contained" color="primary" size="small" className={classes.margin} />
-            <Button label="標高をクリップボードにコピー" onClick={copyElevation} variant="contained" color="primary" size="small" className={classes.margin} />
-            <Button label="地名をクリップボードにコピー" onClick={copyPlaceName} variant="contained" color="primary" size="small" className={classes.margin} />
+            <Typography>市町村名のヘボン式ローマ字: {CityToHebon(cityKana)}</Typography>
+            <Typography>詳細地名のヘボン式ローマ字: {MunicToHebon(municKana)}</Typography>
+            <Typography>地名のヘボン式ローマ字(カンマ区切り連結): {CityToHebon(cityKana)}, {MunicToHebon(municKana)}</Typography>
+            <Button label="経度をコピー" onClick={copyLongitude} variant="contained" color="primary" size="small" className={classes.margin} />
+            <Button label="緯度をコピー" onClick={copyLatitude} variant="contained" color="primary" size="small" className={classes.margin} />
+            <Button label="標高をコピー" onClick={copyElevation} variant="contained" color="primary" size="small" className={classes.margin} />
+            <Button label="地名をコピー" onClick={copyPlaceName} variant="contained" color="primary" size="small" className={classes.margin} />
+            <Button label="市町村名(ローマ字)をコピー" onClick={copyCity} variant="contained" color="primary" size="small" className={classes.margin} />
+            <Button label="詳細地名(ローマ字)をコピー" onClick={copyMunic} variant="contained" color="primary" size="small" className={classes.margin} />
+            <Button label="地名のローマ字(カンマ区切り)をコピー" onClick={copyCityMunic} variant="contained" color="primary" size="small" className={classes.margin} />
             <MapContainer center={[initialLatitude, initialLongitude]} zoom={initialZoom} scrollWheelZoom={true} style={{ height: "50vh" }} >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -110,8 +110,7 @@ class CollectPointViewSet(viewsets.ModelViewSet):
             response = zip_request.json()
             return Response({'data': response})
         except:
-            print(zip_request)
-            return Response({'data': "エラー"})
+            return Response({'data': "error"})
     
 
 class CollectPointWithGeoInfoViewSet(CollectPointViewSet):
