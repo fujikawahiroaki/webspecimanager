@@ -84,7 +84,7 @@ const LabelFilter = props => (
 );
 
 const LabelList = props => (
-    <List {...props} title="ラベル" actions={<LabelListActions/>} filters={<LabelFilter />} perPage={20}
+    <List {...props} empty={false} title="ラベル" actions={<LabelListActions/>} filters={<LabelFilter />} perPage={20}
         sort={{ field: 'created_at', order: 'DESC' }}>
         <Datagrid >
             <TextField source="name" label="ラベル名"/>

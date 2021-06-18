@@ -84,7 +84,7 @@ const TourFilter = props => (
 );
 
 const TourList = props => (
-    <List {...props} title="採集行" actions={<TourListActions />} filters={<TourFilter />} perPage={20}
+    <List {...props} empty={false} title="採集行" actions={<TourListActions />} filters={<TourFilter />} perPage={20}
         sort={{ field: 'start_date', order: 'DESC' }}>
         <Datagrid >
             <TextField source="title" label="タイトル" />

@@ -160,7 +160,7 @@ const exporter = taxa => {
 
 
 const DefaultTaxonList = props => (
-    <List {...props} title="デフォルト分類情報" actions={<DefaultTaxonListActions/>} filters={<DefaultTaxonFilter />} perPage={20}
+    <List {...props} empty={false} title="デフォルト分類情報" actions={<DefaultTaxonListActions/>} filters={<DefaultTaxonFilter />} perPage={20}
         sort={{ field: 'family', order: 'DESC' }} bulkActionButtons={false} exporter={exporter}>
         <CustomizableDatagrid defaultColumns={['family', 'genus', 'species', 'subspecies', 'scientific_name_author',
                                                'name_publishedin_year', 'change_genus_brackets', 'japanese_name']}>

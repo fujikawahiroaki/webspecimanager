@@ -114,8 +114,8 @@ export function LeafletCoordinateInput({ record = {}, source }) {
     var initialLatitude = 35.702258;
     var initialElevation = 2.8;
     var initialPlaceName = "東京都大東区秋葉原";
-    var initialCityKana = "ﾀｲﾄｳｸ";
-    var initialMunicKana = "ｱｷﾊﾊﾞﾗ"
+    var initialCityKana = "たいとうく";
+    var initialMunicKana = "あきはばら"
     var initialZoom = 4;
     if (get(record, source)) {
         initialLongitude = get(record, source)["longitude"];

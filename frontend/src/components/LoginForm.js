@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { userLogin as userLoginAction } from 'react-admin';
+import { userLogin as userLoginAction} from 'react-admin';
 
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
 
 const styles = ({ spacing }) =>
@@ -13,17 +12,13 @@ const styles = ({ spacing }) =>
         button: {
             width: '100%',
         },
-        icon: {
-            marginRight: spacing.unit,
-        },
     });
 
 const LoginForm = ({ classes, userLogin }) => {
     useEffect(() => {
-        console.log("login form rendered")
         const location = window.location.href;
         const url = new URL(window.location.href);
-        const { searchParams } = url ;
+        const { searchParams } = url;
         const code = searchParams.get('code');
         const state = searchParams.get('state');
 
@@ -39,8 +34,7 @@ const LoginForm = ({ classes, userLogin }) => {
 
     return (
         <div>
-            <CardActions>
-                <Typography>安全のため、10時間に1回自動ログアウトされます</Typography>
+            <CardActions style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Button
                     variant="contained"
                     type="submit"
@@ -57,6 +51,5 @@ const LoginForm = ({ classes, userLogin }) => {
 const mapDispatchToProps = {
     userLogin: userLoginAction,
 }
-
 
 export default connect(undefined, mapDispatchToProps)(withStyles(styles)(LoginForm));

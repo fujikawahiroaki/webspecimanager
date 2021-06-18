@@ -157,7 +157,7 @@ const exporter = collectPoints => {
 
 
 const CollectPointList = props => (
-    <List {...props} title="採集地点" actions={<CollectPointListActions/>} filters={<CollectPointFilter />} perPage={20}
+    <List {...props} empty={false} title="採集地点" actions={<CollectPointListActions/>} filters={<CollectPointFilter />} perPage={20}
         sort={{ field: 'created_at', order: 'DESC' }} exporter={exporter}>
         <CustomizableDatagrid defaultColumns={['country', 'island', 'state_provice', 'municipality', 'japanese_place_name_detail',
                                                'longitude', 'latitude']}>

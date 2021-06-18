@@ -84,7 +84,7 @@ const CollectionSettingFilter = props => (
 );
 
 const CollectionSettingList = props => (
-    <List {...props} title="コレクション設定" actions={<CollectionSettingListActions/>} filters={<CollectionSettingFilter />} perPage={20}
+    <List {...props} empty={false} title="コレクション設定" actions={<CollectionSettingListActions/>} filters={<CollectionSettingFilter />} perPage={20}
         sort={{ field: 'institution_code', order: 'DESC' }}>
         <Datagrid >
             <TextField source="collection_name" label="コレクション名"/>

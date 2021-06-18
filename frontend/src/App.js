@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 // react admin
 import {Admin, Resource, ListGuesser, EditGuesser, ShowGuesser, fetchUtils} from 'react-admin';
 
+
 // drf
 import drfProvider from './utils/drfProvider';
 import addUploadCapabilities from './utils/addUploadFeature';
@@ -62,6 +63,7 @@ const httpClient = (url, options = {}) => {
 }
 
 const dataProvider = addUploadCapabilities(drfProvider(process.env.REACT_APP_BACKEND_API, httpClient))
+
 
 const App = () => (
     <Admin locale="ja" i18nProvider={i18nProvider}
