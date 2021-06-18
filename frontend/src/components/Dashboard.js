@@ -145,7 +145,7 @@ const TaxonGraph = () => {
                             }
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
-                        <Legend content={renderLegend} layout="vertical" verticalAlign="middle" align="left" wrapperStyle={{ fontSize: 14 }} />
+                        <Legend content={renderLegend} layout="vertical" verticalAlign="bottom" align="center" wrapperStyle={{ fontSize: 14 }} />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
@@ -283,7 +283,7 @@ const CollectPointGraph = () => {
                             }
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
-                        <Legend content={renderLegend} layout="vertical" verticalAlign="middle" align="left" wrapperStyle={{ fontSize: 14 }} />
+                        <Legend content={renderLegend} layout="vertical" verticalAlign="bottom" align="center" wrapperStyle={{ fontSize: 14 }} />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
