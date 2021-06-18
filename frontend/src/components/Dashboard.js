@@ -129,7 +129,7 @@ const TaxonGraph = () => {
             </FormControl>
             <div style={{ width: '100%', height: 600 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                    <PieChart width={600} height={600}>
+                    <PieChart width='50%' height='50%'>
                         <Pie
                             dataKey="percentage"
                             nameKey="taxon"
@@ -137,7 +137,7 @@ const TaxonGraph = () => {
                             data={specimenPercentage}
                             cx="50%"
                             cy="50%"
-                            outerRadius={150}
+                            outerRadius='80%'
                             fill="#8884d8"
                         >
                             {
@@ -145,7 +145,7 @@ const TaxonGraph = () => {
                             }
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
-                        <Legend content={renderLegend} layout="vertical" verticalAlign="middle" align="left"/>
+                        <Legend content={renderLegend} layout="vertical" verticalAlign="middle" align="left" wrapperStyle={{ fontSize: 14 }} />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
@@ -156,19 +156,19 @@ const TaxonGraph = () => {
 
 const CollectPointGraph = () => {
     const dataProvider = useDataProvider();
-    const [collectPointPercentage, setCollectPointPercentage] = useState([{ place: "?", percentage: 100, count: 0}]);
+    const [collectPointPercentage, setCollectPointPercentage] = useState([{ place: "?", percentage: 100, count: 0 }]);
     const [selectPlace, setSelectPlace] = useState("collect_point_info__state_provice");
     const [collections, setCollections] = useState([]);
     const [targetCollection, setTargetCollection] = useState('')
     const [isAll, setIsAll] = useState(true);
     const COLORS = ['#800080', '#008b8b', '#6b8e23', '#ff7f50', '#778899', '#006400', '#ff8c00', '#lightpink', '#191970', '#f08080', '#8b4513'];
     useEffect(() => {
-        dataProvider.getCollectPointPercentage('specimen/own-specimens', {target_place: selectPlace, target_collection: targetCollection, is_all: isAll})
-        .then(({ data }) => {
-            setCollectPointPercentage(data.data);
-        }).catch(error => {
-            setCollectPointPercentage([{ place: "?", percentage: 100, count: 0}])
-        })
+        dataProvider.getCollectPointPercentage('specimen/own-specimens', { target_place: selectPlace, target_collection: targetCollection, is_all: isAll })
+            .then(({ data }) => {
+                setCollectPointPercentage(data.data);
+            }).catch(error => {
+                setCollectPointPercentage([{ place: "?", percentage: 100, count: 0 }])
+            })
         dataProvider.getInstitutionCodes('collection-settings/own-collection-settings')
             .then(({ data }) => {
                 setCollections(data.data)
@@ -267,7 +267,7 @@ const CollectPointGraph = () => {
             </FormControl>
             <div style={{ width: '100%', height: 600 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                    <PieChart width={600} height={600}>
+                    <PieChart width='50%' height='50%'>
                         <Pie
                             dataKey="percentage"
                             nameKey="place"
@@ -275,7 +275,7 @@ const CollectPointGraph = () => {
                             data={collectPointPercentage}
                             cx="50%"
                             cy="50%"
-                            outerRadius={150}
+                            outerRadius='80%'
                             fill="#8884d8"
                         >
                             {
@@ -283,7 +283,7 @@ const CollectPointGraph = () => {
                             }
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
-                        <Legend content={renderLegend} layout="vertical" verticalAlign="middle" align="left"/>
+                        <Legend content={renderLegend} layout="vertical" verticalAlign="middle" align="left" wrapperStyle={{ fontSize: 14 }} />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
@@ -305,20 +305,22 @@ export default () => {
                 <Grid item xs={12}>
                     <Card>
                         <CardHeader title="WebSpecimanager" />
-                        <CardContent>ようこそ</CardContent>
-                        <CardContent>必ず<a href="https://www.webspecimanager.net/manual/" target="_blank" rel="noopener">マニュアル</a>をお読みになってからご利用ください</CardContent>
-                        <CardContent>現時点ではSafariブラウザではラベルPDF生成機能がご利用頂けません。またInternet Explorerおよび旧型Edgeはサポートしておりません。Google Chrome、FireFox、Edge(新型)のいずれかからご利用ください。</CardContent>
-                        <CardContent>現時点ではモバイル版では表示が崩れます。お手数ですが、当面はスマホからのご利用の際もPC版で表示するようお願いいたします。</CardContent>
+                        <CardContent>
+                            <Typography variant='h6'>ようこそ</Typography>
+                            <Typography>必ず<a href="https://www.webspecimanager.net/manual/" target="_blank" rel="noopener">マニュアル</a>をお読みになってからご利用ください</Typography>
+                            <Typography>現時点ではSafariブラウザではラベルPDF生成機能がご利用頂けません。またInternet Explorerおよび旧型Edgeはサポートしておりません。Google Chrome、FireFox、Edge(新型)のいずれかからご利用ください。</Typography>
+                            <Typography>現時点ではモバイル版では表示が崩れます。お手数ですが、当面はスマホからのご利用の際もPC版で表示するようお願いいたします。</Typography>
+                        </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <Card>
                         <CardContent>
                             <TaxonGraph />
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <Card>
                         <CardContent>
                             <CollectPointGraph />
