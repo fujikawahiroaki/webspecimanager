@@ -62,13 +62,13 @@ const CollectPointEdit = (props) => (
     <Edit aside={<SideMap />} actions={<CollectPointEditActions/>} {...props} title="採集地点">
         <TabbedForm warnWhenUnsavedChanges>
             <FormTab label="緯度・経度・標高・水深">
-                <NumberInput source="location.longitude" label="経度(10進数・度表記)" helperText="半角数字 小数点以下6桁まで可" resettable/>
-                <NumberInput source="location.latitude" label="緯度(10進数・度表記)" helperText="半角数字 小数点以下6桁まで可" resettable/>
-                <NumberInput source="minimum_elevation" label="最低標高(m)" resettable/>
-                <NumberInput source="maximum_elevation" label="最高標高(m)" resettable/>
-                <NumberInput source="coordinate_precision" label="採集地の範囲(m)" resettable/>
-                <NumberInput source="minimum_depth" label="水面からの最浅の距離(m)" resettable/>
-                <NumberInput source="maximum_depth" label="水面からの最深の距離(m)" resettable/>
+                <NumberInput source="location.longitude" label="経度(10進数・度表記)" helperText="半角数字 小数点以下6桁まで可" resettable validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="location.latitude" label="緯度(10進数・度表記)" helperText="半角数字 小数点以下6桁まで可" resettable validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="minimum_elevation" label="最低標高(m)" resettable validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="maximum_elevation" label="最高標高(m)" resettable validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="coordinate_precision" label="採集地の範囲(m)" resettable validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="minimum_depth" label="水面からの最浅の距離(m)" resettable validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="maximum_depth" label="水面からの最深の距離(m)" resettable validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
             </FormTab>
             <FormTab label="地名情報">
                 <AutocompleteInput source="country" label="国名コード(ISO 3166-1)" helperText="ISO 3166-1準拠の半角英字2字の国名コード(リストから国名を選択すると自動入力されます)" resettable

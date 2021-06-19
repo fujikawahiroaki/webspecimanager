@@ -161,9 +161,9 @@ const SpecimenCreate = (props) => (
                 <DateInput source="date_identified" label="同定日" />
                 <Typography variant='h6'>長音母音入力補助 コピペして使用してください: ā ī ū ē ō ȳ Ā Ī Ū Ē Ō Ȳ â î û ê ô Â Î Û Ê Ô</Typography>
                 <TextInput source="identified_by" label="同定者" helperText='半角英数記号およびアクセント記号付き文字18字以内' parse={identity} validate={validateforIdentifiedBy} />
-                <NumberInput source="year" label="採集年" helperText='半角数字4桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(9999)]} />
-                <NumberInput source="month" label="採集月" helperText='半角数字12以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(12)]} />
-                <NumberInput source="day" label="採集日" helperText='半角数字31以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(31)]} />
+                <NumberInput source="year" label="採集年" helperText='半角数字4桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(9999), required("この項目は空にできません 不明な場合は0を入力してください")]} />
+                <NumberInput source="month" label="採集月" helperText='半角数字12以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(12), required("この項目は空にできません 不明な場合は0を入力してください")]} />
+                <NumberInput source="day" label="採集日" helperText='半角数字31以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(31), required("この項目は空にできません 不明な場合は0を入力してください")]} />
                 <TextInput source="collecter" label="採集者" helperText='半角英数記号およびアクセント記号付き文字18字以内' parse={identity} validate={validateforCollecter} />
                 <AutocompleteInput source="sex" label="性別" choices={[
                     { id: 'U', name: '不明' },
@@ -188,7 +188,7 @@ const SpecimenCreate = (props) => (
                 <TextInput source="lifestage" label="ライフステージ" defaultValue="adult" helperText='半角英数記号20字以内' parse={identity} validate={validateforLifeStage} />
                 <TextInput source="establishment_means" label="生成プロセス(wildなど)" defaultValue="wild" helperText='半角英数記号20字以内' parse={identity} validate={validateforLifeStage} />
                 <TextInput source="rights" label="ライセンス" defaultValue="CC BY" helperText='半角英数記号10字以内' parse={identity} validate={validateforRights} />
-                <TextInput multiline source="note" label="備考" helperText='200字以内 改行可' parse={identity} resettable validate={minLength(0), maxLength(200)} />
+                <TextInput multiline source="note" label="備考" helperText='200字以内 改行可' parse={identity} resettable validate={[minLength(0), maxLength(200)]} />
             </FormTab>
             <FormTab label="分類情報">
                 <ReferenceInput
