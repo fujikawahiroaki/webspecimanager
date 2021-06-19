@@ -59,13 +59,13 @@ const CollectPointCreate = (props) => (
     <Create aside={<SideMap />} actions={<CollectPointCreateActions/>} {...props} title="採集地点">
         <TabbedForm redirect='list'>
             <FormTab label="緯度・経度・標高・水深">
-                <NumberInput source="location.longitude" label="経度(10進数・度表記)" helperText="半角数字 小数点以下6桁まで可" resettable/>
-                <NumberInput source="location.latitude" label="緯度(10進数・度表記)" helperText="半角数字 小数点以下6桁まで可" resettable/>
-                <NumberInput source="minimum_elevation" label="最低標高(m)" resettable/>
-                <NumberInput source="maximum_elevation" label="最高標高(m)" resettable/>
-                <NumberInput source="coordinate_precision" label="採集地の範囲(m)" resettable/>
-                <NumberInput source="minimum_depth" label="水面からの最浅の距離(m)" resettable/>
-                <NumberInput source="maximum_depth" label="水面からの最深の距離(m)" resettable/>
+                <NumberInput source="location.longitude" label="経度(10進数・度表記)" helperText="半角数字 小数点以下6桁まで可" resettable defaultValue={0} validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="location.latitude" label="緯度(10進数・度表記)" helperText="半角数字 小数点以下6桁まで可" resettable defaultValue={0} validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="minimum_elevation" label="最低標高(m)" resettable defaultValue={0} validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="maximum_elevation" label="最高標高(m)" resettable defaultValue={0} validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="coordinate_precision" label="採集地の範囲(m)" defaultValue={0} validate={required("この項目は空にできません 不明な場合は0を入力してください")} resettable/>
+                <NumberInput source="minimum_depth" label="水面からの最浅の距離(m)" resettable defaultValue={0} validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
+                <NumberInput source="maximum_depth" label="水面からの最深の距離(m)" resettable defaultValue={0} validate={required("この項目は空にできません 不明な場合は0を入力してください")}/>
             </FormTab>
             <FormTab label="地名情報">
                 <AutocompleteInput source="country" label="国名コード(ISO 3166-1)" helperText="ISO 3166-1準拠の半角英字2字の国名コード(リストから国名を選択すると自動入力されます)" resettable
@@ -79,7 +79,7 @@ const CollectPointCreate = (props) => (
                 <TextInput source="municipality" label="市名以下の詳細地名" helperText="半角英数記号およびアクセント記号付き文字50字以内 大地名から順にカンマ区切り" parse={identity} resettable validate={validateASCIIforMunicipality}/>
                 <TextInput multiple source="verbatim_locality" label="採集地の説明" helperText="200字以内 改行可" parse={identity} resettable validate={[minLength(0), maxLength(200)]}/>
                 <TextInput source="japanese_place_name" label="日本語地名(ラベル用)" helperText="14字以内" parse={identity} resettable validate={[minLength(0), maxLength(14)]}/>
-                <TextInput source="japanese_place_name_detail" label="日本語地名(詳細)" parse={identity} helperText="50字以内 標本との紐付けの際の検索に利用されるので、検索しやすい内容にしてください" resettable validate={[minLength(0), maxLength(50)]}/>
+                <TextInput source="japanese_place_name_detail" label="日本語地名(詳細)" parse={identity} helperText="50字以内 標本との紐付けの際の検索に利用されるので、検索しやすい内容にしてください" resettable validate={[minLength(0), maxLength(50), required("この項目は空にできません")]}/>
             </FormTab>
             <FormTab label="採集行情報">
                 <ReferenceArrayInput

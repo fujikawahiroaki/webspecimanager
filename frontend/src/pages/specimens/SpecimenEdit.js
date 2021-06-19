@@ -78,16 +78,16 @@ const SpecimenEdit = (props) => (
                     {({ formData, ...rest }) => formData.collection_settings_info &&
                         <div>
                             <Typography variant='h6'>編集の場合、作成とは異なり標本IDを空にできません。不明な場合は0を入力してください</Typography>
-                            <NumberInput source="collection_code" {...rest} label="標本ID" helperText='半角数字18桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(999999999999999999), required("この項目は空にできません 不明な場合は0を入力してください")]} />
+                            <NumberInput source="collection_code" {...rest} label="標本ID" helperText='半角数字18桁以内(不明な場合0を入力してください)' defaultValue={0} parse={identity} validate={[minValue(0), maxValue(999999999999999999), required("この項目は空にできません 不明な場合は0を入力してください")]} />
                         </div>
                     }
                 </FormDataConsumer>
                 <DateInput source="date_identified" label="同定日"/>
                 <Typography variant='h6'>長音母音入力補助 コピペして使用してください: ā ī ū ē ō ȳ Ā Ī Ū Ē Ō Ȳ â î û ê ô Â Î Û Ê Ô</Typography>
                 <TextInput source="identified_by" label="同定者" helperText='半角英数記号およびアクセント記号付き文字18字以内' parse={identity} validate={validateforIdentifiedBy}/>
-                <NumberInput source="year" label="採集年" helperText='半角数字4桁以内(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(9999), required("この項目は空にできません 不明な場合は0を入力してください")]}/>
-                <NumberInput source="month" label="採集月" helperText='半角数字12以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(12), required("この項目は空にできません 不明な場合は0を入力してください")]}/>
-                <NumberInput source="day" label="採集日" helperText='半角数字31以下(不明な場合0を入力してください)' parse={identity} validate={[minValue(0), maxValue(31), required("この項目は空にできません 不明な場合は0を入力してください")]}/>
+                <NumberInput source="year" label="採集年" helperText='半角数字4桁以内(不明な場合0を入力してください)' parse={identity} defaultValue={0} validate={[minValue(0), maxValue(9999), required("この項目は空にできません 不明な場合は0を入力してください")]}/>
+                <NumberInput source="month" label="採集月" helperText='半角数字12以下(不明な場合0を入力してください)' parse={identity} defaultValue={0} validate={[minValue(0), maxValue(12), required("この項目は空にできません 不明な場合は0を入力してください")]}/>
+                <NumberInput source="day" label="採集日" helperText='半角数字31以下(不明な場合0を入力してください)' parse={identity} defaultValue={0} validate={[minValue(0), maxValue(31), required("この項目は空にできません 不明な場合は0を入力してください")]}/>
                 <TextInput source="collecter" label="採集者" helperText='半角英数記号およびアクセント記号付き文字18字以内' parse={identity} validate={validateforCollecter}/>
                 <AutocompleteInput source="sex" label="性別" choices={[
                     { id: 'U', name: '不明' },
