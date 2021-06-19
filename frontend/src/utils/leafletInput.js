@@ -55,6 +55,13 @@ export function LeafletCoordinateInput({ record = {}, source }) {
             return name.replace("大字", "");
         };
     };
+    const splitGun = (kanjiName, kanaName) => {
+        if (kanjiName.includes("北群馬郡")) {
+            return kanaName.replace('ｷﾀｸﾞﾝﾏｸﾞﾝ', 'ｷﾀｸﾞﾝﾏｸﾞﾝ, ')
+        } else {
+            return kanaName.replace('ｸﾞﾝ', 'ｸﾞﾝ, ')
+        };
+    }
     const GetPlaceName = (lng, lat) => {
         fetch(`https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat=${lat}&lon=${lng}`)
             .then(response => {
@@ -81,8 +88,8 @@ export function LeafletCoordinateInput({ record = {}, source }) {
                                         };
                                     };
                                     const searchResult = data.data.items.find(item => checkName(item.components));
-                                    setPlaceName(`${names["pref"]} ${names["city"]} ${names["munic"]}`)
-                                    setCityKana(toHiragana(toZenKana(searchResult.componentskana[1])));
+                                    setPlaceName(`${names["pref"]} ${searchResult.components[1]} ${names["munic"]}`)
+                                    setCityKana(toHiragana(toZenKana(splitGun(searchResult.components[1], searchResult.componentskana[1]))));
                                     setMunicKana(toHiragana(toZenKana(searchResult.componentskana[2])));
                                 } catch (e) {
                                     const checkName = (components) => {
@@ -93,8 +100,8 @@ export function LeafletCoordinateInput({ record = {}, source }) {
                                         };
                                     };
                                     const searchResult = data.data.items.find(item => checkName(item.components));
-                                    setPlaceName(`${names["pref"]} ${names["city"]} ${names["munic"]}`)
-                                    setCityKana(toHiragana(toZenKana(searchResult.componentskana[1])));
+                                    setPlaceName(`${names["pref"]} ${searchResult.components[1]} ${names["munic"]}`)
+                                    setCityKana(toHiragana(toZenKana(splitGun(searchResult.components[1], searchResult.componentskana[1]))));
                                     setMunicKana("詳細地名の読みがなが取得できませんでした");
                                 };
                             })
@@ -189,6 +196,11 @@ export function LeafletCoordinateInput({ record = {}, source }) {
             } else if (cityName.slice(-2) === 'KU') {
                 cityName = cityName.slice(0 ,-2) + '-KU';
             };
+            if (cityName.includes('GUN, ')) {
+                cityName = cityName.replace('GUN, ', '-GUN, ');
+                const gunNameIndex = cityName.indexOf('-GUN, ') + 6;
+                return cityName.charAt(0) + cityName.slice(1, gunNameIndex).toLowerCase() + cityName.charAt(gunNameIndex) + cityName.slice(gunNameIndex+1).toLowerCase();
+            };
             return cityName.charAt(0) + cityName.slice(1).toLowerCase();
         };
     };
@@ -209,10 +221,10 @@ export function LeafletCoordinateInput({ record = {}, source }) {
     return (
         <span>
             <Typography variant='h5'>地点情報入力補助マップ</Typography>
-            <Typography>情報を取得したい地点をクリックしてください</Typography>
-            <Typography>標高および地名の取得は現時点では日本国内にのみ対応しております</Typography>
-            <Typography>読みがなおよびローマ字の取得はエラーが起きやすいです</Typography>
-            <Typography>詳細地名の読みがなおよびローマ字には「群」「町」などが含まれますが、その切り出し・分割が現時点ではできておりませんので、お手数おかけしますがコピペ後に調整お願いいたします</Typography>
+            <Typography>情報を取得したい地点をクリックしてください。</Typography>
+            <Typography>標高および地名の取得は現時点では日本国内にのみ対応しております。</Typography>
+            <Typography>読みがな・ローマ字の取得は時々エラーが発生します。数秒空けてからもう一度付近をクリックすると取得できることが多いです。</Typography>
+            <Typography>地名ローマ字に長音記号を使いたい場合(例: TokyoではなくTōkyōにしたい等)、お手数ですがコピペ後に手動で置換をお願いします。</Typography>
             <Typography>　</Typography>
             <Typography>経度: {longitude} 緯度: {latitude} 標高: {elevation}</Typography>
             <Typography>地名: {placeName}</Typography>
