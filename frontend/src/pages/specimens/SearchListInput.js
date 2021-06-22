@@ -28,7 +28,7 @@ export const SearchListInput = props => {
                     id: record.record.default_taxon_info
                 })
                     .then(({ data }) => {
-                        setCurrentName(`現在のデータ: ${data.scientific_name}`);
+                        setCurrentName(`現在のデータ: ${data.scientific_name} (空にしたい場合、検索結果リスト最上段の空白の選択肢を選んでください)`);
                     })
                     .catch(error => {
                         setCurrentName('')

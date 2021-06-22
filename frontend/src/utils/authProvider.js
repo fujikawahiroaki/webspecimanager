@@ -8,6 +8,7 @@ const auth0 = new Auth0Client({
     audience: authConfig.audience,
     scope: "openid profile offline_access read:specimens create:specimens delete:specimens",
     useRefreshTokens: true,
+    issuer: authConfig.domain
 });
 
 
