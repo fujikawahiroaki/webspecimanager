@@ -23,6 +23,7 @@ import labels from "./pages/labels";
 // components
 import Dashboard from './components/Dashboard';
 import authProvider from './utils/authProvider';
+import { httpClient } from './utils/authProvider';
 
 // themes
 import { theme } from "./themes/theme";
@@ -49,18 +50,6 @@ const messages = {
     }
 };
 const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'ja');
-
-const httpClient = (url, options = {}) => {
-    if (!options.headers) {
-        options.headers = new Headers({ Accept: 'application/json' });
-    }
-    const token =  localStorage.getItem('wsat');
-    options.headers.set('Authorization',  `Bearer ${token}`);
-    options.user = {
-        authenticated: true
-    };
-    return fetchUtils.fetchJson(url, options);
-}
 
 const dataProvider = addUploadCapabilities(drfProvider(process.env.REACT_APP_BACKEND_API, httpClient))
 

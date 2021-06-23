@@ -294,12 +294,12 @@ const CollectPointGraph = () => {
 
 export default () => {
     const { loading, authenticated } = useAuthState();
-    if (loading || !localStorage.hasOwnProperty('wsat')) {
+    if (loading) {
         return (
             <div>ログイン情報を読み込み中です.........</div>
         )
     }
-    if (authenticated && localStorage.hasOwnProperty('wsat')) {
+    if (authenticated) {
         return (
             <Grid container spacing={1}>
                 <Grid item xs={12}>

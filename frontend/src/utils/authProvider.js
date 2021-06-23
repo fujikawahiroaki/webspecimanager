@@ -1,5 +1,7 @@
 import authConfig from "./authConfig";
 import { Auth0Client } from '@auth0/auth0-spa-js';
+import { fetchUtils } from 'react-admin';
+
 
 const auth0 = new Auth0Client({
     domain: authConfig.domain,
@@ -10,6 +12,19 @@ const auth0 = new Auth0Client({
     useRefreshTokens: true,
     issuer: authConfig.issuer
 });
+
+
+export const httpClient = async (url, options = {}) => {
+    if (!options.headers) {
+        options.headers = new Headers({ Accept: 'application/json' });
+    }
+    const token =  await auth0.getTokenSilently();
+    options.headers.set('Authorization',  `Bearer ${token}`);
+    options.user = {
+        authenticated: true
+    };
+    return fetchUtils.fetchJson(url, options);
+}
 
 
 export default {
@@ -27,7 +42,7 @@ export default {
                 localStorage.clear();
                 return auth0.logout({
                     redirect_uri: authConfig.redirectURI,
-                    federated: true // have to be enabled to invalidate refresh token
+                    federated: false // have to be enabled to invalidate refresh token
                 });
             }
             return Promise.resolve()
@@ -45,7 +60,6 @@ export default {
         return auth0.isAuthenticated().then(function (isAuthenticated) {
             if (isAuthenticated) {
                 auth0.getTokenSilently().then(access_token => {
-                    localStorage.setItem('wsat', access_token);
                     return Promise.resolve();
                 }).catch(e => {
                     if (e.error === 'login_required') {
