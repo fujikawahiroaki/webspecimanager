@@ -173,6 +173,8 @@ const SpecimenCreate = (props) => (
                     { id: 'I', name: '不確定' },
                     { id: 'T', name: '転移' },
                 ]} />
+                <BooleanInput source="allow_kojin_shuzo" label="個人収蔵.comへの投稿の可否" parse={identity} defaultValue={false}/>
+                <BooleanInput source="published_kojin_shuzo" label="個人収蔵.comに投稿済み?" parse={identity} defaultValue={false}/>
                 <AutocompleteInput source="preparation_type" label="標本の種類" choices={[
                     { id: 'dry specimens', name: '乾燥標本' },
                     { id: 'immersion specimens', name: '液浸標本' },

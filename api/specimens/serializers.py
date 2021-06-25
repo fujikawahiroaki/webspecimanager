@@ -82,6 +82,8 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
     year = serializers.IntegerField(required=False)
     month = serializers.IntegerField(required=False)
     day = serializers.IntegerField(required=False)
+    allow_kojin_shuzo = serializers.BooleanField(required=False)
+    published_kojin_shuzo = serializers.BooleanField(required=False)
     image1 = Base64ImageField(required=False)
     image2 = Base64ImageField(required=False)
     image3 = Base64ImageField(required=False)
@@ -112,7 +114,8 @@ class SpecimenSerializer(CountryFieldMixin, serializers.ModelSerializer):
                   'year', 'month', 'day', 'sex', 'sampling_protocol',
                   'sampling_effort', 'note', 'preparation_type',
                   'disposition', 'establishment_means',
-                  'lifestage', 'rights', 'image1', 'image2', 'image3',
+                  'lifestage', 'rights', 'allow_kojin_shuzo', 'published_kojin_shuzo',
+                  'image1', 'image2', 'image3',
                   'image4', 'image5', 'name']
         read_only_fields = ('date_last_modified', 'id')
         extra_kwargs = {

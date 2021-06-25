@@ -66,59 +66,58 @@ const CustomTaxonListActions = (props) => {
         total,
     } = useListContext();
     return (
-        <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            {filters && cloneElement(filters, {
-                resource,
-                showFilter,
-                displayedFilters,
-                filterValues,
-                context: 'button',
-            })}
-            <CreateButton basePath={basePath} />
-            <ExportButton
-                disabled={total === 0}
-                resource={resource}
-                sort={currentSort}
-                filterValues={filterValues}
-                maxResults={100000}
-                label="CSVをDL"
-            />
-            <Typography>　</Typography>
-            <Typography>CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索</Typography>
-            <Typography>　</Typography>
-            <Typography>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
-            {/* Add your custom actions */}
-        </TopToolbar>
+        <div>
+            <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+                {filters && cloneElement(filters, {
+                    resource,
+                    showFilter,
+                    displayedFilters,
+                    filterValues,
+                    context: 'button',
+                })}
+                <CreateButton basePath={basePath} />
+                <ExportButton
+                    disabled={total === 0}
+                    resource={resource}
+                    sort={currentSort}
+                    filterValues={filterValues}
+                    maxResults={100000}
+                    label="CSVをDL"
+                />
+            </TopToolbar>
+            <Typography variant="body2">CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索してください。</Typography>
+            <Typography variant="body2">検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
+        </div>
     );
 };
 
 const CustomTaxonFilter = props => (
     <Filter {...props}>
-        <TextInput source="genus" label="属" alwaysOn resettable/>
-        <TextInput source="species" label="種" alwaysOn resettable/>
-        <TextInput source="subspecies" label="亜種" alwaysOn resettable/>
-        <TextInput source="japanese_name" label="和名" alwaysOn resettable/>
-        <TextInput source="subgenus" label="亜属" resettable/>
-        <TextInput source="scientific_name_author" label="記載者" resettable/>
-        <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable/>
-        <NumberInput source="name_publishedin_year_max" label="記載年の範囲(入力年以前)" resettable/>
-        <NumberInput source="actual_dist_year_min" label="記載実流通年の範囲(入力年以降)" resettable/>
-        <NumberInput source="actual_dist_year_max" label="記載実流通年の範囲(入力年以前)" resettable/>
+        <TextInput source="genus" label="属" alwaysOn resettable />
+        <TextInput source="species" label="種" alwaysOn resettable />
+        <TextInput source="subspecies" label="亜種" alwaysOn resettable />
+        <TextInput source="japanese_name" label="和名" alwaysOn resettable />
+        <TextInput source="subgenus" label="亜属" resettable />
+        <TextInput source="scientific_name_author" label="記載者" resettable />
+        <NumberInput source="name_publishedin_year_min" label="記載年の範囲(入力年以降)" resettable />
+        <NumberInput source="name_publishedin_year_max" label="記載年の範囲(入力年以前)" resettable />
+        <NumberInput source="actual_dist_year_min" label="記載実流通年の範囲(入力年以降)" resettable />
+        <NumberInput source="actual_dist_year_max" label="記載実流通年の範囲(入力年以前)" resettable />
         <BooleanInput source="change_genus_brackets" label="属移動カッコの有無" resettable />
         <BooleanInput source="unknown_author_brackets" label="記載者不明角カッコの有無" resettable />
         <BooleanInput source="unknown_name_publishedin_year_brackets" label="記載年不明角カッコの有無" resettable />
-        <TextInput source="kingdom" label="界" resettable/>
-        <TextInput source="phylum" label="門" resettable/>
-        <TextInput source="class_name" label="綱" resettable/>
-        <TextInput source="order" label="目" resettable/>
-        <TextInput source="suborder" label="亜目" resettable/>
-        <TextInput source="family" label="科" resettable/>
-        <TextInput source="subfamily" label="亜科" resettable/>
-        <TextInput source="tribe" label="族" resettable/>
-        <TextInput source="subtribe" label="亜族" resettable/>
-        <TextInput source="distribution" label="分布" resettable/>
-        <TextInput source="note" label="備考" resettable/>
-        <DateInput source="created_at" label="作成日" resettable/>
+        <TextInput source="kingdom" label="界" resettable />
+        <TextInput source="phylum" label="門" resettable />
+        <TextInput source="class_name" label="綱" resettable />
+        <TextInput source="order" label="目" resettable />
+        <TextInput source="suborder" label="亜目" resettable />
+        <TextInput source="family" label="科" alwaysOn resettable />
+        <TextInput source="subfamily" label="亜科" resettable />
+        <TextInput source="tribe" label="族" resettable />
+        <TextInput source="subtribe" label="亜族" resettable />
+        <TextInput source="distribution" label="分布" resettable />
+        <TextInput source="note" label="備考" resettable />
+        <DateInput source="created_at" label="作成日" resettable />
     </Filter>
 );
 
@@ -160,22 +159,22 @@ const exporter = taxa => {
 };
 
 const CustomTaxonList = props => (
-    <List {...props} empty={false} title="カスタム分類情報" actions={<CustomTaxonListActions/>} filters={<CustomTaxonFilter />} perPage={20}
+    <List {...props} empty={false} title="カスタム分類情報" actions={<CustomTaxonListActions />} filters={<CustomTaxonFilter />} perPage={20}
         sort={{ field: 'family', order: 'DESC' }} exporter={exporter}>
         <CustomizableDatagrid defaultColumns={['family', 'genus', 'species', 'subspecies', 'scientific_name_author',
-                                               'name_publishedin_year', 'change_genus_brackets', 'japanese_name']}>
+            'name_publishedin_year', 'change_genus_brackets', 'japanese_name']}>
             <TextField source="family" label="科" />
-            <TextField source="genus" label="属"/>
-            <TextField source="subgenus" label="亜属"/>
-            <TextField source="species" label="種"/>
-            <TextField source="subspecies" label="亜種"/>
-            <TextField source="scientific_name_author" label="記載者"/>
-            <TextField source="name_publishedin_year" label="記載年"/>
-            <TextField source="actual_dist_year" label="記載実流通年"/>
+            <TextField source="genus" label="属" />
+            <TextField source="subgenus" label="亜属" />
+            <TextField source="species" label="種" />
+            <TextField source="subspecies" label="亜種" />
+            <TextField source="scientific_name_author" label="記載者" />
+            <TextField source="name_publishedin_year" label="記載年" />
+            <TextField source="actual_dist_year" label="記載実流通年" />
             <BooleanField source='change_genus_brackets' label='属移動カッコの有無' />
             <BooleanField source='unknown_author_brackets' label='記載者不明角カッコの有無' />
             <BooleanField source='unknown_name_publishedin_year_brackets' label='記載年不明角カッコの有無' />
-            <TextField source="japanese_name" label="和名"/>
+            <TextField source="japanese_name" label="和名" />
             <TextField source="kingdom" label="界" />
             <TextField source="phylum" label="門" />
             <TextField source="class_name" label="綱" />
@@ -186,10 +185,10 @@ const CustomTaxonList = props => (
             <TextField source="subtribe" label="亜族" />
             <TextField source="distribution" label="分布" />
             <TextField source="note" label="備考" />
-            <DateField source="created_at" label="作成日"/>
+            <DateField source="created_at" label="作成日" />
             <EditButton label="編集" />
-            <CloneButton label="これをベースに作成"/>
-            <ShowButton label="詳細"/>
+            <CloneButton label="これをベースに作成" />
+            <ShowButton label="詳細" />
         </CustomizableDatagrid>
     </List>
 );

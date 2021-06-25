@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, useMemo, useState, useEffect, Fragment } from 'react';
+import { cloneElement, useMemo, useState, useEffect, Fragment, useCallback } from 'react';
 import {
     useListContext,
     useDataProvider,
@@ -40,6 +40,12 @@ import {
     SimpleForm,
     TextInput,
     SearchInput,
+    useUpdateMany,
+    useGetList,
+    useRefresh,
+    fetchRelatedRecords,
+    useResourceContext,
+    useNotify,
     BooleanInput,
     Filter,
     NumberInput,
@@ -47,6 +53,7 @@ import {
     downloadCSV,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
+import DownloadIcon from '@material-ui/icons/GetApp';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
 import jsonExport from 'jsonexport/dist';
 import Typography from '@material-ui/core/Typography';
@@ -55,6 +62,85 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import { Box } from '@material-ui/core';
+
+
+const ExportForKojinShuzoButton = props => {
+    const {
+        maxResults = 100000,
+        onClick,
+        label = 'ra.action.export',
+        icon = <DownloadIcon />,
+        exporter: customExporter,
+        sort, // deprecated, to be removed in v4
+        ...rest
+    } = props;
+    const {
+        filter,
+        filterValues,
+        currentSort,
+        exporter: exporterFromContext,
+        total,
+    } = useListContext(props);
+    const resource = useResourceContext(props);
+    const exporter = customExporter || exporterFromContext;
+    const dataProvider = useDataProvider();
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const handleClick = useCallback(
+        event => {
+            dataProvider
+                .getList(resource, {
+                    sort: currentSort || sort,
+                    filter: { ...filterValues, ...filter, allow_kojin_shuzo: true, published_kojin_shuzo: false },
+                    pagination: { page: 1, perPage: maxResults },
+                })
+                .then(
+                    ({ data }) => {
+                        exporter &&
+                            exporter(
+                                data,
+                                fetchRelatedRecords(dataProvider),
+                                dataProvider,
+                                resource
+                            )
+                        const idsForKojinShuzo = data.map(rec => rec.id);
+                        dataProvider.updateMany(resource, { ids: idsForKojinShuzo, data: { published_kojin_shuzo: true } });
+                        refresh();
+                    }
+                )
+                .catch(error => {
+                    console.error(error);
+                    notify('ra.notification.http_error', 'warning');
+                });
+            if (typeof onClick === 'function') {
+                onClick(event);
+            }
+        },
+        [
+            currentSort,
+            dataProvider,
+            exporter,
+            filterValues,
+            filter,
+            maxResults,
+            notify,
+            onClick,
+            resource,
+            sort,
+        ]
+    );
+    return (
+        <Button
+            onClick={handleClick}
+            label={label}
+            disabled={total === 0}
+            {...rest}
+        >
+            {icon}
+        </Button>
+    );
+};
 
 
 const SpecimenListActions = (props) => {
@@ -70,6 +156,7 @@ const SpecimenListActions = (props) => {
         resource,
         displayedFilters,
         filterValues,
+        filter,
         hasCreate,
         basePath,
         selectedIds,
@@ -77,28 +164,37 @@ const SpecimenListActions = (props) => {
         total,
     } = useListContext();
     return (
-        <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            {filters && cloneElement(filters, {
-                resource,
-                showFilter,
-                displayedFilters,
-                filterValues,
-                context: 'button',
-            })}
-            <CreateButton basePath={basePath} />
-            <ExportButton
-                disabled={total === 0}
-                resource={resource}
-                sort={currentSort}
-                filterValues={filterValues}
-                maxResults={100000}
-                label="CSVをDL"
-            />
-            <Typography>　</Typography>
-            <Typography>CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索</Typography>
-            <Typography>　</Typography>
-            <Typography>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
-        </TopToolbar>
+        <div>
+            <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+                {filters && cloneElement(filters, {
+                    resource,
+                    showFilter,
+                    displayedFilters,
+                    filterValues,
+                    context: 'button',
+                })}
+                <CreateButton basePath={basePath} />
+                <ExportButton
+                    disabled={total === 0}
+                    resource={resource}
+                    sort={currentSort}
+                    filterValues={filterValues}
+                    maxResults={100000}
+                    label="CSVをDL"
+                />
+                <ExportForKojinShuzoButton
+                    exporter={exporterForKojinShuzo}
+                    disabled={total === 0}
+                    resource={resource}
+                    sort={currentSort}
+                    filterValues={filterValues}
+                    maxResults={100000}
+                    label="個人収蔵.com投稿用CSVをDL"
+                />
+            </TopToolbar>
+                <Typography variant="body2">CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索してください。</Typography>
+                <Typography variant="body2">検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
+        </div>
     );
 };
 
@@ -168,6 +264,8 @@ const SpecimenFilter = props => (
         <TextInput source="day_min" label="採集日の範囲(入力日以降)" resettable />
         <TextInput source="day_max" label="採集日の範囲(入力日以前)" resettable />
         <TextInput source="sex" label="性別" resettable />
+        <BooleanInput source="allow_kojin_shuzo" label="個人収蔵.comへの投稿の可否" resettable />
+        <BooleanInput source="published_kojin_shuzo" label="個人収蔵.comに投稿済み?" resettable />
         <TextInput source="preparation_type" label="標本の種類" resettable />
         <TextInput source="disposition" label="現在の標本の状況" resettable />
         <TextInput source="sampling_protocol" label="採集方法" resettable />
@@ -291,10 +389,90 @@ const exporter = specimens => {
     });
     jsonExport(specimensForExport, {
     }, (err, csv) => {
+
         downloadCSV(csv, 'specimens');
     });
 };
 
+const exporterForKojinShuzo = specimens => {
+    const specimensForKojinShuzo = specimens.map(specimen => {
+        var higherTaxon = '';
+        if (specimen.class_name === 'Insecta') {
+            higherTaxon = "昆虫";
+        } else if (specimen.class_name === 'Arachnida') {
+            higherTaxon = "クモ類";
+        } else if (
+            specimen.class_name === 'Osteichthyes' ||
+            specimen.class_name === 'Chondrichthyes' ||
+            specimen.class_name === 'Agnatha' ||
+            specimen.class_name === 'Pisces') {
+            higherTaxon = "魚類";
+        } else if (specimen.phylum === 'Mollusca') {
+            higherTaxon = "軟体動物";
+        } else if (specimen.phylum === 'Brachiopoda') {
+            higherTaxon = "腕足動物";
+        } else if (
+            specimen.class_name === 'Ostracoda' ||
+            specimen.class_name === 'Mystacocarida' ||
+            specimen.class_name === 'Ichthyostraca' ||
+            specimen.class_name === 'Hexanauplia' ||
+            specimen.class_name === 'Malacostraca' ||
+            specimen.class_name === 'Branchiopoda' ||
+            specimen.class_name === 'Cephalocarida' ||
+            specimen.class_name === 'Remipedia') {
+            higherTaxon = "甲殻類";
+        } else if (specimen.className === 'Aves') {
+            higherTaxon = "鳥類";
+        };
+        var sex = 'unknown';
+        if (specimen.sex === 'M') {
+            sex = 'male';
+        } else if (specimen.sex === 'F') {
+            sex = 'female';
+        }
+        var image1 = '';
+        if (specimen.image1) {
+            image1 = specimen.image1;
+        };
+        var preparation_type = '乾燥';
+        if (specimen.preparation_type === 'immersion specimens') {
+            preparation_type = "液浸";
+        }
+        var license = 1;
+        if (specimen.rights === 'CC 0') {
+            license = 0;
+        } else if (specimen.rights === 'CC BY-NC') {
+            license = 2;
+        }
+        const sortedSpecimenForExport = {
+            higherTaxon: higherTaxon,
+            japanese_name: specimen.japanese_name,
+            scientific_name: `${specimen.genus} ${specimen.species} ${specimen.subspecies}`,
+            sex: sex,
+            place_name: `${specimen.country}: ${specimen.island}, ${specimen.state_provice}, ${specimen.municipality}, ${specimen.japanese_place_name} `,
+            latitude: specimen.latitude.toFixed(6),
+            longitude: specimen.longitude.toFixed(6),
+            year: specimen.year,
+            month: specimen.month,
+            day: specimen.day,
+            collecter: specimen.collecter,
+            identified_by: specimen.identified_by,
+            istype: '',
+            image1: image1,
+            image2: '',
+            image3: '',
+            preparation_type: preparation_type,
+            license: license,
+            note: specimen.note.split('\n').join(' '),
+            twitter: '',
+            collection_info: `${specimen.collection_name}:  ${specimen.institution_code} ${specimen.collection_code}`
+        };
+        return sortedSpecimenForExport;
+    });
+    jsonExport(specimensForKojinShuzo, { includeHeaders: false }, (err, csv) => {
+        downloadCSV(csv, 'specimens_for_kojinshuzo');
+    });
+};
 
 const Counter = () => {
     const { filterValues, ids } = useListContext();
@@ -355,7 +533,7 @@ const Counter = () => {
                                 id: 'uncontrolled-native',
                             }}
                             onChange={handleChange}
-                            style={{ width: "10%"}}
+                            style={{ width: "10%" }}
                         >
                             <option value={"kingdom"}>界</option>
                             <option value={"phylum"}>門</option>
@@ -392,13 +570,13 @@ const MyList = ({ children, ...props }) => (
         <Counter />
         <Card>
             <CardContent>
-                <div style={{ justifyContent: 'space-between' ,display: "flex" }}>
+                <div style={{ justifyContent: 'space-between', display: "flex" }}>
                     <Typography noWrap>↓一括選択は項目名左端のチェックボックスからできます</Typography>
                     <Typography noWrap>表示項目の変更は下の黒いボタンからできます↓</Typography>
                 </div>
             </CardContent>
             <BulkActionsToolbar>
-                <BulkDeleteButton {...props}/>
+                <BulkDeleteButton {...props} />
             </BulkActionsToolbar>
             {cloneElement(children, {
                 hasBulkActions: props.bulkActionButtons !== false,
@@ -463,6 +641,8 @@ const SpecimenList = props => {
                 <TextField source="month" label="採集月" />
                 <TextField source="day" label="採集日" />
                 <TextField source="sex" label="性別" />
+                <BooleanField source="allow_kojin_shuzo" label="個人収蔵.comへの投稿の可否" />
+                <BooleanField source="published_kojin_shuzo" label="個人収蔵.comに投稿済み?" />
                 <TextField source="preparation_type" label="標本の種類" />
                 <TextField source="disposition" label="現在の標本の状況" />
                 <TextField source="sampling_protocol" label="採集方法" />

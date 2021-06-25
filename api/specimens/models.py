@@ -136,6 +136,14 @@ class Specimen(models.Model):
     note = models.TextField(verbose_name='備考', max_length=200,
                             default='',
                             blank=True)
+    # 個人収蔵.com様への投稿の可否
+    allow_kojin_shuzo = models.BooleanField(verbose_name='個人収蔵.com様への投稿の可否',
+                                            default=False,
+                                            blank=True)
+    # 個人収蔵.com様へ投稿済みか?
+    published_kojin_shuzo = models.BooleanField(verbose_name='個人収蔵.com様へ投稿済みか?',
+                                                default=False,
+                                                blank=True)
     # 画像
     image1 = models.ImageField(upload_to=user_portfolio_directory_path,
                                null=True, blank=True)

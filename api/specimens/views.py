@@ -135,7 +135,7 @@ class SpecimenFilter(PropertyFilterSet):
                   'order', 'suborder', 'family', 'subfamily', 'tribe',
                   'subtribe', 'genus', 'subgenus', 'species', 'subspecies',
                   'scientific_name_author', 'name_publishedin_year',
-                  'actual_dist_year',
+                  'actual_dist_year', 'allow_kojin_shuzo', 'published_kojin_shuzo',
                   'japanese_name', 'change_genus_brackets',
                   'unknown_author_brackets', 'unknown_name_publishedin_year_brackets', 'date_last_modified'
                   ]

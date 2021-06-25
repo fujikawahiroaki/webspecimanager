@@ -66,6 +66,7 @@ const DefaultTaxonListActions = (props) => {
         total,
     } = useListContext();
     return (
+        <div>
         <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
             {filters && cloneElement(filters, {
                 resource,
@@ -82,12 +83,11 @@ const DefaultTaxonListActions = (props) => {
                 maxResults={100000}
                 label="CSVをDL"
             />
-            <Typography>　</Typography>
-            <Typography>CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索</Typography>
-            <Typography>　</Typography>
-            <Typography>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
-            {/* Add your Default actions */}
         </TopToolbar>
+            <Typography variant="body2">CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索してください。</Typography>
+            <Typography variant="body2">検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
+            {/* Add your Default actions */}
+        </div>
     );
 };
 
@@ -111,7 +111,7 @@ const DefaultTaxonFilter = props => (
         <TextInput source="class_name" label="綱" resettable/>
         <TextInput source="order" label="目" resettable/>
         <TextInput source="suborder" label="亜目" resettable/>
-        <TextInput source="family" label="科" resettable/>
+        <TextInput source="family" label="科" alwaysOn resettable/>
         <TextInput source="subfamily" label="亜科" resettable/>
         <TextInput source="tribe" label="族" resettable/>
         <TextInput source="subtribe" label="亜族" resettable/>

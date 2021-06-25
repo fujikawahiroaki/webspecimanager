@@ -43,6 +43,8 @@ const SpecimenShow = props => (
                 <TextField source="month" label="採集月"/>
                 <TextField source="day" label="採集日"/>
                 <TextField source="sex" label="性別"/>
+                <BooleanField source="allow_kojin_shuzo" label="個人収蔵.comへの投稿の可否" />
+                <BooleanField source="published_kojin_shuzo" label="個人収蔵.comに投稿済み?" />
                 <TextField source="preparation_type" label="標本の種類"/>
                 <TextField source="disposition" label="現在の標本の状況"/>
                 <TextField source="sampling_protocol" label="採集方法"/>
