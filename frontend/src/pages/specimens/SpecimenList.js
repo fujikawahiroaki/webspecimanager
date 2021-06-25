@@ -182,15 +182,6 @@ const SpecimenListActions = (props) => {
                     maxResults={100000}
                     label="CSVをDL"
                 />
-                <ExportForKojinShuzoButton
-                    exporter={exporterForKojinShuzo}
-                    disabled={total === 0}
-                    resource={resource}
-                    sort={currentSort}
-                    filterValues={filterValues}
-                    maxResults={100000}
-                    label="個人収蔵.com投稿用CSVをDL"
-                />
             </TopToolbar>
                 <Typography variant="body2">CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索してください。</Typography>
                 <Typography variant="body2">検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
