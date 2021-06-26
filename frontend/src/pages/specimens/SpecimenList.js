@@ -62,7 +62,8 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+import encoding from 'encoding-japanese';
 
 
 const ExportForKojinShuzoButton = props => {
@@ -165,7 +166,7 @@ const SpecimenListActions = (props) => {
     } = useListContext();
     return (
         <div>
-            <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+            <TopToolbar className={className} {...sanitizeListRestProps(rest)} >
                 {filters && cloneElement(filters, {
                     resource,
                     showFilter,
@@ -182,9 +183,25 @@ const SpecimenListActions = (props) => {
                     maxResults={100000}
                     label="CSVをDL"
                 />
+                <ExportButton
+                    disabled={total === 0}
+                    resource={resource}
+                    sort={currentSort}
+                    filterValues={filterValues}
+                    maxResults={100000}
+                    label="Excel用CSVをDL"
+                    exporter={exporterForExcel}
+                />
+                <ExportForKojinShuzoButton
+                    disabled={total === 0}
+                    resource={resource}
+                    sort={currentSort}
+                    filterValues={filterValues}
+                    maxResults={100000}
+                    label="個人収蔵.com用CSVをDL"
+                    exporter={exporterForKojinShuzo}
+                />
             </TopToolbar>
-                <Typography variant="body2">CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索してください。</Typography>
-                <Typography variant="body2">検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
         </div>
     );
 };
@@ -315,7 +332,7 @@ const SpecimenFilter = props => (
 );
 
 
-const exporter = specimens => {
+const specimenToJson = (specimens) => {
     const specimensForExport = specimens.map(specimen => {
         const sortedSpecimenForExport = {
             collection_name: specimen.collection_name,
@@ -378,12 +395,24 @@ const exporter = specimens => {
         }
         return sortedSpecimenForExport;
     });
-    jsonExport(specimensForExport, {
-    }, (err, csv) => {
+    return specimensForExport;
+};
 
+
+const exporter = specimens => {
+    jsonExport(specimenToJson(specimens), {
+    }, (err, csv) => {
         downloadCSV(csv, 'specimens');
     });
 };
+
+
+const exporterForExcel = specimens => {
+    jsonExport(specimenToJson(specimens), {
+    }, (err, csv) => {
+        downloadCSV(new Blob(["\uFEFF", csv], { type: 'application/octet-stream' }), 'specimens_for_excel');
+    });
+}
 
 const exporterForKojinShuzo = specimens => {
     const specimensForKojinShuzo = specimens.map(specimen => {
@@ -440,14 +469,14 @@ const exporterForKojinShuzo = specimens => {
             japanese_name: specimen.japanese_name,
             scientific_name: `${specimen.genus} ${specimen.species} ${specimen.subspecies}`,
             sex: sex,
-            place_name: `${specimen.country}: ${specimen.island}, ${specimen.state_provice}, ${specimen.municipality}, ${specimen.japanese_place_name} `,
+            place_name: `${specimen.country}: ${specimen.island}, ${specimen.state_provice}, ${specimen.municipality}, ${specimen.japanese_place_name} `.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
             latitude: specimen.latitude.toFixed(6),
             longitude: specimen.longitude.toFixed(6),
             year: specimen.year,
             month: specimen.month,
             day: specimen.day,
-            collecter: specimen.collecter,
-            identified_by: specimen.identified_by,
+            collecter: specimen.collecter.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+            identified_by: specimen.identified_by.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
             istype: '',
             image1: image1,
             image2: '',
@@ -461,7 +490,14 @@ const exporterForKojinShuzo = specimens => {
         return sortedSpecimenForExport;
     });
     jsonExport(specimensForKojinShuzo, { includeHeaders: false }, (err, csv) => {
-        downloadCSV(csv, 'specimens_for_kojinshuzo');
+        const unicodeList = [];
+        for (let i = 0; i < csv.length; i += 1) {
+            unicodeList.push(csv.charCodeAt(i));
+        }
+        const shiftJisCodeList = encoding.convert(unicodeList, 'sjis', 'unicode');
+        const uInt8List = new Uint8Array(shiftJisCodeList);
+        const convertedCsv = new Blob([uInt8List], { type: 'text/csv' });
+        downloadCSV(convertedCsv, 'specimens_for_kojin_shuzo');
     });
 };
 
@@ -558,7 +594,22 @@ const MyList = ({ children, ...props }) => (
             filters={props.filters}
             actions={props.actions}
         />
-        <Counter />
+        <Grid container spacing={2}>
+            <Grid item xs={12} md={7}>
+                <Counter />
+            </Grid>
+            <Grid item xs={12} md={5}>
+                <Card style={{ margin: '1em' }}>
+                    <CardContent>
+                        <Typography variant="h6">注意事項</Typography>
+                        <Typography variant="body2" style={{ padding: 5 }}>ノーマルCSVはBOMなしUTF-8、Excel用CSVはBOM付きUTF-8、個人収蔵.com用CSVはShift_JISでエンコードされています。</Typography>
+                        <Typography variant="body2" style={{ padding: 5 }}>個人収蔵.com用CSVではShift_JISの制約により、Ōなどのアクセント記号付き文字が通常のアルファベットに変換されます。</Typography>
+                        <Typography variant="body2" style={{ padding: 5 }}>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
+                        <Typography variant="body2" style={{ padding: 5 }}>個人収蔵.com用CSVでは個人収蔵.comへの投稿が可かつ未投稿のデータのみがダウンロードされます。検索による絞り込みは有効です。</Typography>
+                    </CardContent>
+                </Card>
+            </Grid>
+        </Grid>
         <Card>
             <CardContent>
                 <div style={{ justifyContent: 'space-between', display: "flex" }}>

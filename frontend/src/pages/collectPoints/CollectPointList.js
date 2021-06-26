@@ -83,9 +83,18 @@ const CollectPointListActions = (props) => {
                     maxResults={100000}
                     label="CSVをDL"
                 />
+                <ExportButton
+                    disabled={total === 0}
+                    resource={resource}
+                    sort={currentSort}
+                    filterValues={filterValues}
+                    maxResults={100000}
+                    label="Excel用CSVをDL"
+                    exporter={exporterForExcel}
+                />
                 {/* Add your custom actions */}
             </TopToolbar>
-            <Typography variant="body2">CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索してください。</Typography>
+            <Typography variant="body2">ノーマルCSVはBOMなしUTF-8、Excel用CSVはBOM付きUTF-8でエンコードされています。</Typography>
             <Typography variant="body2">検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
         </div>
     );
@@ -124,7 +133,7 @@ const CollectPointFilter = props => (
 );
 
 
-const exporter = collectPoints => {
+const collectPointToJson = (collectPoints) => {
     const collectPointsForExport = collectPoints.map(collectPoint => {
         const collectPointForExport = {
             contient: collectPoint.contient,
@@ -149,12 +158,22 @@ const exporter = collectPoints => {
         };
         return collectPointForExport;
     });
-    jsonExport(collectPointsForExport, {
+    return collectPointsForExport
+};
+
+const exporter = collectPoints => {
+    jsonExport(collectPointToJson(collectPoints), {
     }, (err, csv) => {
         downloadCSV(csv, 'collect_points');
     });
 };
 
+const exporterForExcel = collectPoints => {
+    jsonExport(collectPointToJson(collectPoints), {
+    }, (err, csv) => {
+        downloadCSV(new Blob(["\uFEFF", csv], { type: 'application/octet-stream' }), 'collect_points_for_excel');
+    });
+};
 
 const CollectPointList = props => (
     <List {...props} empty={false} title="採集地点" actions={<CollectPointListActions />} filters={<CollectPointFilter />} perPage={20}

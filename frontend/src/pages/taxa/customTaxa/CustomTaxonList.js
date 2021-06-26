@@ -84,8 +84,17 @@ const CustomTaxonListActions = (props) => {
                     maxResults={100000}
                     label="CSVをDL"
                 />
+                <ExportButton
+                    disabled={total === 0}
+                    resource={resource}
+                    sort={currentSort}
+                    filterValues={filterValues}
+                    maxResults={100000}
+                    label="Excel用CSVをDL"
+                    exporter={exporterForExcel}
+                />
             </TopToolbar>
-            <Typography variant="body2">CSVの文字コードはutf-8なので、Excelでそのまま読み込むとデータが崩れます。対処法は「Excel csv 文字化け」で検索してください。</Typography>
+            <Typography variant="body2">ノーマルCSVはBOMなしUTF-8、Excel用CSVはBOM付きUTF-8でエンコードされています。</Typography>
             <Typography variant="body2">検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
         </div>
     );
@@ -122,7 +131,7 @@ const CustomTaxonFilter = props => (
 );
 
 
-const exporter = taxa => {
+const taxaToJson = (taxa) => {
     const taxaForExport = taxa.map(taxon => {
         const taxonForExport = {
             kingdom: taxon.kingdom,
@@ -152,9 +161,20 @@ const exporter = taxa => {
         }
         return taxonForExport;
     });
-    jsonExport(taxaForExport, {
+    return taxaForExport;
+};
+
+const exporter = taxa => {
+    jsonExport(taxaToJson(taxa), {
     }, (err, csv) => {
         downloadCSV(csv, 'custom_taxa');
+    });
+};
+
+const exporterForExcel = taxa => {
+    jsonExport(taxaToJson(taxa), {
+    }, (err, csv) => {
+        downloadCSV(new Blob(["\uFEFF", csv], { type: 'application/octet-stream' }), 'custom_taxa_for_excel');
     });
 };
 
