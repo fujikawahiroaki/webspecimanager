@@ -470,8 +470,8 @@ const exporterForKojinShuzo = specimens => {
             scientific_name: `${specimen.genus} ${specimen.species} ${specimen.subspecies}`,
             sex: sex,
             place_name: `${specimen.country}: ${specimen.island}, ${specimen.state_provice}, ${specimen.municipality}, ${specimen.japanese_place_name} `.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
-            latitude: specimen.latitude.toFixed(6),
-            longitude: specimen.longitude.toFixed(6),
+            latitude: specimen.latitude.toFixed(3),
+            longitude: specimen.longitude.toFixed(3),
             year: specimen.year,
             month: specimen.month,
             day: specimen.day,
@@ -603,7 +603,10 @@ const MyList = ({ children, ...props }) => (
                     <CardContent>
                         <Typography variant="h6">注意事項</Typography>
                         <Typography variant="body2" style={{ padding: 5 }}>ノーマルCSVはBOMなしUTF-8、Excel用CSVはBOM付きUTF-8、個人収蔵.com用CSVはShift_JISでエンコードされています。</Typography>
-                        <Typography variant="body2" style={{ padding: 5 }}>個人収蔵.com用CSVではShift_JISの制約により、Ōなどのアクセント記号付き文字が通常のアルファベットに変換されます。</Typography>
+                        <Typography variant="body2" style={{ padding: 5 }}>
+                            個人収蔵.com用CSVではShift_JISの制約により、Ōなどのアクセント記号付き文字が通常のアルファベットに変換されます。
+                            また、過度にピンポイントでの情報公開を避けるために、緯度・経度の小数点以下の桁数が3桁に変換されます。変換されるのはCSVのみで、元データに影響はありません。
+                        </Typography>
                         <Typography variant="body2" style={{ padding: 5 }}>検索条件に合うデータのみをダウンロードします。全データをダウンロードしたい場合、検索をかけないでください。</Typography>
                         <Typography variant="body2" style={{ padding: 5 }}>個人収蔵.com用CSVでは個人収蔵.comへの投稿が可かつ未投稿のデータのみがダウンロードされます。検索による絞り込みは有効です。</Typography>
                     </CardContent>
