@@ -40,6 +40,8 @@ class SpecimenFilter(PropertyFilterSet):
     """
     date_identified = filters.DateFromToRangeFilter()
     date_last_modified = filters.DateFromToRangeFilter()
+    collection_code = filters.NumberFilter(lookup_expr='exact')
+    collection_code_range = filters.RangeFilter(field_name='collection_code')
     kingdom = PropertyCharFilter(field_name='kingdom', lookup_expr='icontains')
     phylum = PropertyCharFilter(field_name='phylum', lookup_expr='icontains')
     class_name = PropertyCharFilter(field_name='class_name',

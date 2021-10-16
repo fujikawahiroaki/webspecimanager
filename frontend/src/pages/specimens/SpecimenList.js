@@ -260,7 +260,9 @@ const SpecimenFilter = props => (
         <TextInput label="採集行のタイトル" source="tour__title" resettable />
         <TextInput label="コレクション名" source="collection_settings_info__collection_name" resettable />
         <TextInput label="機関コード" source="collection_settings_info__institution_code" resettable />
-        <TextInput source="collection_code" label="標本ID" resettable />
+        <NumberInput source="collection_code" label="標本ID" resettable />
+        <NumberInput source="collection_code_range_min" label="標本IDの範囲(入力値以上)" resettable />
+        <NumberInput source="collection_code_range_max" label="標本IDの範囲(入力値以下)" resettable />
         <TextInput source="identified_by" label="同定者" resettable />
         <DateInput source="date_identified_after" label="同定年月日の範囲(入力日以降)" resettable />
         <DateInput source="date_identified_before" label="同定年月日の範囲(入力日以前)" resettable />
