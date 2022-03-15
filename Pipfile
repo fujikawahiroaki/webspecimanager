@@ -42,6 +42,12 @@ django-extensions = "*"
 pygraphviz = "*"
 django-model-utils = "*"
 drf-pdf = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-mock = "*"
+requests-mock = "*"
+django-mock-queries = "*"
+model-bakery = "*"
 
 [requires]
 python_version = "3.7"
