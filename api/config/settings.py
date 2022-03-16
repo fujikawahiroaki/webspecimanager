@@ -110,10 +110,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db(),
-    'TEST': {
-            'NAME': 'test_database',
-        },
+    'default': env.db()
 }
 
 # Password validation
